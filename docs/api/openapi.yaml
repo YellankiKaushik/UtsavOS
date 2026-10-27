@@ -1,0 +1,3544 @@
+{
+  "openapi": "3.1.0",
+  "info":
+    {
+      "title": "UtsavOS P0 API",
+      "version": "0.1.0",
+      "description": "Money is a canonical decimal string in INR paise. Every state-changing request requires an exact allowed Origin. Routes are implemented with an allowlisted Next.js dispatcher. Refined Zod rules and SQL constraints are normative alongside this schema.",
+    },
+  "servers": [{ "url": "/api/v1" }],
+  "paths":
+    {
+      "/me":
+        {
+          "get":
+            {
+              "summary": "Current verified identity, workspaces and AI usage",
+              "operationId": "get__me",
+              "security": [{ "sessionCookie": [] }],
+              "parameters": [],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/functions":
+        {
+          "get":
+            {
+              "summary": "P1 preview: list own functions (FEATURE_EVENT_FUNCTIONS required)",
+              "operationId": "get__events__eventId__functions",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "P1 preview: create a function with audit/version protection",
+              "operationId": "post__events__eventId__functions",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "fields":
+                                    {
+                                      "$ref": "#/components/schemas/FunctionFields",
+                                    },
+                                },
+                              "required": ["expectedVersion", "fields"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/functions/{functionId}":
+        {
+          "patch":
+            {
+              "summary": "P1 preview: edit a function",
+              "operationId": "patch__events__eventId__functions__functionId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "functionId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "fields":
+                                    {
+                                      "$ref": "#/components/schemas/FunctionFields",
+                                    },
+                                },
+                              "required": ["expectedVersion", "fields"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "delete":
+            {
+              "summary": "P1 preview: archive an unassigned function",
+              "operationId": "delete__events__eventId__functions__functionId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "functionId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                },
+                              "required": ["expectedVersion"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/functions/{functionId}/resources":
+        {
+          "post":
+            {
+              "summary": "P1 preview: assign or detach an owned resource without duplicating costs",
+              "operationId": "post__events__eventId__functions__functionId__resources",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "functionId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "kind":
+                                    {
+                                      "type": "string",
+                                      "enum": ["task", "budget", "vendor"],
+                                    },
+                                  "resourceId":
+                                    { "type": "string", "format": "uuid" },
+                                  "assigned": { "type": "boolean" },
+                                },
+                              "required":
+                                [
+                                  "expectedVersion",
+                                  "kind",
+                                  "resourceId",
+                                  "assigned",
+                                ],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/workspaces/personal":
+        {
+          "post":
+            {
+              "summary": "Idempotently provision personal owner workspace",
+              "operationId": "post__workspaces_personal",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events":
+        {
+          "get":
+            {
+              "summary": "List own events (limit 1–50 and opaque cursor)",
+              "operationId": "get__events",
+              "security": [{ "sessionCookie": [] }],
+              "parameters": [],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Create event and audit atomically",
+              "operationId": "post__events",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "workspaceId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                          },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/EventFields",
+                                          },
+                                      },
+                                    "required": ["workspaceId", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "workspaceId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                          },
+                                        "type":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "wedding",
+                                                "birthday",
+                                                "community",
+                                              ],
+                                          },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 140,
+                                          },
+                                        "dateStatus":
+                                          {
+                                            "type": "string",
+                                            "enum": ["tbd", "scheduled"],
+                                          },
+                                        "startsAt":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "date-time",
+                                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "timeZone":
+                                          {
+                                            "type": "string",
+                                            "maxLength": 100,
+                                          },
+                                        "guestCount":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 100000,
+                                          },
+                                        "currency":
+                                          { "type": "string", "const": "INR" },
+                                        "budgetMinor":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^(0|[1-9]\\d{0,12})$",
+                                          },
+                                        "preferences":
+                                          {
+                                            "default": "",
+                                            "type": "string",
+                                            "maxLength": 2000,
+                                          },
+                                        "status":
+                                          {
+                                            "default": "planning",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "planning",
+                                                "active",
+                                                "completed",
+                                                "archived",
+                                              ],
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "workspaceId",
+                                        "type",
+                                        "title",
+                                        "dateStatus",
+                                        "timeZone",
+                                        "guestCount",
+                                        "currency",
+                                        "budgetMinor",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "201":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}":
+        {
+          "get":
+            {
+              "summary": "Read authorized event snapshot",
+              "operationId": "get__events__eventId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "patch":
+            {
+              "summary": "Edit metadata (guest changes require replan)",
+              "operationId": "patch__events__eventId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/EventFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "type":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "wedding",
+                                                "birthday",
+                                                "community",
+                                              ],
+                                          },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 140,
+                                          },
+                                        "dateStatus":
+                                          {
+                                            "type": "string",
+                                            "enum": ["tbd", "scheduled"],
+                                          },
+                                        "startsAt":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "date-time",
+                                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "timeZone":
+                                          {
+                                            "type": "string",
+                                            "maxLength": 100,
+                                          },
+                                        "guestCount":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 100000,
+                                          },
+                                        "currency":
+                                          { "type": "string", "const": "INR" },
+                                        "budgetMinor":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^(0|[1-9]\\d{0,12})$",
+                                          },
+                                        "preferences":
+                                          {
+                                            "default": "",
+                                            "type": "string",
+                                            "maxLength": 2000,
+                                          },
+                                        "status":
+                                          {
+                                            "default": "planning",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "planning",
+                                                "active",
+                                                "completed",
+                                                "archived",
+                                              ],
+                                          },
+                                      },
+                                    "required": ["expectedVersion"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/budget-items":
+        {
+          "post":
+            {
+              "summary": "Create budget-items record",
+              "operationId": "post__events__eventId__budget_items",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/BudgetFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 140,
+                                          },
+                                        "category":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 80,
+                                          },
+                                        "pricingBasis":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "fixed",
+                                                "per_guest",
+                                                "per_unit",
+                                              ],
+                                          },
+                                        "unitPriceMinor":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^(0|[1-9]\\d{0,12})$",
+                                          },
+                                        "quantity":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "integer",
+                                                  "minimum": 0,
+                                                  "maximum": 100000,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "sourceKind":
+                                          {
+                                            "default": "user_estimate",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "ai_estimate",
+                                                "user_estimate",
+                                                "vendor_quote",
+                                              ],
+                                          },
+                                        "sourceLabel":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 500,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "isLocked":
+                                          {
+                                            "default": false,
+                                            "type": "boolean",
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "expectedVersion",
+                                        "title",
+                                        "category",
+                                        "pricingBasis",
+                                        "unitPriceMinor",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/budget-items/{itemId}":
+        {
+          "patch":
+            {
+              "summary": "Edit budget-items; locked rows allow only explicit unlock",
+              "operationId": "patch__events__eventId__budget_items__itemId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/BudgetFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 140,
+                                          },
+                                        "category":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 80,
+                                          },
+                                        "pricingBasis":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "fixed",
+                                                "per_guest",
+                                                "per_unit",
+                                              ],
+                                          },
+                                        "unitPriceMinor":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^(0|[1-9]\\d{0,12})$",
+                                          },
+                                        "quantity":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "integer",
+                                                  "minimum": 0,
+                                                  "maximum": 100000,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "sourceKind":
+                                          {
+                                            "default": "user_estimate",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "ai_estimate",
+                                                "user_estimate",
+                                                "vendor_quote",
+                                              ],
+                                          },
+                                        "sourceLabel":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 500,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "isLocked":
+                                          {
+                                            "default": false,
+                                            "type": "boolean",
+                                          },
+                                      },
+                                    "required": ["expectedVersion"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "type": "object",
+                                            "properties":
+                                              {
+                                                "isLocked": { "const": false },
+                                              },
+                                            "required": ["isLocked"],
+                                            "additionalProperties": false,
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "delete":
+            {
+              "summary": "Remove budget-items (budget items are archived)",
+              "operationId": "delete__events__eventId__budget_items__itemId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                },
+                              "required": ["expectedVersion"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/tasks":
+        {
+          "get":
+            {
+              "summary": "Read tasks",
+              "operationId": "get__events__eventId__tasks",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Create tasks record",
+              "operationId": "post__events__eventId__tasks",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/TaskFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200,
+                                          },
+                                        "description":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 4000,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "status":
+                                          {
+                                            "default": "todo",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "todo",
+                                                "in_progress",
+                                                "done",
+                                                "blocked",
+                                              ],
+                                          },
+                                        "dueAt":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "date-time",
+                                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "priority":
+                                          {
+                                            "default": "normal",
+                                            "type": "string",
+                                            "enum": ["low", "normal", "high"],
+                                          },
+                                        "isLocked":
+                                          {
+                                            "default": false,
+                                            "type": "boolean",
+                                          },
+                                        "dependencyIds":
+                                          {
+                                            "default": [],
+                                            "maxItems": 100,
+                                            "type": "array",
+                                            "items":
+                                              {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                              },
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "title"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/tasks/{itemId}":
+        {
+          "patch":
+            {
+              "summary": "Edit tasks; locked rows allow only explicit unlock",
+              "operationId": "patch__events__eventId__tasks__itemId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/TaskFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200,
+                                          },
+                                        "description":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 4000,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "status":
+                                          {
+                                            "default": "todo",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "todo",
+                                                "in_progress",
+                                                "done",
+                                                "blocked",
+                                              ],
+                                          },
+                                        "dueAt":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "date-time",
+                                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "priority":
+                                          {
+                                            "default": "normal",
+                                            "type": "string",
+                                            "enum": ["low", "normal", "high"],
+                                          },
+                                        "isLocked":
+                                          {
+                                            "default": false,
+                                            "type": "boolean",
+                                          },
+                                        "dependencyIds":
+                                          {
+                                            "default": [],
+                                            "maxItems": 100,
+                                            "type": "array",
+                                            "items":
+                                              {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                              },
+                                          },
+                                      },
+                                    "required": ["expectedVersion"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "type": "object",
+                                            "properties":
+                                              {
+                                                "isLocked": { "const": false },
+                                              },
+                                            "required": ["isLocked"],
+                                            "additionalProperties": false,
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "delete":
+            {
+              "summary": "Remove tasks (budget items are archived)",
+              "operationId": "delete__events__eventId__tasks__itemId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                },
+                              "required": ["expectedVersion"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/vendor-requirements":
+        {
+          "get":
+            {
+              "summary": "Read vendor-requirements",
+              "operationId": "get__events__eventId__vendor_requirements",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Create vendor-requirements record",
+              "operationId": "post__events__eventId__vendor_requirements",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/VendorFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 140,
+                                          },
+                                        "category":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 80,
+                                          },
+                                        "status":
+                                          {
+                                            "default": "needed",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "needed",
+                                                "researching",
+                                                "shortlisted",
+                                                "confirmed",
+                                                "not_needed",
+                                              ],
+                                          },
+                                        "notes":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 4000,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "quoteSource":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 500,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "isLocked":
+                                          {
+                                            "default": false,
+                                            "type": "boolean",
+                                          },
+                                        "estimatedCostMinor":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "pattern": "^(0|[1-9]\\d{0,12})$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "dueAt":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "date-time",
+                                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                      },
+                                    "required":
+                                      ["expectedVersion", "title", "category"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/vendor-requirements/{itemId}":
+        {
+          "patch":
+            {
+              "summary": "Edit vendor-requirements; locked rows allow only explicit unlock",
+              "operationId": "patch__events__eventId__vendor_requirements__itemId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "$ref": "#/components/schemas/VendorFields",
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "title":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 140,
+                                          },
+                                        "category":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 80,
+                                          },
+                                        "status":
+                                          {
+                                            "default": "needed",
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "needed",
+                                                "researching",
+                                                "shortlisted",
+                                                "confirmed",
+                                                "not_needed",
+                                              ],
+                                          },
+                                        "notes":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 4000,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "quoteSource":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "maxLength": 500,
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "isLocked":
+                                          {
+                                            "default": false,
+                                            "type": "boolean",
+                                          },
+                                        "estimatedCostMinor":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "pattern": "^(0|[1-9]\\d{0,12})$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "dueAt":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "date-time",
+                                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                      },
+                                    "required": ["expectedVersion"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          { "type": "integer", "minimum": 1 },
+                                        "fields":
+                                          {
+                                            "type": "object",
+                                            "properties":
+                                              {
+                                                "isLocked": { "const": false },
+                                              },
+                                            "required": ["isLocked"],
+                                            "additionalProperties": false,
+                                          },
+                                      },
+                                    "required": ["expectedVersion", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "delete":
+            {
+              "summary": "Remove vendor-requirements (budget items are archived)",
+              "operationId": "delete__events__eventId__vendor_requirements__itemId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                },
+                              "required": ["expectedVersion"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/budget":
+        {
+          "get":
+            {
+              "summary": "Exact projected/remaining decimal strings and active items",
+              "operationId": "get__events__eventId__budget",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/ai-drafts":
+        {
+          "get":
+            {
+              "summary": "List up to 20 saved drafts",
+              "operationId": "get__events__eventId__ai_drafts",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Generate bounded live Gemini draft without mutating plan",
+              "operationId": "post__events__eventId__ai_drafts",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "preferences":
+                                    { "type": "string", "maxLength": 2000 },
+                                  "clientRequestId":
+                                    { "type": "string", "format": "uuid" },
+                                },
+                              "required":
+                                [
+                                  "expectedVersion",
+                                  "preferences",
+                                  "clientRequestId",
+                                ],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/ai-drafts/{draftId}":
+        {
+          "get":
+            {
+              "summary": "Read saved candidate draft",
+              "operationId": "get__events__eventId__ai_drafts__draftId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "draftId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/plan-acceptances":
+        {
+          "post":
+            {
+              "summary": "Atomically accept selected IDs and permitted title/price edits",
+              "operationId": "post__events__eventId__plan_acceptances",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "draftId":
+                                    { "type": "string", "format": "uuid" },
+                                  "selectedDraftItemIds":
+                                    {
+                                      "type": "array",
+                                      "items": { "type": "string" },
+                                      "minItems": 1,
+                                      "maxItems": 49,
+                                    },
+                                  "edits":
+                                    {
+                                      "type": "object",
+                                      "additionalProperties":
+                                        {
+                                          "type": "object",
+                                          "properties":
+                                            {
+                                              "title":
+                                                {
+                                                  "type": "string",
+                                                  "minLength": 1,
+                                                  "maxLength": 140,
+                                                },
+                                              "unitPriceMinor":
+                                                {
+                                                  "$ref": "#/components/schemas/MoneyMinor",
+                                                },
+                                            },
+                                          "additionalProperties": false,
+                                        },
+                                    },
+                                },
+                              "required":
+                                [
+                                  "expectedVersion",
+                                  "draftId",
+                                  "selectedDraftItemIds",
+                                  "edits",
+                                ],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/replan-proposals":
+        {
+          "get":
+            {
+              "summary": "List saved proposal previews",
+              "operationId": "get__events__eventId__replan_proposals",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Compute authoritative diff, save preview only",
+              "operationId": "post__events__eventId__replan_proposals",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "change":
+                                    { "$ref": "#/components/schemas/Change" },
+                                },
+                              "required": ["expectedVersion", "change"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/replan-proposals/{proposalId}":
+        {
+          "get":
+            {
+              "summary": "Read proposal",
+              "operationId": "get__events__eventId__replan_proposals__proposalId_",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "proposalId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/replan-proposals/{proposalId}/approve":
+        {
+          "post":
+            {
+              "summary": "Atomically approve all required stored operations",
+              "operationId": "post__events__eventId__replan_proposals__proposalId__approve",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "proposalId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "selectedOperationIds":
+                                    {
+                                      "type": "array",
+                                      "items": { "type": "string" },
+                                      "maxItems": 13,
+                                    },
+                                },
+                              "required":
+                                ["expectedVersion", "selectedOperationIds"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/replan-proposals/{proposalId}/reject":
+        {
+          "post":
+            {
+              "summary": "Reject without mutating event",
+              "operationId": "post__events__eventId__replan_proposals__proposalId__reject",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "proposalId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                  "selectedOperationIds":
+                                    {
+                                      "type": "array",
+                                      "items": { "type": "string" },
+                                      "maxItems": 13,
+                                    },
+                                },
+                              "required":
+                                ["expectedVersion", "selectedOperationIds"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/replan-proposals/{proposalId}/explain":
+        {
+          "post":
+            {
+              "summary": "Optional Gemini nonbinding explanation",
+              "operationId": "post__events__eventId__replan_proposals__proposalId__explain",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "proposalId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "type": "object",
+                              "properties":
+                                {
+                                  "expectedVersion":
+                                    { "type": "integer", "minimum": 1 },
+                                },
+                              "required": ["expectedVersion"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/history":
+        {
+          "get":
+            {
+              "summary": "Paginated scrubbed audit history",
+              "operationId": "get__events__eventId__history",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/api/health/live":
+        {
+          "servers": [{ "url": "/" }],
+          "get":
+            {
+              "summary": "Process liveness without dependency or secret disclosure",
+              "operationId": "get_health",
+              "security": [],
+              "responses":
+                { "200": { "description": "Process is serving requests" } },
+            },
+        },
+    },
+  "components":
+    {
+      "securitySchemes":
+        {
+          "sessionCookie":
+            {
+              "type": "apiKey",
+              "in": "cookie",
+              "name": "sb-<project-ref>-auth-token",
+              "description": "Supabase SSR session cookies; chunking managed by @supabase/ssr",
+            },
+        },
+      "schemas":
+        {
+          "EventFields":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties":
+                {
+                  "type":
+                    {
+                      "type": "string",
+                      "enum": ["wedding", "birthday", "community"],
+                    },
+                  "title":
+                    { "type": "string", "minLength": 1, "maxLength": 140 },
+                  "dateStatus":
+                    { "type": "string", "enum": ["tbd", "scheduled"] },
+                  "startsAt":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                  "timeZone": { "type": "string", "maxLength": 100 },
+                  "guestCount":
+                    { "type": "integer", "minimum": 0, "maximum": 100000 },
+                  "currency": { "type": "string", "const": "INR" },
+                  "budgetMinor":
+                    { "type": "string", "pattern": "^(0|[1-9]\\d{0,12})$" },
+                  "preferences":
+                    { "default": "", "type": "string", "maxLength": 2000 },
+                  "status":
+                    {
+                      "default": "planning",
+                      "type": "string",
+                      "enum": ["planning", "active", "completed", "archived"],
+                    },
+                },
+              "required":
+                [
+                  "type",
+                  "title",
+                  "dateStatus",
+                  "startsAt",
+                  "timeZone",
+                  "guestCount",
+                  "currency",
+                  "budgetMinor",
+                  "preferences",
+                  "status",
+                ],
+              "additionalProperties": false,
+            },
+          "FunctionFields":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties":
+                {
+                  "title":
+                    { "type": "string", "minLength": 1, "maxLength": 140 },
+                  "startsAt":
+                    {
+                      "anyOf":
+                        [
+                          {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                  "endsAt":
+                    {
+                      "anyOf":
+                        [
+                          {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                  "timeZone": { "type": "string", "maxLength": 100 },
+                  "status":
+                    {
+                      "default": "planned",
+                      "type": "string",
+                      "enum": ["planned", "active", "completed", "cancelled"],
+                    },
+                  "notes":
+                    { "default": "", "type": "string", "maxLength": 2000 },
+                },
+              "required":
+                ["title", "startsAt", "endsAt", "timeZone", "status", "notes"],
+              "additionalProperties": false,
+            },
+          "BudgetFields":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties":
+                {
+                  "title":
+                    { "type": "string", "minLength": 1, "maxLength": 140 },
+                  "category":
+                    { "type": "string", "minLength": 1, "maxLength": 80 },
+                  "pricingBasis":
+                    {
+                      "type": "string",
+                      "enum": ["fixed", "per_guest", "per_unit"],
+                    },
+                  "unitPriceMinor":
+                    { "type": "string", "pattern": "^(0|[1-9]\\d{0,12})$" },
+                  "quantity":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 100000,
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                  "sourceKind":
+                    {
+                      "default": "user_estimate",
+                      "type": "string",
+                      "enum": ["ai_estimate", "user_estimate", "vendor_quote"],
+                    },
+                  "sourceLabel":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          { "type": "string", "maxLength": 500 },
+                          { "type": "null" },
+                        ],
+                    },
+                  "isLocked": { "default": false, "type": "boolean" },
+                },
+              "required":
+                [
+                  "title",
+                  "category",
+                  "pricingBasis",
+                  "unitPriceMinor",
+                  "quantity",
+                  "sourceKind",
+                  "sourceLabel",
+                  "isLocked",
+                ],
+              "additionalProperties": false,
+            },
+          "TaskFields":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties":
+                {
+                  "title":
+                    { "type": "string", "minLength": 1, "maxLength": 200 },
+                  "description":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          { "type": "string", "maxLength": 4000 },
+                          { "type": "null" },
+                        ],
+                    },
+                  "status":
+                    {
+                      "default": "todo",
+                      "type": "string",
+                      "enum": ["todo", "in_progress", "done", "blocked"],
+                    },
+                  "dueAt":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                  "priority":
+                    {
+                      "default": "normal",
+                      "type": "string",
+                      "enum": ["low", "normal", "high"],
+                    },
+                  "isLocked": { "default": false, "type": "boolean" },
+                  "dependencyIds":
+                    {
+                      "default": [],
+                      "maxItems": 100,
+                      "type": "array",
+                      "items":
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                        },
+                    },
+                },
+              "required":
+                [
+                  "title",
+                  "description",
+                  "status",
+                  "dueAt",
+                  "priority",
+                  "isLocked",
+                  "dependencyIds",
+                ],
+              "additionalProperties": false,
+            },
+          "VendorFields":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties":
+                {
+                  "title":
+                    { "type": "string", "minLength": 1, "maxLength": 140 },
+                  "category":
+                    { "type": "string", "minLength": 1, "maxLength": 80 },
+                  "status":
+                    {
+                      "default": "needed",
+                      "type": "string",
+                      "enum":
+                        [
+                          "needed",
+                          "researching",
+                          "shortlisted",
+                          "confirmed",
+                          "not_needed",
+                        ],
+                    },
+                  "notes":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          { "type": "string", "maxLength": 4000 },
+                          { "type": "null" },
+                        ],
+                    },
+                  "quoteSource":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          { "type": "string", "maxLength": 500 },
+                          { "type": "null" },
+                        ],
+                    },
+                  "isLocked": { "default": false, "type": "boolean" },
+                  "estimatedCostMinor":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          {
+                            "type": "string",
+                            "pattern": "^(0|[1-9]\\d{0,12})$",
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                  "dueAt":
+                    {
+                      "default": null,
+                      "anyOf":
+                        [
+                          {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                          },
+                          { "type": "null" },
+                        ],
+                    },
+                },
+              "required":
+                [
+                  "title",
+                  "category",
+                  "status",
+                  "notes",
+                  "quoteSource",
+                  "isLocked",
+                  "estimatedCostMinor",
+                  "dueAt",
+                ],
+              "additionalProperties": false,
+            },
+          "Change":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties":
+                {
+                  "newGuestCount":
+                    { "type": "integer", "minimum": 0, "maximum": 100000 },
+                  "priceChanges":
+                    {
+                      "default": [],
+                      "maxItems": 12,
+                      "type": "array",
+                      "items":
+                        {
+                          "type": "object",
+                          "properties":
+                            {
+                              "budgetItemId":
+                                {
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                },
+                              "newUnitPriceMinor":
+                                {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9]\\d{0,12})$",
+                                },
+                            },
+                          "required": ["budgetItemId", "newUnitPriceMinor"],
+                          "additionalProperties": false,
+                        },
+                    },
+                  "doNotExceedBudget": { "default": true, "type": "boolean" },
+                  "protectResourceIds":
+                    {
+                      "default": [],
+                      "maxItems": 100,
+                      "type": "array",
+                      "items":
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                        },
+                    },
+                },
+              "required":
+                ["priceChanges", "doNotExceedBudget", "protectResourceIds"],
+              "additionalProperties": false,
+            },
+          "MoneyMinor":
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "string",
+              "pattern": "^(0|[1-9]\\d{0,12})$",
+            },
+          "Success":
+            {
+              "type": "object",
+              "properties":
+                {
+                  "data": {},
+                  "meta":
+                    {
+                      "type": "object",
+                      "properties":
+                        { "requestId": { "type": "string", "format": "uuid" } },
+                      "required": ["requestId"],
+                      "additionalProperties": false,
+                    },
+                },
+              "required": ["data", "meta"],
+              "additionalProperties": false,
+            },
+        },
+    },
+}
