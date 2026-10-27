@@ -40,6 +40,7 @@ async function route(request: Request, ctx: Context) {
       const { db, user } = await session();
       const path = s.join("/");
       if (path === "me" && method === "GET") {
+        const providerSettings = aiConfig();
         const { data: workspaces, error } = await db
           .from("workspaces")
           .select("id,name,kind");
@@ -61,12 +62,14 @@ async function route(request: Request, ctx: Context) {
           },
           workspaces,
           usage,
-          aiConfigured: !!(
-            aiConfig().keys[aiConfig().primary] &&
-            aiConfig().models[aiConfig().primary]
-          ),
-          aiProviderPrimary: aiConfig().primary,
-          aiProviderFallback: aiConfig().fallback,
+          aiConfigured:
+            providerSettings.enabled &&
+            !!(
+              providerSettings.keys[providerSettings.primary] &&
+              providerSettings.models[providerSettings.primary]
+            ),
+          aiProviderPrimary: providerSettings.primary,
+          aiProviderFallback: providerSettings.fallback,
           features: {
             guests: process.env.FEATURE_GUESTS === "true",
             eventFunctions: process.env.FEATURE_EVENT_FUNCTIONS === "true",

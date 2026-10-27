@@ -6,5 +6,6 @@ supabase/.temp
 .next
 node_modules
 test-results
+test-results-staging
 playwright-report
 ChatGPT Image Oct 26, 2026, 06_25_05 PM.png

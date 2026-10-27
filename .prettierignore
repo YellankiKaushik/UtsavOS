@@ -6,6 +6,7 @@ supabase/migrations
 test-results
 test-results-live-public
 test-results-live
+test-results-staging
 playwright-report
 .runtime
 supabase/.temp

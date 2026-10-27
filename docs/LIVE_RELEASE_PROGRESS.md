@@ -33,3 +33,13 @@ FR-016 uses separate owner-only contacts and anonymous capability RPCs. Tokens a
 - Fifth migration `20261027192558_p1_guest_rsvp.sql` was dry-run and applied to the verified isolated project. A real hosted guest test passed using ordinary A/B sessions and an anonymous publishable client: refresh, function persistence, private contacts, direct-write denial, cross-tenant denial, scoped reply, idempotent replay, unchanged planned count and revocation. No AI request was made by this test.
 
 Redacted detailed execution evidence is ignored under `.runtime/release-20261028/`; no credentials or generated test passwords belong in Git.
+
+## First staging deployment
+
+Preview `dpl_957ZfpWbsfHKi4T5qvJNG3ttZB1F` reached READY at `https://utsavos-kc1id75of-kaushik-yellanki-project.vercel.app` for commit `0b54d31fef23244fb29cc28f1ef25438257573ce`. Authenticated health returned 200 / `status:ok`. Vercel protection stays enabled. Short-lived development OIDC is attached only to this exact Preview origin in browser tests; it is never printed or traced. AI generation and optional explanation are disabled for Preview; functions/guests are enabled only on this branch after hosted tests.
+
+GitHub run `40572301093` succeeded for that commit in both validate and supabase-platform jobs. The latter exercises the real Docker platform; local Docker availability remains unrelated.
+
+Remote Auth Site URL is `https://utsavos.vercel.app`; email confirmation is enabled. The allowlist initially contained only production URLs. A minimal separate config, reviewed via read-only diff, added only this Preview's two exact callback URLs (normal and recovery), preserving the production Site URL and confirmation policy. Post-apply read-only verification confirmed those values. The helper's initial post-check also counted undeclared settings as mismatches; this was a reporting check defect, not a failed remote update.
+
+The hosted manual-only browser suite is deliberately separate from the full AI release suite. Login returned 200 and a Secure, HttpOnly, SameSite=Lax session cookie. The initial protection-header test used incomplete browser headers; forwarding all headers fixed navigation. The next assertion found an application bug: `/me.aiConfigured` ignored the disabled generation flag. The endpoint is now corrected. A fresh Preview and complete hosted journey are still required; no full P0 staging or production verdict is claimed.

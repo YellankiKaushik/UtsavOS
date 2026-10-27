@@ -1,0 +1,187 @@
+import { test, expect, type BrowserContext, type Page } from "@playwright/test";
+const origin = process.env.LIVE_PREVIEW_URL!;
+async function protect(context: BrowserContext) {
+  const token = process.env.VERCEL_OIDC_TOKEN;
+  if (token)
+    await context.route(`${origin}/**`, async (route) =>
+      route.continue({
+        headers: {
+          ...(await route.request().allHeaders()),
+          "x-vercel-trusted-oidc-idp-token": token,
+        },
+      }),
+    );
+}
+async function login(page: Page, suffix: "A" | "B") {
+  await page.goto("/login");
+  await page
+    .getByLabel("Email address")
+    .fill(process.env[`LIVE_USER_${suffix}_EMAIL`]!);
+  await page
+    .getByLabel("Password", { exact: true })
+    .fill(process.env[`LIVE_USER_${suffix}_PASSWORD`]!);
+  const authResponse = page.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname === "/auth/actions" &&
+      response.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Sign in to UtsavOS" }).click();
+  const response = await authResponse;
+  expect(response.status()).toBe(200);
+  console.info(
+    JSON.stringify({
+      step: "hosted login",
+      status: response.status(),
+      setCookiePresent: !!(await response.headerValue("set-cookie")),
+      cookies: (await page.context().cookies(origin)).map((c) => ({
+        name: c.name,
+        secure: c.secure,
+        httpOnly: c.httpOnly,
+        sameSite: c.sameSite,
+        path: c.path,
+      })),
+    }),
+  );
+  await expect(page).toHaveURL(/\/app\/events$/, { timeout: 20000 });
+}
+async function read(page: Page, path: string) {
+  return page.evaluate(async (path) => {
+    const response = await fetch(path);
+    return { status: response.status, body: await response.json() };
+  }, path);
+}
+test.beforeEach(async ({ context }) => protect(context));
+test("HOSTED MANUAL ONLY: real Vercel/Auth/DB planning, private RSVP, refresh and tenant isolation", async ({
+  page,
+  browser,
+}) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  expect((await read(page, "/api/health/live")).status).toBe(200);
+  await login(page, "A");
+  const me = (await read(page, "/api/v1/me")).body.data;
+  expect(me.aiConfigured).toBe(false);
+  expect(me.features).toMatchObject({ eventFunctions: true, guests: true });
+  await page.getByRole("link", { name: "New celebration" }).click();
+  const title = `SYNTHETIC HOSTED MANUAL ${Date.now()}`;
+  await page.getByLabel("Celebration name").fill(title);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Create celebration" }).click();
+  await expect(
+    page.getByRole("heading", { name: title, exact: true }),
+  ).toBeVisible();
+  const eventId = new URL(page.url()).pathname.split("/")[3];
+  await page.getByRole("link", { name: "Budget", exact: true }).click();
+  await page.getByRole("button", { name: "Add expense", exact: true }).click();
+  await page.getByLabel("Expense name").fill("Synthetic stationery");
+  await page.getByLabel("Category", { exact: true }).fill("gifts");
+  await page.getByLabel("Total estimate (₹)").fill("1000");
+  await page.getByRole("button", { name: "Save expense", exact: true }).click();
+  await expect(
+    page.getByText("Synthetic stationery", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Tasks & timeline" }).click();
+  await page.getByRole("button", { name: "Add task", exact: true }).click();
+  await page.getByLabel("Task name").fill("Synthetic welcome desk");
+  await page.getByRole("button", { name: "Save task", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Complete Synthetic welcome desk" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Vendors", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Add vendor requirement", exact: true })
+    .click();
+  await page.getByLabel("Requirement name").fill("Synthetic photographer");
+  await page
+    .getByRole("button", { name: "Save requirement", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Synthetic photographer" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Functions", exact: true }).click();
+  await page.getByRole("button", { name: "Add function", exact: true }).click();
+  await page.getByLabel("Function name").fill("Hosted reception");
+  await page
+    .getByRole("button", { name: "Save function", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Hosted reception", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Guests & RSVP", exact: true }).click();
+  await page
+    .getByLabel("Household name", { exact: true })
+    .fill("Synthetic household");
+  await page
+    .getByRole("button", { name: "Add household", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Add guest", exact: true }).click();
+  await page
+    .getByLabel("Guest name", { exact: true })
+    .fill("Synthetic invitee");
+  await page.getByLabel("Email (optional)").fill("synthetic@example.test");
+  await page.getByRole("button", { name: "Save guest", exact: true }).click();
+  await expect(
+    page.getByRole("rowheader", { name: "Synthetic invitee" }),
+  ).toBeVisible();
+  await page
+    .getByLabel("Invited household")
+    .selectOption({ label: "Synthetic household" });
+  await page.getByRole("button", { name: "Create invitation link" }).click();
+  const invitation = await page
+    .getByLabel("Invitation link — save it now")
+    .inputValue();
+  const guestContext = await browser.newContext();
+  await protect(guestContext);
+  const guestPage = await guestContext.newPage();
+  await guestPage.setViewportSize({ width: 390, height: 844 });
+  await guestPage.goto(invitation);
+  await expect(
+    guestPage.getByRole("heading", { name: title, exact: true }),
+  ).toBeVisible();
+  expect(new URL(guestPage.url()).hash).toBe("");
+  await guestPage
+    .getByLabel(`Synthetic invitee — ${title}`)
+    .selectOption("accepted");
+  await guestPage
+    .getByRole("button", { name: "Save attendance response" })
+    .click();
+  await expect(guestPage.getByRole("status")).toContainText(
+    "Your response is saved",
+  );
+  await page.reload();
+  await expect(page.getByLabel("Attendance for Synthetic invitee")).toHaveValue(
+    "accepted",
+  );
+  const persisted = (await read(page, `/api/v1/events/${eventId}`)).body.data;
+  expect(
+    persisted.budgetItems.some(
+      (x: { title: string; unitPriceMinor: string }) =>
+        x.title === "Synthetic stationery" && x.unitPriceMinor === "100000",
+    ),
+  ).toBe(true);
+  expect(persisted.event.guestCount).toBe(150);
+  const bContext = await browser.newContext();
+  await protect(bContext);
+  const bPage = await bContext.newPage();
+  await login(bPage, "B");
+  expect((await read(bPage, `/api/v1/events/${eventId}`)).status).toBe(404);
+  expect((await read(bPage, `/api/v1/events/${eventId}/guests`)).status).toBe(
+    404,
+  );
+  await page.getByRole("button", { name: "Revoke invitation" }).click();
+  await guestPage.reload();
+  await guestPage
+    .getByLabel("Invitation code")
+    .fill(new URL(invitation).hash.slice(1));
+  await guestPage.getByRole("button", { name: "Open invitation" }).click();
+  await expect(
+    guestPage.getByRole("alert").filter({ hasText: "This invitation" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+  await page.goto(`/app/events/${eventId}`);
+  await expect(page).toHaveURL(/\/login$/);
+  await guestContext.close();
+  await bContext.close();
+});
