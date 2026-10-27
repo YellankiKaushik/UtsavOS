@@ -1,0 +1,1194 @@
+# UtsavOS final engineering checkpoint
+
+2026-10-27 · Asia/Kolkata. **P0 IMPLEMENTED BUT RELEASE BLOCKED. P1 PARTIALLY IMPLEMENTED. P2 NOT STARTED.**
+
+This report preserves evidence boundaries. Code complete, staging verified and public production ready are separate gates. No credential values or raw provider errors are included.
+
+## A. Executive verdict
+
+- **implementation:** P0 implementation locally verified; P1 FR-015 implemented as isolated preview; full product incomplete
+- **releaseEligible:** false
+
+### gates
+
+- **A:** P0 CODE COMPLETE / TESTED LOCALLY (not real-service acceptance)
+- **B:** STAGING BLOCKED
+- **C:** PUBLIC PRODUCTION NOT READY
+
+### majorWork
+
+- Read-only provider root-cause diagnostics and safer failure classifications
+- Fixed live test environment precedence to honor shell/secret-manager overrides
+- Two actual fixed free-model tests without weakening privacy
+- Complete owner-scoped P1 functions with schema/API/UI/audit/receipt/version/FK controls
+- Extended local SQL/native/browser security, accessibility and concurrency checks
+
+- **remaining:** EXT-01–07 persist with new evidence. Remaining P1/P2 implementation and production operations are not complete.
+
+## B. Git history
+
+- **startingCommit:** 15be61c
+- **verifiedImplementationCommit:** a98fdecfa07dc0cee18609330f764158224b65e6
+- **branch:** master
+
+### changedImplementationFiles
+
+- .env.example
+- README.md
+- app/api/v1/[...segments]/route.ts
+- docs/DECISIONS.md
+- docs/DEPLOYMENT.md
+- docs/api/openapi.yaml
+- docs/modules/EVENT_FUNCTIONS.md
+- playwright.live.config.ts
+- scripts/diagnose-providers.mjs
+- scripts/generate-openapi.mjs
+- scripts/live-env.ts
+- scripts/preflight-live.mjs
+- src/application/repository.ts
+- src/components/event-functions.tsx
+- src/components/planner.tsx
+- src/domain/event-functions.ts
+- src/generated/database.types.ts
+- src/infrastructure/ai/diagnostic.ts
+- src/infrastructure/ai/service.ts
+- src/infrastructure/ai/types.ts
+- supabase/migrations/20261026183745_p1_event_functions.sql
+- tests/ai/diagnostic.test.ts
+- tests/ai/providers.test.ts
+- tests/concurrency/transactions.native.ts
+- tests/contract/api.test.ts
+- tests/e2e/functions.spec.ts
+- tests/integration/event-functions.test.ts
+- tests/live-smoke/providers.live.ts
+- tests/unit/live-env.test.ts
+- vitest.ai-live.config.ts
+- vitest.live.config.ts
+- vitest.smoke.config.ts
+
+- **documentationCommit:** Commit containing this report: git log -1 --format=%H -- docs/CODEX_FINAL_COMPLETION_REPORT.json
+- **uncommittedAtSourceCheckpoint:** Only original unrelated user image; report package added afterward and committed separately
+- **remoteConfigured:** false
+- **pushed:** false
+- **historyRewritten:** false
+- **secretFilesCommitted:** false
+
+## C. Blocker resolution
+
+- **id:** EXT-01
+- **service:** Gemini
+- **original:** Generation AI_AUTHENTICATION_FAILED
+- **rootCause:** Authentication-level failure confirmed by configured-model GET HTTP401; exact credential/project restriction not disclosed
+- **diagnostics:** One read-only model metadata request,389ms; official v1beta endpoint and header checked; no model substitution or repeated generation
+- **changes:** Safe diagnostic categories and whitelisted reason parser; separate401/403 and DNS/TLS/network handling
+- **verification:** BLOCKED — no valid live draft; metadata401
+- **requiredAccess:** Authorized Google key/project/API access to selected model
+- **action:** In Google AI Studio/API key and Cloud API credentials settings verify the configured key belongs to the intended project and its API restrictions permit Generative Language. Verify API enabled/model entitlement/quota; securely replace configuration only if needed. Never paste the key in chat.
+- **prerequisite:** Authorized Google account/project owner access
+- **risk:** Credential handling; no purchase authorized
+- **autonomous:** Read-only diagnosis complete; cannot grant absent external authorization
+- **command:** npm run test:providers:smoke -- -t gemini (once after external change)
+- **status:** BLOCKED
+- **id:** EXT-02
+- **service:** OpenRouter
+- **original:** Free router exceeded20s without a valid draft
+- **rootCause:** Key accepted200; compatible free catalogue exists. Fixed free-model completion404/no permitted endpoint under current policy; exact exclusion not established
+- **diagnostics:** Read-only key200/393ms and catalogue200/785ms;6 free structured candidates. One liquid/lfm-2.5-2.6b:free smoke failed ~1.23s; one nvidia/nemotron-3.5-super-vl:free smoke failed ~1.37s. Both one attempt,45s deadline, no fallback/data-collection relaxation
+- **changes:** Process overrides now win over env files; unavailable model distinguished from no approved routing endpoint; routing errors never retry/reroute
+- **verification:** BLOCKED — no actual model, validated payload or usage returned
+- **requiredAccess:** Account-permitted structured-output route compatible with retained privacy policy
+- **action:** In OpenRouter model endpoints, account privacy and key/provider restrictions identify a permitted structured-output endpoint with data_collection=deny. Preserve privacy; select an approved fixed route. If no free compatible route exists, account owner must decide access/budget; do not purchase or silently enable training.
+- **prerequisite:** Approved route/account policy and explicit spend allowance for any paid model
+- **risk:** Third-party routing and potential inference cost
+- **autonomous:** Free metadata/two bounded tests completed; no further unchanged retries or paid calls
+- **command:** Set both model aliases consistently in secure environment, then npm run test:providers:smoke -- -t openrouter
+- **status:** BLOCKED
+- **id:** EXT-03
+- **service:** Supabase
+- **original:** Configured management project lookup denied
+- **rootCause:** Connected Supabase principal lacks access to configured project; isolated UtsavOS staging designation unverified
+- **diagnostics:** Current list shows only unrelated inactive LoadGuard3D; configured get_project still denies permission. Historical Auth settings200/REST schema401 are reachability only
+- **changes:** Four migrations verified locally; no remote write or service-role bypass
+- **verification:** BLOCKED — target identity, migration history and PostgREST unverified
+- **requiredAccess:** Correct isolated UtsavOS staging project and management membership
+- **action:** In the intended Supabase organization invite/authorize the connected account, or securely configure the actual designated staging URL/publishable key. Reconnect the correct account. Inspect project identity, migration history and grants; dry-run then apply four reviewed migrations through history. Never remote-reset.
+- **prerequisite:** Project owner designation and management access
+- **risk:** Database integrity; cloud mutations forbidden until identity verified
+- **autonomous:** Local migration verification complete; remote changes cannot proceed
+- **command:** Authorized management get_project and migration history; local db:types; then reviewed staging migration dry-run
+- **status:** BLOCKED
+- **id:** EXT-04
+- **service:** Supabase Auth
+- **original:** No confirmed synthetic staging account pair
+- **rootCause:** .env.live.local absent; staging confirmation and both account credentials missing
+- **diagnostics:** Current live test and browser preflights execute0 tests and exit nonzero; production anonymous guard verified separately
+- **changes:** Live environment precedence fixed; actual login/refresh/recovery/tenant checks remain prepared, not bypassed
+- **verification:** BLOCKED — no signed target session or authenticated real journey
+- **requiredAccess:** Two confirmed synthetic accounts in verified isolated project
+- **action:** After EXT-03, create/confirm two dedicated synthetic users. Configure LIVE_USER_A_EMAIL/PASSWORD, LIVE_USER_B_EMAIL/PASSWORD and LIVE_STAGING_CONFIRMED=true in ignored .env.live.local. Configure exact localhost:3005 and staged callback/recovery origins, email confirmation and SMTP. Do not use customer identities.
+- **prerequisite:** Verified staging schema/Auth settings and successful selected-model smoke for browser
+- **risk:** Account credentials and synthetic staging records
+- **autonomous:** No account provisioning until project identity verified
+- **command:** npm run test:live; npm run test:e2e:live; manually verify signup/confirmation/recovery/refresh/expiry
+- **status:** BLOCKED
+- **id:** EXT-05
+- **service:** Local Supabase/CI
+- **original:** DockerLifecycleInspectError; Docker/Podman absent
+- **rootCause:** Neither CLI on PATH nor known installed executable paths available; no operational local container stack
+- **diagnostics:** Current PATH/common-path checks negative; no repeated doomed Supabase startup.13 native independent TCP tests pass
+- **changes:** Preserved platform CI and native tests, added P0/P1 shared-version races
+- **verification:** BLOCKED — GoTrue/PostgREST/pgTAP parity unverified
+- **requiredAccess:** Docker-capable local machine or repository CI
+- **action:** Provide an operational supported container runtime or run committed supabase-platform CI job in an authorized repository. There is currently no Git remote, so this checkout cannot dispatch its CI autonomously.
+- **prerequisite:** Disposable LOCAL stack or designated repository/CI access
+- **risk:** Local reset must never target linked/customer data
+- **autonomous:** Native verification done; runtime installation/remote CI unavailable
+- **command:** npx supabase start; npx supabase db reset --local; npx supabase test db (LOCAL ONLY)
+- **status:** BLOCKED
+- **id:** EXT-06
+- **service:** AI evaluation
+- **original:** 24-case real-model corpus not executed
+- **rootCause:** No provider smoke succeeds; no approved24-request budget configured
+- **diagnostics:** Corpus preflight blocks with0 cases; synthetic contracts and adversarial doubles pass
+- **changes:** Separate provider evidence records and validation-stage diagnostics
+- **verification:** BLOCKED — no model reliability/usefulness metrics
+- **requiredAccess:** Successful smoke and approved request budget per provider
+- **action:** Resolve each provider, set LIVE_AI_PROVIDER and LIVE_EVAL_REQUEST_BUDGET>=24 in ignored environment, run separately. Review actual outputs for cultural/task usefulness, conflicting actions, vendor/capacity claims, financial correctness, time zones and observed usage. Schema checks do not replace judgment.
+- **prerequisite:** EXT-01/02 resolved plus explicitly permitted quota/budget
+- **risk:** Provider charges/quota and privacy; synthetic inputs only
+- **autonomous:** No corpus calls while smoke/budget gate fails
+- **command:** npm run test:ai:live (one provider at a time)
+- **status:** BLOCKED
+- **id:** EXT-07
+- **service:** Vercel/deployment
+- **original:** No designated verified staging deployment
+- **rootCause:** No .vercel link or Git remote; authorized personal and available team project search returns no UtsavOS target
+- **diagnostics:** Vercel account/team discovery and scoped utsav project searches empty; no unrelated target accessed
+- **changes:** Production build/secret scan and local public guard pass; deployment runbook includes fourth migration/P1 preview flag
+- **verification:** BLOCKED — no deployment ID, public URL, hosted health or callbacks
+- **requiredAccess:** Designated authorized UtsavOS staging target and correct service configuration
+- **action:** Designate/link the actual UtsavOS Vercel-compatible staging project/team and environment; assign region/operator, configure secrets, exact APP_BASE_URL and Auth callbacks. Deploy only that target after critical service gates. Verify real health/login/persistence/tenant/proposal journeys. No plan change or domain purchase.
+- **prerequisite:** Correct hosting target and verified Supabase/provider settings
+- **risk:** Publication and potential hosting cost; no unrelated projects
+- **autonomous:** Local build complete; no target can be safely selected or deployed
+- **command:** Target-specific reviewed deployment, inspect logs/health; run deployed authenticated journey
+- **status:** BLOCKED
+
+## D. Gemini evidence
+
+- **requestedModel:** gemini-3.8-flash
+- **actualModel:** not observed / not available
+
+### currentModelMetadata
+
+- **requestedModel:** gemini-3.8-flash
+- **provider:** gemini
+- **status:** 401
+- **latencyMs:** 389
+- **attempts:** 1
+- **category:** authentication
+- **httpStatus:** 401
+- **reason:** not observed / not available
+- **networkCode:** not observed / not available
+
+- **genuinePlanning:** Historical direct generation failed authentication; no unchanged generation repeated this session
+- **structuredValidity:** not observed / not available
+- **inputTokens:** not observed / not available
+- **outputTokens:** not observed / not available
+- **cost:** not observed / not available
+
+### evaluation
+
+- **casesRun:** 0
+- **automatedLiveMetrics:** not observed / not available
+- **humanReview:** NOT RUN
+
+- **remaining:** HTTP401 authentication blocks model-access proof; exact credential restriction not disclosed. Do not change model to hide auth failure.
+
+## E. OpenRouter evidence
+
+### requestedModels
+
+- openrouter/free (historical)
+- liquid/lfm-2.5-2.6b:free
+- nvidia/nemotron-3.5-super-vl:free
+
+- **actualRoutedModel:** not observed / not available
+
+### metadata
+
+#### keyStatus
+
+- **provider:** openrouter-key
+- **status:** 200
+- **latencyMs:** 393
+- **attempts:** 1
+
+#### status
+
+- **provider:** openrouter-models
+- **status:** 200
+- **latencyMs:** 785
+- **attempts:** 1
+
+#### candidates
+
+- **id:** xingchen-agi/xing4.0-29b-a4b:free
+- **structuredOutput:** true
+- **zeroTokenPrice:** true
+- **id:** nvidia/nemotron-3.5-super-vl:free
+- **structuredOutput:** true
+- **zeroTokenPrice:** true
+- **id:** dots-studio/dots-3-note-preview:free
+- **structuredOutput:** true
+- **zeroTokenPrice:** true
+- **id:** liquid/lfm-2.5-2.6b:free
+- **structuredOutput:** true
+- **zeroTokenPrice:** true
+- **id:** nvidia/nemotron-3-super-120b-a12b:free
+- **structuredOutput:** true
+- **zeroTokenPrice:** true
+- **id:** openrouter/free
+- **structuredOutput:** true
+- **zeroTokenPrice:** true
+
+#### account
+
+- **isFreeTier:** true
+- **hasRemainingAllowance:** true
+
+- **compatibleFreeCandidateCount:** 6
+
+### latestGenuineSmoke
+
+- **status:** FAILED
+- **provider:** openrouter
+- **requestedModel:** nvidia/nemotron-3.5-super-vl:free
+- **code:** AI_ROUTE_UNAVAILABLE
+- **category:** routing
+- **validationStage:** not observed / not available
+- **latencyMs:** 1364
+
+- **structuredValidity:** not observed / not available
+- **inputTokens:** not observed / not available
+- **outputTokens:** not observed / not available
+- **cost:** not observed / not available
+- **fallback:** None in live tests; policy/authorization/TLS/routing/validation failures cannot automatically reroute. Eligible fallback tested only with controlled doubles.
+- **remaining:** Key and capability metadata work, but no permitted tested completion route. Privacy retained. No live model usefulness result.
+
+## F. Supabase evidence
+
+- **confirmedProjectIdentity:** false
+- **currentManagement:** Permission denied again; only unrelated inactive LoadGuard3D visible and untouched
+
+### migrationInventory
+
+- 20261026142503_p0_core.sql
+- 20261026165848_ai_provider_provenance.sql
+- 20261026180040_combined_change_financial_bounds.sql
+- 20261026183745_p1_event_functions.sql
+
+- **migrationHistoryHosted:** NOT INSPECTED — unauthorized
+
+### remoteAppliedChanges
+
+- **localMigrationResult:** All4 executed in PGlite/native PostgreSQL
+- **authentication:** Anonymous guards pass; actual signup/login/logout/refresh/recovery BLOCKED
+- **realTargetPersistence:** UNVERIFIED
+- **RLS:** Synthetic A/B policies, denied direct writes, RPCs/FKs verified locally; target JWT/PostgREST BLOCKED
+- **hostedConcurrency:** NOT RUN
+
+### nativeConcurrency
+
+- **version:** PostgreSQL 17.10 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit
+
+#### scenarios
+
+- **scenario:** pooled RPC upgrade resolves provenance wrapper
+- **passed:** true
+- **scenario:** independent tenants
+- **passed:** true
+- **scenario:** same-event optimistic race
+- **passed:** true
+- **scenario:** duplicate concurrent approval
+- **passed:** true
+- **scenario:** different-key concurrent approval
+- **passed:** true
+- **scenario:** stale approval behind row lock
+- **passed:** true
+- **scenario:** real transactional rollback
+- **passed:** true
+- **scenario:** budget edit race and protected price
+- **passed:** true
+- **scenario:** duplicate draft acceptance race
+- **passed:** true
+- **scenario:** cross-tenant denial during owner edit
+- **passed:** true
+- **scenario:** concurrent generation reservation cap
+- **passed:** true
+- **scenario:** P1/P0 shared version race
+- **passed:** true
+- **scenario:** P1 duplicate function creation replay
+- **passed:** true
+
+- **note:** Native PostgreSQL with synthetic auth roles; not hosted Supabase/Auth verification.
+
+## G. Frontend evidence
+
+### routes
+
+- /
+- /login
+- /reset-password
+- protected /app
+- onboarding/create/events overview
+- event budget/tasks/timeline/vendors/AI draft/replan/approval/history
+- settings (source inspected)
+- P1 event functions preview
+
+- **scope:** Actual production public/anonymous checks plus synthetic HTTP planner/function harness; no real signed-account journey
+
+### interactions
+
+- P0 create/manual budget/task/vendor/outage/replan/refresh
+- AI edited selective acceptance payload
+- P1 create/edit/resource assignment/refresh/unassign/archive
+- Dialog keyboard/Escape/focus restoration
+
+### widths
+
+- 320
+- 375
+- 768
+- 1024
+- 1440
+
+- **accessibility:** axe WCAG2A/AA/2.1AA and overflow assertions pass; function editor also scanned at all5 widths. Manual screen-reader/device review not performed.
+- **defectFixed:** Resource checkbox reverted while save pending; added explicit pending selection, busy status, rollback on failed save and retained original assertions
+- **knownLimits:** P1 staging preview off by default; settings/Auth real-data lifecycle unverified
+
+## H. Automated testing
+
+### commands
+
+- **command:** npm test -- --reporter=default --reporter=json --outputFile=.runtime/final-unit-results.json
+- **environment:** Local Node24.16.0; domain/HTTP/provider doubles and PGlite Auth stubs
+- **tests:** 156
+- **passed:** 156
+- **failed:** 0
+- **skipped:** 0
+- **durationMs:** 12187.7451171875
+- **result:** PASS
+- **evidence:** .runtime/final-unit-results.json
+- **command:** npm run test:concurrency -- --reporter=default --reporter=json --outputFile=.runtime/final-native-results.json
+- **environment:** PostgreSQL 17.10 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit; loopback independent TCP sessions with synthetic Auth roles
+- **tests:** 13
+- **passed:** 13
+- **failed:** 0
+- **skipped:** 0
+- **durationMs:** 22190.229736328125
+- **result:** PASS
+- **evidence:** .runtime/final-native-results.json; .runtime/concurrency-summary.json
+- **command:** npm run test:e2e
+- **environment:** Chromium; real production public pages plus visibly synthetic planner/function harness
+- **tests:** 20
+- **passed:** 20
+- **failed:** 0
+- **skipped:** 0
+- **flaky:** 0
+- **durationMs:** 48088.751000000004
+- **result:** PASS
+- **evidence:** .runtime/browser-results.json; playwright-report; test-results
+- **command:** npm run test:live:public
+- **environment:** Production Next3004 with actual configuration; anonymous/read-only
+- **tests:** 1
+- **passed:** 1
+- **failed:** 0
+- **skipped:** 0
+- **flaky:** 0
+- **durationMs:** 2286.7329999999997
+- **result:** PASS
+- **evidence:** .runtime/live-public-results.json
+- **command:** node scripts/diagnose-providers.mjs
+- **environment:** Real read-only provider metadata; per-request10s deadline; no retry/fallback/generation
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** DIAGNOSTIC: Gemini401; OpenRouter key/catalogue200
+- **evidence:** docs/evidence/final-verification.json
+- **command:** npm run test:providers:smoke -- -t openrouter
+- **environment:** Real liquid/lfm-2.5-2.6b:free; explicit shell aliases;45s deadline; zero retries/fallback; privacy deny
+- **tests:** 2
+- **passed:** 0
+- **failed:** 1
+- **skipped:** 1
+- **result:** FAILED — AI_MODEL_UNAVAILABLE before improved route classifier; ~1229ms
+- **evidence:** This report retains first fixed-model attempt; latest smoke record overwritten by next model
+- **command:** npm run test:providers:smoke -- -t openrouter
+- **environment:** Real nvidia/nemotron-3.5-super-vl:free; same bounds/privacy, improved classification
+- **tests:** 2
+- **passed:** 0
+- **failed:** 1
+- **skipped:** 1
+- **result:** FAILED — AI_ROUTE_UNAVAILABLE; ~1367ms
+- **evidence:** .runtime/live-provider-smoke.json; docs/evidence/openrouter-evaluation.json
+- **command:** npm run test:live
+- **environment:** Real-config preflight only
+- **tests:** 0
+- **passed:** 0
+- **failed:** 0
+- **skipped:** 0
+- **result:** BLOCKED, nonzero; no test/provider call/remote mutation
+- **evidence:** scripts/preflight-live.mjs and external register
+- **command:** npm run test:e2e:live
+- **environment:** Real-config preflight only
+- **tests:** 0
+- **passed:** 0
+- **failed:** 0
+- **skipped:** 0
+- **result:** BLOCKED, nonzero; no test/provider call/remote mutation
+- **evidence:** scripts/preflight-live.mjs and external register
+- **command:** npm run test:ai:live
+- **environment:** Real-config preflight only
+- **tests:** 0
+- **passed:** 0
+- **failed:** 0
+- **skipped:** 0
+- **result:** BLOCKED, nonzero; no test/provider call/remote mutation
+- **evidence:** scripts/preflight-live.mjs and external register
+- **command:** npm run lint
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** Executed command output; safe evidence checkpoint
+- **command:** npm run typecheck
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** Executed command output; safe evidence checkpoint
+- **command:** npm run format:check
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** Executed command output; safe evidence checkpoint
+- **command:** npm run api:generate
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** docs/api/openapi.yaml (24 paths)
+- **command:** npm run db:types
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** src/generated/database.types.ts
+- **command:** npm run build
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** Executed command output; safe evidence checkpoint
+- **command:** npm run security:client
+- **environment:** Windows Node24.16.0; actual source/build
+- **tests:** not observed / not available
+- **passed:** not observed / not available
+- **failed:** not observed / not available
+- **skipped:** not observed / not available
+- **result:** PASS
+- **evidence:** Executed command output; safe evidence checkpoint
+
+### regressions
+
+- New SQL JSON operator precedence error fixed with explicit parentheses; all SQL cases pass
+- Node contract import extension fixed for API generator
+- Generated RPC argument Json type mismatch fixed without casts/security bypass
+- P1 pending-checkbox browser defect fixed; original20-test suite then passes
+
+- **historicalOnly:** Previous npm ci/audit0 and129/11/14 results remain historical; no dependency changes or fresh install required this session
+
+## I. Security assessment
+
+- **authorization:** Authenticated owner checks independently in every P1 SQL entry; anonymous/nonmember denied; no auth bypass
+- **isolation:** Composite workspace/event/function FKs plus resource event filters and owner RLS; tenant B denied in tests
+- **transactionalFinance:** Shared event lock/version; P1 cannot alter monetary/deadline/vendor facts. Locked resources reject linking. Native P0/P1 race and same-key duplicate receipt tests pass; golden financial regressions retained.
+- **secrets:** Ignored actual environment never displayed/committed; safe diagnostics whitelist fields; staged and client-known-secret scans pass; no raw provider errors persisted
+- **validation:** Strict Zod DTO/domain schema and DB checks; bounded payloads; exact Origin/idempotency; AI JSON/schema/semantic/size stages reject without reroute
+
+### risks
+
+- Target GoTrue/JWT/PostgREST/grants unverified
+- No real valid model output or usefulness evaluation
+- No load/penetration/compliance/restore/manual screen-reader certification
+- Full P1/P2 and operational privacy/retention processes incomplete
+
+## J. Deployment
+
+- **target:** No designated UtsavOS target accessible; available account/team searches empty
+- **deploymentId:** not observed / not available
+- **url:** not observed / not available
+- **status:** NOT DEPLOYED
+- **health:** Local production public health200 and anonymous401/redirect verified; no hosted health
+- **logs:** Local build/API safe logs only
+- **callbacks:** Target Auth confirmation/recovery/refresh unverified; required allowlists in action register
+- **environment:** No .vercel link or Git remote; actual environment remains ignored. FEATURE_EVENT_FUNCTIONS defaults false.
+- **rollback:** Disable preview flag to withdraw P1 UI/API exposure. Preserve additive schema/history. Revert code via new commit or known deployment; forward-fix financial DB state, never remote-reset/drop referenced data.
+- **remaining:** EXT-03/04/07 and production ownership/backups/monitoring
+
+## K. P0 completion
+
+- **requirementId:** FR-001
+- **name:** Registration/login/logout/recovery and protected sessions
+
+### implementationFiles
+
+- app/auth/actions/route.ts
+- app/auth/callback/route.ts
+- proxy.ts
+- src/infrastructure/supabase/server.ts
+
+- **databaseDependencies:** Supabase Auth users/sessions
+- **apiDependencies:** /auth/actions; /auth/callback; /api/v1/me
+- **uiComponents:** src/components/auth-form.tsx
+
+### testFiles
+
+- tests/contract/api.test.ts
+- tests/live-public/guard.spec.ts
+- tests/live-e2e/journey.spec.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-03/04: real login, confirmation/recovery/refresh not verified
+- **requirementId:** FR-002
+- **name:** Personal owner workspace
+
+### implementationFiles
+
+- app/onboarding/page.tsx
+- src/application/repository.ts
+- supabase/migrations/20261026142503_p0_core.sql
+
+- **databaseDependencies:** workspaces/workspace_members; private.provision + owner RLS
+- **apiDependencies:** POST /api/v1/workspaces/personal
+- **uiComponents:** onboarding and planner navigation
+
+### testFiles
+
+- tests/integration/database.test.ts
+- tests/concurrency/transactions.native.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-03/04: hosted provisioning not verified
+- **requirementId:** FR-003
+- **name:** Create all three event types
+
+### implementationFiles
+
+- src/domain/contracts.ts
+- src/components/planner.tsx
+- app/api/v1/[...segments]/route.ts
+
+- **databaseDependencies:** events; guarded create command
+- **apiDependencies:** POST /api/v1/events
+- **uiComponents:** EventWizard
+
+### testFiles
+
+- tests/integration/database.test.ts
+- tests/e2e/planner-ui.spec.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-03/04: real account journey
+- **requirementId:** FR-004
+- **name:** List/detail/edit persistent events
+
+### implementationFiles
+
+- src/components/planner.tsx
+- src/application/repository.ts
+- app/api/v1/[...segments]/route.ts
+
+- **databaseDependencies:** events.version, row locks, RLS
+- **apiDependencies:** GET events; GET/PATCH events/:id
+- **uiComponents:** Events/Overview/Event settings
+
+### testFiles
+
+- tests/contract/api.test.ts
+- tests/integration/database.test.ts
+- tests/concurrency/transactions.native.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-03/04: target PostgREST not verified
+- **requirementId:** FR-005
+- **name:** Real Gemini structured draft and personalized ideas
+
+### implementationFiles
+
+- src/infrastructure/ai/gemini-provider.ts
+- src/infrastructure/ai/service.ts
+- src/domain/ai-contract.ts
+- src/infrastructure/gemini.ts
+
+- **databaseDependencies:** ai_usage_records/ai_drafts; reserve/complete/save commands
+- **apiDependencies:** POST events/:id/plan-generations; Google Gemini API
+- **uiComponents:** src/components/planning.tsx AiPage
+
+### testFiles
+
+- tests/ai/adapter.test.ts
+- tests/ai/providers.test.ts
+- tests/live-smoke/providers.live.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-01/06: live valid generation/usefulness not verified
+- **requirementId:** FR-006
+- **name:** Review/edit/select and atomically accept draft
+
+### implementationFiles
+
+- src/components/planning.tsx
+- src/domain/ai-contract.ts
+- supabase/migrations/20261026142503_p0_core.sql
+
+- **databaseDependencies:** ai_drafts; budget_items/tasks/task_dependencies/vendor_requirements; receipts
+- **apiDependencies:** POST events/:id/plan-acceptances
+- **uiComponents:** DraftReview
+
+### testFiles
+
+- tests/integration/database.test.ts
+- tests/e2e/planner-ui.spec.ts
+- tests/concurrency/transactions.native.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-01/02/03/04: genuine generated draft browser acceptance
+- **requirementId:** FR-007
+- **name:** Exact estimated budgets, pricing bases and overrun
+
+### implementationFiles
+
+- src/domain/money.ts
+- src/components/resources.tsx
+- supabase/migrations/20261026142503_p0_core.sql
+
+- **databaseDependencies:** budget_items; money/FK/check constraints; events.budget_minor
+- **apiDependencies:** budget-items CRUD and budget summary
+- **uiComponents:** BudgetPage
+
+### testFiles
+
+- tests/unit/domain.test.ts
+- tests/integration/database.test.ts
+- tests/concurrency/transactions.native.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** Hosted persistence unverified; no actual P1 payment/commitment claims
+- **requirementId:** FR-008
+- **name:** Manual vendor checklist with category/status/deadline/estimate
+
+### implementationFiles
+
+- src/components/resources.tsx
+- src/domain/contracts.ts
+
+- **databaseDependencies:** vendor_requirements; owner RLS and guarded put/delete
+- **apiDependencies:** vendor-requirements CRUD
+- **uiComponents:** VendorsPage
+
+### testFiles
+
+- tests/integration/database.test.ts
+- tests/e2e/planner-ui.spec.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** No verified supplier availability, booking or price integration
+- **requirementId:** FR-009
+- **name:** Tasks/status/priority/deadlines and dependency timeline
+
+### implementationFiles
+
+- src/domain/tasks.ts
+- src/domain/dates.ts
+- src/components/resources.tsx
+
+- **databaseDependencies:** tasks/task_dependencies; assert_dag and same-event FK
+- **apiDependencies:** tasks CRUD
+- **uiComponents:** TasksPage/TimelinePage
+
+### testFiles
+
+- tests/unit/domain.test.ts
+- tests/unit/dates.test.ts
+- tests/integration/database.test.ts
+- tests/e2e/planner-ui.spec.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** Hosted persistence not verified; agency assignments remain P1
+- **requirementId:** FR-010
+- **name:** Non-mutating deterministic replan preview
+
+### implementationFiles
+
+- src/domain/replan.ts
+- src/components/planning.tsx
+- supabase/migrations/20261026180040_combined_change_financial_bounds.sql
+
+- **databaseDependencies:** replan_proposals; current authorized snapshot/version
+- **apiDependencies:** POST events/:id/replan-proposals
+- **uiComponents:** ReplanPage diff/warnings
+
+### testFiles
+
+- tests/unit/domain.test.ts
+- tests/integration/database.test.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** Venue capacity unknown is an explicit unresolved warning, never fabricated
+- **requirementId:** FR-011
+- **name:** Approval/staleness/locks/idempotency and reversal
+
+### implementationFiles
+
+- src/domain/replan.ts
+- supabase/migrations/20261026142503_p0_core.sql
+- src/components/planning.tsx
+
+- **databaseDependencies:** event/proposal row locks; audit_events/idempotency_receipts; exact transaction
+- **apiDependencies:** proposal approvals/rejections
+- **uiComponents:** Proposal review explicit selection/approval
+
+### testFiles
+
+- tests/integration/database.test.ts
+- tests/concurrency/transactions.native.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-03/04: target platform integration; reversal is fresh reviewed proposal
+- **requirementId:** FR-012
+- **name:** Audit history
+
+### implementationFiles
+
+- src/components/planner.tsx
+- src/application/repository.ts
+- supabase/migrations/20261026142503_p0_core.sql
+
+- **databaseDependencies:** audit_events owner read-only; transaction-coupled audit
+- **apiDependencies:** GET event history
+- **uiComponents:** History with pagination
+
+### testFiles
+
+- tests/integration/database.test.ts
+- tests/concurrency/transactions.native.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** Retention/purge/backup recovery needs operator policy
+- **requirementId:** FR-013
+- **name:** Responsive accessible dashboard/modules/account UI
+
+### implementationFiles
+
+- app/globals.css
+- src/components/planner.tsx
+- src/components/planning.tsx
+- src/components/resources.tsx
+- src/components/ui.tsx
+
+- **databaseDependencies:** authorized event snapshots and /me
+- **apiDependencies:** P0 routes from Section36
+- **uiComponents:** Overview/create/budget/tasks/timeline/vendors/planning/review/settings
+
+### testFiles
+
+- tests/e2e/planner-ui.spec.ts
+- tests/e2e/public.spec.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** Fixture tests do not replace real authenticated journey/manual screen-reader review
+- **requirementId:** FR-014
+- **name:** Failure recovery and manual planning during AI outage
+
+### implementationFiles
+
+- src/infrastructure/ai/service.ts
+- src/infrastructure/ai/types.ts
+- src/infrastructure/supabase/fetch.ts
+- src/components/ui.tsx
+
+- **databaseDependencies:** quota/active-generation lease; receipts; atomic mutations
+- **apiDependencies:** safe API envelopes and bounded provider calls
+- **uiComponents:** ErrorNotice/loading/cancel/retry controls
+
+### testFiles
+
+- tests/ai/adapter.test.ts
+- tests/ai/providers.test.ts
+- tests/unit/http.test.ts
+- tests/e2e/planner-ui.spec.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** Actual provider success and DB/network recovery still need staging verification
+- **requirementId:** USR-OR-001
+- **name:** OpenRouter unified provider/fallback/provenance
+
+### implementationFiles
+
+- src/infrastructure/ai/openrouter-provider.ts
+- src/infrastructure/ai/service.ts
+- src/infrastructure/config.ts
+- supabase/migrations/20261026165848_ai_provider_provenance.sql
+
+- **databaseDependencies:** safe draft/usage provider fields; workspace active lease
+- **apiDependencies:** OpenRouter models/chat completions; shared plan API
+- **uiComponents:** Provider disclosure in planning/settings, actual-model draft header
+
+### testFiles
+
+- tests/ai/providers.test.ts
+- tests/integration/database.test.ts
+- tests/concurrency/transactions.native.ts
+- tests/live-smoke/providers.live.ts
+
+- **testOutcome:** Current P0 regression/SQL/native/browser checks pass at their stated layers; actual Auth/platform/provider gates remain blocked
+- **status:** IMPLEMENTED / TESTED LOCALLY; STAGING BLOCKED
+- **releaseEligible:** false
+- **remainingIssue:** EXT-02/06: no live actual model or valid output
+
+## L. P1 completion
+
+- **id:** FR-015
+- **feature:** Multiple functions, independent schedules and resource links
+- **status:** IMPLEMENTED / TESTED LOCALLY; PREVIEW OFF BY DEFAULT
+
+### files
+
+- src/domain/event-functions.ts
+- src/components/event-functions.tsx
+- app/api/v1/[...segments]/route.ts
+- supabase/migrations/20261026183745_p1_event_functions.sql
+- docs/modules/EVENT_FUNCTIONS.md
+
+### tests
+
+- tests/integration/event-functions.test.ts (10)
+- tests/concurrency/transactions.native.ts (2 P1 races)
+- tests/contract/api.test.ts (gate/schema case)
+- tests/e2e/functions.spec.ts (6)
+
+- **remaining:** Hosted Auth/RLS/PostgREST and real browser verification; commercial eligibility not claimed
+- **id:** FR-016
+- **feature:** Guest/household management and scoped RSVP invitations
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+- **id:** FR-017
+- **feature:** Professional teams, roles, delegation and collaboration
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+- **id:** FR-018
+- **feature:** Vendor quotations, confirmed commitments, deposits and actual payment records
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+- **id:** FR-019
+- **feature:** Private quote upload and AI extraction with confidence/source spans
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+- **id:** FR-020
+- **feature:** Subscription billing, entitlements, commercial usage limits and professional dashboard
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+- **id:** FR-021
+- **feature:** Structured export, correction/deletion and recovery lifecycle
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+- **id:** APP-F-08
+- **feature:** Basic event-day task coordination
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** Independent implementation remains; explicit permission/domain/API/UI/test contract required before exposure. External storage/billing/sends and business policies need authorized service access as applicable.
+
+## M. P2 completion
+
+- **feature:** Advanced event-day operations/dashboard
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** No implementation or integration claim. Define explicit acceptance contract; preserve financial/authorization invariants; obtain external credentials/agreements when applicable.
+- **feature:** Contingency planning and constraint simulation
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** No implementation or integration claim. Define explicit acceptance contract; preserve financial/authorization invariants; obtain external credentials/agreements when applicable.
+- **feature:** Scheduled notifications/WhatsApp integrations
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** No implementation or integration claim. Define explicit acceptance contract; preserve financial/authorization invariants; obtain external credentials/agreements when applicable.
+- **feature:** Supplier listings/marketplace integrations
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** No implementation or integration claim. Define explicit acceptance contract; preserve financial/authorization invariants; obtain external credentials/agreements when applicable.
+- **feature:** Advanced usage analytics/event intelligence
+- **status:** NOT STARTED
+
+### files
+
+### tests
+
+- **remaining:** No implementation or integration claim. Define explicit acceptance contract; preserve financial/authorization invariants; obtain external credentials/agreements when applicable.
+- **feature:** Native mobile application (conditional on proven need)
+- **status:** DEFERRED — V2 conditional
+
+### files
+
+### tests
+
+- **remaining:** No implementation or integration claim. Define explicit acceptance contract; preserve financial/authorization invariants; obtain external credentials/agreements when applicable.
+
+## N. Commercial readiness
+
+- **actualOnboarding:** Code implemented; genuine account journey not verified
+- **professionalWorkflows:** Functions locally tested; agency/guest/role/finance/subscription flows incomplete
+- **privacyRetention:** Data minimization/disclosure and no provider privacy relaxation; operator policy, jurisdiction, deletion/export/retention process unresolved
+- **support:** No assigned support/incident owner or break-glass operation verified
+- **AIUsage:** Database20/workspace/day,5s burst and60s active lease; bounded retries/deadlines. Provider usage/cost parsing implemented, no actual completion usage observed.
+- **billing:** NOT IMPLEMENTED; no plan/purchase or revenue readiness
+- **costMonitoring:** Safe usage metadata foundation only; no verified actual-cost dashboard or commercial margin
+- **customerLimitations:** No booking, vendor availability, payment execution, notification delivery or privacy/compliance promise; cannot onboard paying users as production-ready
+
+## O. Final action register
+
+- **id:** EXT-01
+- **service:** Gemini
+- **original:** Generation AI_AUTHENTICATION_FAILED
+- **rootCause:** Authentication-level failure confirmed by configured-model GET HTTP401; exact credential/project restriction not disclosed
+- **diagnostics:** One read-only model metadata request,389ms; official v1beta endpoint and header checked; no model substitution or repeated generation
+- **changes:** Safe diagnostic categories and whitelisted reason parser; separate401/403 and DNS/TLS/network handling
+- **verification:** BLOCKED — no valid live draft; metadata401
+- **requiredAccess:** Authorized Google key/project/API access to selected model
+- **action:** In Google AI Studio/API key and Cloud API credentials settings verify the configured key belongs to the intended project and its API restrictions permit Generative Language. Verify API enabled/model entitlement/quota; securely replace configuration only if needed. Never paste the key in chat.
+- **prerequisite:** Authorized Google account/project owner access
+- **risk:** Credential handling; no purchase authorized
+- **autonomous:** Read-only diagnosis complete; cannot grant absent external authorization
+- **command:** npm run test:providers:smoke -- -t gemini (once after external change)
+- **status:** BLOCKED
+- **id:** EXT-02
+- **service:** OpenRouter
+- **original:** Free router exceeded20s without a valid draft
+- **rootCause:** Key accepted200; compatible free catalogue exists. Fixed free-model completion404/no permitted endpoint under current policy; exact exclusion not established
+- **diagnostics:** Read-only key200/393ms and catalogue200/785ms;6 free structured candidates. One liquid/lfm-2.5-2.6b:free smoke failed ~1.23s; one nvidia/nemotron-3.5-super-vl:free smoke failed ~1.37s. Both one attempt,45s deadline, no fallback/data-collection relaxation
+- **changes:** Process overrides now win over env files; unavailable model distinguished from no approved routing endpoint; routing errors never retry/reroute
+- **verification:** BLOCKED — no actual model, validated payload or usage returned
+- **requiredAccess:** Account-permitted structured-output route compatible with retained privacy policy
+- **action:** In OpenRouter model endpoints, account privacy and key/provider restrictions identify a permitted structured-output endpoint with data_collection=deny. Preserve privacy; select an approved fixed route. If no free compatible route exists, account owner must decide access/budget; do not purchase or silently enable training.
+- **prerequisite:** Approved route/account policy and explicit spend allowance for any paid model
+- **risk:** Third-party routing and potential inference cost
+- **autonomous:** Free metadata/two bounded tests completed; no further unchanged retries or paid calls
+- **command:** Set both model aliases consistently in secure environment, then npm run test:providers:smoke -- -t openrouter
+- **status:** BLOCKED
+- **id:** EXT-03
+- **service:** Supabase
+- **original:** Configured management project lookup denied
+- **rootCause:** Connected Supabase principal lacks access to configured project; isolated UtsavOS staging designation unverified
+- **diagnostics:** Current list shows only unrelated inactive LoadGuard3D; configured get_project still denies permission. Historical Auth settings200/REST schema401 are reachability only
+- **changes:** Four migrations verified locally; no remote write or service-role bypass
+- **verification:** BLOCKED — target identity, migration history and PostgREST unverified
+- **requiredAccess:** Correct isolated UtsavOS staging project and management membership
+- **action:** In the intended Supabase organization invite/authorize the connected account, or securely configure the actual designated staging URL/publishable key. Reconnect the correct account. Inspect project identity, migration history and grants; dry-run then apply four reviewed migrations through history. Never remote-reset.
+- **prerequisite:** Project owner designation and management access
+- **risk:** Database integrity; cloud mutations forbidden until identity verified
+- **autonomous:** Local migration verification complete; remote changes cannot proceed
+- **command:** Authorized management get_project and migration history; local db:types; then reviewed staging migration dry-run
+- **status:** BLOCKED
+- **id:** EXT-04
+- **service:** Supabase Auth
+- **original:** No confirmed synthetic staging account pair
+- **rootCause:** .env.live.local absent; staging confirmation and both account credentials missing
+- **diagnostics:** Current live test and browser preflights execute0 tests and exit nonzero; production anonymous guard verified separately
+- **changes:** Live environment precedence fixed; actual login/refresh/recovery/tenant checks remain prepared, not bypassed
+- **verification:** BLOCKED — no signed target session or authenticated real journey
+- **requiredAccess:** Two confirmed synthetic accounts in verified isolated project
+- **action:** After EXT-03, create/confirm two dedicated synthetic users. Configure LIVE_USER_A_EMAIL/PASSWORD, LIVE_USER_B_EMAIL/PASSWORD and LIVE_STAGING_CONFIRMED=true in ignored .env.live.local. Configure exact localhost:3005 and staged callback/recovery origins, email confirmation and SMTP. Do not use customer identities.
+- **prerequisite:** Verified staging schema/Auth settings and successful selected-model smoke for browser
+- **risk:** Account credentials and synthetic staging records
+- **autonomous:** No account provisioning until project identity verified
+- **command:** npm run test:live; npm run test:e2e:live; manually verify signup/confirmation/recovery/refresh/expiry
+- **status:** BLOCKED
+- **id:** EXT-05
+- **service:** Local Supabase/CI
+- **original:** DockerLifecycleInspectError; Docker/Podman absent
+- **rootCause:** Neither CLI on PATH nor known installed executable paths available; no operational local container stack
+- **diagnostics:** Current PATH/common-path checks negative; no repeated doomed Supabase startup.13 native independent TCP tests pass
+- **changes:** Preserved platform CI and native tests, added P0/P1 shared-version races
+- **verification:** BLOCKED — GoTrue/PostgREST/pgTAP parity unverified
+- **requiredAccess:** Docker-capable local machine or repository CI
+- **action:** Provide an operational supported container runtime or run committed supabase-platform CI job in an authorized repository. There is currently no Git remote, so this checkout cannot dispatch its CI autonomously.
+- **prerequisite:** Disposable LOCAL stack or designated repository/CI access
+- **risk:** Local reset must never target linked/customer data
+- **autonomous:** Native verification done; runtime installation/remote CI unavailable
+- **command:** npx supabase start; npx supabase db reset --local; npx supabase test db (LOCAL ONLY)
+- **status:** BLOCKED
+- **id:** EXT-06
+- **service:** AI evaluation
+- **original:** 24-case real-model corpus not executed
+- **rootCause:** No provider smoke succeeds; no approved24-request budget configured
+- **diagnostics:** Corpus preflight blocks with0 cases; synthetic contracts and adversarial doubles pass
+- **changes:** Separate provider evidence records and validation-stage diagnostics
+- **verification:** BLOCKED — no model reliability/usefulness metrics
+- **requiredAccess:** Successful smoke and approved request budget per provider
+- **action:** Resolve each provider, set LIVE_AI_PROVIDER and LIVE_EVAL_REQUEST_BUDGET>=24 in ignored environment, run separately. Review actual outputs for cultural/task usefulness, conflicting actions, vendor/capacity claims, financial correctness, time zones and observed usage. Schema checks do not replace judgment.
+- **prerequisite:** EXT-01/02 resolved plus explicitly permitted quota/budget
+- **risk:** Provider charges/quota and privacy; synthetic inputs only
+- **autonomous:** No corpus calls while smoke/budget gate fails
+- **command:** npm run test:ai:live (one provider at a time)
+- **status:** BLOCKED
+- **id:** EXT-07
+- **service:** Vercel/deployment
+- **original:** No designated verified staging deployment
+- **rootCause:** No .vercel link or Git remote; authorized personal and available team project search returns no UtsavOS target
+- **diagnostics:** Vercel account/team discovery and scoped utsav project searches empty; no unrelated target accessed
+- **changes:** Production build/secret scan and local public guard pass; deployment runbook includes fourth migration/P1 preview flag
+- **verification:** BLOCKED — no deployment ID, public URL, hosted health or callbacks
+- **requiredAccess:** Designated authorized UtsavOS staging target and correct service configuration
+- **action:** Designate/link the actual UtsavOS Vercel-compatible staging project/team and environment; assign region/operator, configure secrets, exact APP_BASE_URL and Auth callbacks. Deploy only that target after critical service gates. Verify real health/login/persistence/tenant/proposal journeys. No plan change or domain purchase.
+- **prerequisite:** Correct hosting target and verified Supabase/provider settings
+- **risk:** Publication and potential hosting cost; no unrelated projects
+- **autonomous:** Local build complete; no target can be safely selected or deployed
+- **command:** Target-specific reviewed deployment, inspect logs/health; run deployed authenticated journey
+- **status:** BLOCKED
+
+## P. Continuation instructions
+
+### firstFiles
+
+- docs/EXTERNAL_ACTION_REGISTER.md
+- docs/IMPLEMENTATION_STATUS.md
+- docs/modules/EVENT_FUNCTIONS.md
+- src/infrastructure/ai/diagnostic.ts
+- src/infrastructure/ai/types.ts
+- scripts/live-env.ts
+- supabase/migrations/20261026183745_p1_event_functions.sql
+
+### externalOrder
+
+- Resolve Gemini auth and an approved OpenRouter route; run one smoke only after material change
+- Verify isolated Supabase identity, inspect/dry-run/apply4 migrations without remote reset
+- Configure two synthetic accounts; run real Auth/persistence/tenant/transaction tests
+- After successful provider smoke and allowed24-request budget run separate corpora plus qualitative review
+- Designate authorized hosting target, verify deployed real journey and operations
+
+### independentNextTasks
+
+- Extend FR-015 adversarial/real staging tests and platform pgTAP coverage before rollout
+- Implement FR-016 guest/household/function-consistent attendance and hashed expiring/revocable invitation tokens with manual share (no unsolicited sends)
+- Then explicit role/delegation contracts for FR-017 before agency collaboration
+- Continue remaining AppendixF modules independently with separate migrations/contracts/tests; leave unfinished surfaces hidden
+- Define advanced P2 acceptance contracts only after protecting P0 regression gates
+
+### commandsAfterCodeChanges
+
+- npm run format:check
+- npm run lint
+- npm run typecheck
+- npm test
+- npm run test:concurrency
+- npm run api:generate
+- npm run db:types
+- npm run build
+- npm run security:client
+- npm run test:e2e
+
+- **precautions:** Read current Git/status; preserve15be61c/a98fdec history and original image, do not overwrite ignored environment. Do not regenerate older historical reports with today's state. No paid requests/purchases, customer data, unrelated cloud projects, remote resets or unchanged retry loops.
+- **completion:** This session is a saved engineering checkpoint. Remaining independent P1/P2 work is explicitly incomplete; external blockers do not justify claiming full product completion.
