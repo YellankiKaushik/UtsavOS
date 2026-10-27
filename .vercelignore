@@ -2,6 +2,7 @@
 .env*
 !.env.example
 .runtime
+supabase/.temp
 .next
 node_modules
 test-results

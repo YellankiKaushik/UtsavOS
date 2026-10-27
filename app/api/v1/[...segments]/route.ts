@@ -24,6 +24,7 @@ import {
 import { aiConfig } from "@/infrastructure/config";
 import { functionMutation, functionLink } from "@/domain/event-functions";
 import type { Json } from "@/generated/database.types";
+import { guestRoute } from "@/application/guest-http";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 type Context = { params: Promise<{ segments: string[] }> };
@@ -67,6 +68,7 @@ async function route(request: Request, ctx: Context) {
           aiProviderPrimary: aiConfig().primary,
           aiProviderFallback: aiConfig().fallback,
           features: {
+            guests: process.env.FEATURE_GUESTS === "true",
             eventFunctions: process.env.FEATURE_EVENT_FUNCTIONS === "true",
           },
         };
@@ -209,6 +211,9 @@ async function route(request: Request, ctx: Context) {
       const resourceName = s[2],
         recordId = s[3];
       const state = await snapshot(db, eventId); // RLS/auth check before every child path.
+      if (resourceName === "guests" && s.length === 3) {
+        return guestRoute(request, db, eventId, requestId);
+      }
       if (resourceName === "functions") {
         if (process.env.FEATURE_EVENT_FUNCTIONS !== "true")
           throw new DomainError("NOT_FOUND", "Module not enabled", 404);

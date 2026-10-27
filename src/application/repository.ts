@@ -33,6 +33,7 @@ export function databaseError(error: {
     "AI_BUSY",
     "FUNCTION_IN_USE",
     "RESOURCE_UNAVAILABLE",
+    "HOUSEHOLD_IN_USE",
   ];
   const code =
     known.find((c) => error.message === c) ||

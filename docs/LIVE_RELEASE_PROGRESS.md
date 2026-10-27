@@ -28,7 +28,8 @@ FR-016 uses separate owner-only contacts and anonymous capability RPCs. Tokens a
 
 - Unit/integration regression: 181 passed, 0 failed, 0 skipped (including 9 guest/RSVP cases).
 - Production build passed after granting local build filesystem access; the initial sandbox build failed with EPERM creating the new route directory.
-- Initial native concurrency attempt was blocked by sandbox loopback EACCES; rerun with authorized local socket access is in progress. No skipped test is counted as passed.
-- Browser regression and additional RSVP mobile/accessibility tests are in progress.
+- Initial native concurrency attempt was blocked by sandbox loopback EACCES. Authorized rerun passed all 15 cases, including simultaneous anonymous replies and RSVP racing a host archive. The first new test setup attempted a direct row lock, correctly denied by table grants; the corrected test acquires its lock through the ordinary guarded RPC.
+- Browser regression: 21 passed initially; one new assertion matched both the app error and Next.js route announcer. Correcting the selector yielded 2/2 RSVP cases, including mobile layout, axe accessibility and token fragment removal. Existing 20 browser cases passed unchanged.
+- Fifth migration `20261027192558_p1_guest_rsvp.sql` was dry-run and applied to the verified isolated project. A real hosted guest test passed using ordinary A/B sessions and an anonymous publishable client: refresh, function persistence, private contacts, direct-write denial, cross-tenant denial, scoped reply, idempotent replay, unchanged planned count and revocation. No AI request was made by this test.
 
 Redacted detailed execution evidence is ignored under `.runtime/release-20261028/`; no credentials or generated test passwords belong in Git.

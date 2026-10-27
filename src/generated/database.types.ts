@@ -339,6 +339,99 @@ export type Database = {
         };
         Relationships: [];
       };
+      guest_attendance: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          guest_id: string;
+          event_function_id: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          guest_id: string;
+          event_function_id?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          guest_id?: string;
+          event_function_id?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      guest_households: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          name: string;
+          notes: string;
+          state: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          name: string;
+          notes?: string;
+          state?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          name?: string;
+          notes?: string;
+          state?: string;
+        };
+        Relationships: [];
+      };
+      guests: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          household_id: string;
+          display_name: string;
+          email: string | null;
+          phone: string | null;
+          notes: string;
+          state: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          household_id: string;
+          display_name: string;
+          email?: string | null;
+          phone?: string | null;
+          notes?: string;
+          state?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          household_id?: string;
+          display_name?: string;
+          email?: string | null;
+          phone?: string | null;
+          notes?: string;
+          state?: string;
+        };
+        Relationships: [];
+      };
       idempotency_receipts: {
         Row: {
           id: string;
@@ -637,6 +730,23 @@ export type Database = {
         Returns: Json;
       };
       event_snapshot: { Args: { p_event_id: string | null }; Returns: Json };
+      guest_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      guest_directory: { Args: { p_event_id: string | null }; Returns: Json };
+      rsvp_respond: {
+        Args: { p_token: string; p_answers: Json; p_idempotency_key: string };
+        Returns: Json;
+      };
+      rsvp_view: { Args: { p_token: string }; Returns: Json };
     };
   };
 };

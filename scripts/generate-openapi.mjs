@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { z } from "zod";
 import { functionFields } from "../src/domain/event-functions.ts";
+import { guestMutation, rsvpRequest } from "../src/domain/guests.ts";
 import { format } from "prettier";
 import {
   eventFields,
@@ -87,6 +88,26 @@ function flat(name, metadata, partial = false) {
   };
 }
 add("/me", "get", "Current verified identity, workspaces and AI usage");
+add(
+  "/events/{eventId}/guests",
+  "get",
+  "Private guest directory (FEATURE_GUESTS required)",
+);
+add(
+  "/events/{eventId}/guests",
+  "post",
+  "Versioned household, guest, attendance and invitation commands",
+  z.toJSONSchema(guestMutation, { io: "input" }),
+);
+add(
+  "/api/rsvp",
+  "post",
+  "Read or reply to an expiring scoped invitation; Idempotency-Key required only for respond",
+  z.toJSONSchema(rsvpRequest, { io: "input" }),
+);
+paths["/api/rsvp"].servers = [{ url: "/" }];
+paths["/api/rsvp"].post.security = [];
+paths["/api/rsvp"].post.parameters[0].required = false;
 add(
   "/events/{eventId}/functions",
   "get",

@@ -33,6 +33,7 @@ import {
 import { BudgetPage, TasksPage, VendorsPage } from "./resources";
 import { AiPage, ReplanPage } from "./planning";
 import { EventFunctionsPage } from "./event-functions";
+import { GuestsPage } from "./guests";
 import {
   dateLabel,
   localDateValue,
@@ -518,9 +519,9 @@ export function EventWizard() {
   );
 }
 function EventWorkspace({ id, tab }: { id: string; tab: string }) {
-  const capabilities = useResource<{ features?: { eventFunctions?: boolean } }>(
-    "me",
-  );
+  const capabilities = useResource<{
+    features?: { eventFunctions?: boolean; guests?: boolean };
+  }>("me");
   const resource = useResource<EventSnapshot>(`events/${id}`),
     [editing, setEditing] = useState(false);
   if (resource.loading && !resource.data) return <Loading />;
@@ -537,6 +538,9 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
     ["ai-plan", "AI planning"],
     ["replan", "Replan"],
     ["history", "History"],
+    ...(capabilities.data?.features?.guests
+      ? [["guests", "Guests & RSVP"]]
+      : []),
     ...(capabilities.data?.features?.eventFunctions
       ? [["functions", "Functions · preview"]]
       : []),
@@ -598,6 +602,8 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
         <ReplanPage state={state} reload={resource.reload} />
       ) : tab === "history" ? (
         <History id={id} zone={e.timeZone} />
+      ) : tab === "guests" && capabilities.data?.features?.guests ? (
+        <GuestsPage state={state} reload={resource.reload} />
       ) : tab === "functions" && capabilities.data?.features?.eventFunctions ? (
         <EventFunctionsPage state={state} reload={resource.reload} />
       ) : (

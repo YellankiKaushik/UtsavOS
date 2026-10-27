@@ -49,6 +49,562 @@
                 },
             },
         },
+      "/events/{eventId}/guests":
+        {
+          "get":
+            {
+              "summary": "Private guest directory (FEATURE_GUESTS required)",
+              "operationId": "get__events__eventId__guests",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Versioned household, guest, attendance and invitation commands",
+              "operationId": "post__events__eventId__guests",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "$schema": "https://json-schema.org/draft/2020-12/schema",
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "household",
+                                          },
+                                        "id":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "uuid",
+                                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "fields":
+                                          {
+                                            "type": "object",
+                                            "properties":
+                                              {
+                                                "name":
+                                                  {
+                                                    "type": "string",
+                                                    "minLength": 1,
+                                                    "maxLength": 120,
+                                                  },
+                                                "notes":
+                                                  {
+                                                    "default": "",
+                                                    "type": "string",
+                                                    "maxLength": 500,
+                                                  },
+                                              },
+                                            "required": ["name"],
+                                            "additionalProperties": false,
+                                          },
+                                      },
+                                    "required":
+                                      ["expectedVersion", "action", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "guest",
+                                          },
+                                        "id":
+                                          {
+                                            "default": null,
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "uuid",
+                                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "fields":
+                                          {
+                                            "type": "object",
+                                            "properties":
+                                              {
+                                                "householdId":
+                                                  {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                                  },
+                                                "displayName":
+                                                  {
+                                                    "type": "string",
+                                                    "minLength": 1,
+                                                    "maxLength": 120,
+                                                  },
+                                                "email":
+                                                  {
+                                                    "default": null,
+                                                    "anyOf":
+                                                      [
+                                                        {
+                                                          "type": "string",
+                                                          "maxLength": 254,
+                                                          "format": "email",
+                                                          "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+                                                        },
+                                                        { "type": "null" },
+                                                      ],
+                                                  },
+                                                "phone":
+                                                  {
+                                                    "default": null,
+                                                    "anyOf":
+                                                      [
+                                                        {
+                                                          "type": "string",
+                                                          "pattern": "^[+0-9 ()-]{3,32}$",
+                                                        },
+                                                        { "type": "null" },
+                                                      ],
+                                                  },
+                                                "notes":
+                                                  {
+                                                    "default": "",
+                                                    "type": "string",
+                                                    "maxLength": 500,
+                                                  },
+                                              },
+                                            "required":
+                                              ["householdId", "displayName"],
+                                            "additionalProperties": false,
+                                          },
+                                      },
+                                    "required":
+                                      ["expectedVersion", "action", "fields"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "archive_household",
+                                                "archive_guest",
+                                                "revoke_invite",
+                                              ],
+                                          },
+                                        "id":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                      },
+                                    "required":
+                                      ["expectedVersion", "action", "id"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "attendance",
+                                          },
+                                        "guestId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "functionId":
+                                          {
+                                            "anyOf":
+                                              [
+                                                {
+                                                  "type": "string",
+                                                  "format": "uuid",
+                                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                                },
+                                                { "type": "null" },
+                                              ],
+                                          },
+                                        "status":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "pending",
+                                                "accepted",
+                                                "declined",
+                                                "uninvited",
+                                              ],
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "expectedVersion",
+                                        "action",
+                                        "guestId",
+                                        "functionId",
+                                        "status",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "invite",
+                                          },
+                                        "householdId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "guestIds":
+                                          {
+                                            "minItems": 1,
+                                            "maxItems": 50,
+                                            "type": "array",
+                                            "items":
+                                              {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                              },
+                                          },
+                                        "functionIds":
+                                          {
+                                            "default": [],
+                                            "maxItems": 10,
+                                            "type": "array",
+                                            "items":
+                                              {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                              },
+                                          },
+                                        "includeEvent":
+                                          {
+                                            "default": true,
+                                            "type": "boolean",
+                                          },
+                                        "expiresInHours":
+                                          {
+                                            "default": 72,
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 168,
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "expectedVersion",
+                                        "action",
+                                        "householdId",
+                                        "guestIds",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/api/rsvp":
+        {
+          "post":
+            {
+              "summary": "Read or reply to an expiring scoped invitation; Idempotency-Key required only for respond",
+              "operationId": "post__api_rsvp",
+              "security": [],
+              "parameters":
+                [
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "$schema": "https://json-schema.org/draft/2020-12/schema",
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          { "type": "string", "const": "read" },
+                                        "token":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^[a-f0-9]{64}$",
+                                          },
+                                      },
+                                    "required": ["action", "token"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "respond",
+                                          },
+                                        "token":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^[a-f0-9]{64}$",
+                                          },
+                                        "answers":
+                                          {
+                                            "minItems": 1,
+                                            "maxItems": 500,
+                                            "type": "array",
+                                            "items":
+                                              {
+                                                "type": "object",
+                                                "properties":
+                                                  {
+                                                    "guestId":
+                                                      {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                                      },
+                                                    "functionId":
+                                                      {
+                                                        "anyOf":
+                                                          [
+                                                            {
+                                                              "type": "string",
+                                                              "format": "uuid",
+                                                              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                                            },
+                                                            { "type": "null" },
+                                                          ],
+                                                      },
+                                                    "status":
+                                                      {
+                                                        "type": "string",
+                                                        "enum":
+                                                          [
+                                                            "accepted",
+                                                            "declined",
+                                                          ],
+                                                      },
+                                                  },
+                                                "required":
+                                                  [
+                                                    "guestId",
+                                                    "functionId",
+                                                    "status",
+                                                  ],
+                                                "additionalProperties": false,
+                                              },
+                                          },
+                                      },
+                                    "required": ["action", "token", "answers"],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "servers": [{ "url": "/" }],
+        },
       "/events/{eventId}/functions":
         {
           "get":
@@ -112,7 +668,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -197,7 +753,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -279,7 +835,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -360,7 +916,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -443,7 +999,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -528,7 +1084,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -753,7 +1309,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -917,7 +1473,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -1092,7 +1648,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -1277,7 +1833,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -1397,7 +1953,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -1563,7 +2119,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -1746,7 +2302,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -1866,7 +2422,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2046,7 +2602,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2242,7 +2798,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2410,7 +2966,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2548,7 +3104,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2705,7 +3261,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2842,7 +3398,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -2930,7 +3486,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],
@@ -3018,7 +3574,7 @@
                   {
                     "name": "Idempotency-Key",
                     "in": "header",
-                    "required": true,
+                    "required": false,
                     "schema": { "type": "string", "format": "uuid" },
                   },
                 ],

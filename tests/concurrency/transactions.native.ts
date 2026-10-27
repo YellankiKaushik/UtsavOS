@@ -6,6 +6,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import { resolve, relative, sep } from "node:path";
 import type { EventSnapshot } from "@/domain/contracts";
 import { calculateBudget } from "@/domain/money";
+import { createHash, randomBytes } from "node:crypto";
 const A = "11111111-1111-4111-8111-111111111111",
   B = "22222222-2222-4222-8222-222222222222";
 let server: EmbeddedPostgres,
@@ -645,6 +646,135 @@ it("replays concurrent identical function creation with one function/audit", asy
   ).toHaveLength(1);
   results.push({
     scenario: "P1 duplicate function creation replay",
+    passed: true,
+  });
+});
+
+async function guestFixture() {
+  const f = await fixture();
+  async function mutate(action: string, payload: unknown) {
+    const r = (
+      await f.c.query(
+        "select public.guest_command($1,$2,$3::jsonb,$4,$5,'native-guests') r",
+        [
+          f.eventId,
+          action,
+          JSON.stringify(payload),
+          f.version,
+          crypto.randomUUID(),
+        ],
+      )
+    ).rows[0].r;
+    f.version = r.version;
+    return r.id as string;
+  }
+  const household = await mutate("household", {
+    fields: { name: "Synthetic household" },
+  });
+  const guest = await mutate("guest", {
+    fields: { householdId: household, displayName: "Synthetic invitee" },
+  });
+  const token = randomBytes(32).toString("hex");
+  await mutate("invite", {
+    householdId: household,
+    guestIds: [guest],
+    functionIds: [],
+    includeEvent: true,
+    expiresInHours: 1,
+    tokenHash: createHash("sha256").update(token).digest("hex"),
+  });
+  const anonymous = async () => {
+    const c = await session(A);
+    await c.query("reset role; set role anon");
+    return c;
+  };
+  const answers = JSON.stringify([
+    { guestId: guest, functionId: null, status: "accepted" },
+  ]);
+  return { ...f, mutate, guest, token, anonymous, answers };
+}
+it("replays concurrent anonymous replies with one audit and one event version", async () => {
+  const f = await guestFixture(),
+    a = await f.anonymous(),
+    b = await f.anonymous(),
+    key = crypto.randomUUID();
+  const replies = await Promise.all(
+    [a, b].map((c) =>
+      c.query("select public.rsvp_respond($1,$2::jsonb,$3) r", [
+        f.token,
+        f.answers,
+        key,
+      ]),
+    ),
+  );
+  expect(replies.filter((r) => r.rows[0].r.replayed)).toHaveLength(1);
+  expect(
+    (
+      await f.c.query("select version from public.events where id=$1", [
+        f.eventId,
+      ])
+    ).rows[0].version,
+  ).toBe(f.version + 1);
+  expect(
+    (
+      await f.c.query(
+        "select id from public.audit_events where event_id=$1 and action='guest_rsvp'",
+        [f.eventId],
+      )
+    ).rows,
+  ).toHaveLength(1);
+  results.push({ scenario: "anonymous RSVP duplicate replay", passed: true });
+});
+it("rejects an RSVP waiting behind a concurrent guest archive", async () => {
+  const f = await guestFixture(),
+    anonymous = await f.anonymous();
+  const pid = (await anonymous.query("select pg_backend_pid() pid")).rows[0]
+    .pid;
+  await f.c.query("begin");
+  try {
+    await f.mutate("attendance", {
+      guestId: f.guest,
+      functionId: null,
+      status: "pending",
+    });
+    const waiting = anonymous
+      .query("select public.rsvp_respond($1,$2::jsonb,$3)", [
+        f.token,
+        f.answers,
+        crypto.randomUUID(),
+      ])
+      .then(
+        () => "unexpected success",
+        (e) => e.message as string,
+      );
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+    await f.mutate("archive_guest", { id: f.guest });
+    await f.c.query("commit");
+    expect(await waiting).toContain("NOT_FOUND");
+    expect(
+      (
+        await f.c.query(
+          "select id from public.audit_events where event_id=$1 and action='guest_rsvp'",
+          [f.eventId],
+        )
+      ).rows,
+    ).toHaveLength(0);
+  } finally {
+    await f.c.query("rollback");
+  }
+  results.push({
+    scenario: "RSVP waits for host archive then revalidates",
     passed: true,
   });
 });
