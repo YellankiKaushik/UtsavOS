@@ -1,0 +1,279 @@
+{
+  "generatedAtUtc": "2026-10-26T18:18:29.270Z",
+  "baseline": "dbe84fe",
+  "unit": {
+    "tests": 129,
+    "passed": 129,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 9717.40087890625
+  },
+  "native": {
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 16116.8466796875
+  },
+  "browser": {
+    "tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 34562.490000000005
+  },
+  "configuredPublicBrowser": {
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 2044.8159999999998
+  },
+  "concurrency": {
+    "version": "PostgreSQL 17.10 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit",
+    "scenarios": [
+      {
+        "scenario": "pooled RPC upgrade resolves provenance wrapper",
+        "passed": true
+      },
+      {
+        "scenario": "independent tenants",
+        "passed": true
+      },
+      {
+        "scenario": "same-event optimistic race",
+        "passed": true
+      },
+      {
+        "scenario": "duplicate concurrent approval",
+        "passed": true
+      },
+      {
+        "scenario": "different-key concurrent approval",
+        "passed": true
+      },
+      {
+        "scenario": "stale approval behind row lock",
+        "passed": true
+      },
+      {
+        "scenario": "real transactional rollback",
+        "passed": true
+      },
+      {
+        "scenario": "budget edit race and protected price",
+        "passed": true
+      },
+      {
+        "scenario": "duplicate draft acceptance race",
+        "passed": true
+      },
+      {
+        "scenario": "cross-tenant denial during owner edit",
+        "passed": true
+      },
+      {
+        "scenario": "concurrent generation reservation cap",
+        "passed": true
+      }
+    ],
+    "note": "Native PostgreSQL with synthetic auth roles; not hosted Supabase/Auth verification."
+  },
+  "liveProviderOutcomes": {
+    "gemini": {
+      "status": "FAILED",
+      "provider": "gemini",
+      "requestedModel": "gemini-3.8-flash",
+      "code": "AI_AUTHENTICATION_FAILED",
+      "category": "authentication",
+      "latencyMs": 190
+    },
+    "openrouter": {
+      "status": "FAILED",
+      "provider": "openrouter",
+      "requestedModel": "openrouter/free",
+      "code": "AI_UNAVAILABLE",
+      "category": "timeout",
+      "latencyMs": 20008
+    }
+  },
+  "environmentDiagnostic": {
+    "variables": [
+      {
+        "name": "SUPABASE_URL",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "NEXT_PUBLIC_SUPABASE_URL",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "SUPABASE_PUBLISHABLE_KEY",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "SUPABASE_SERVICE_ROLE_KEY",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "SUPABASE_SECRET_KEY",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "APP_BASE_URL",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "AI_PROVIDER_MODE",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "AI_PROVIDER_PRIMARY",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "AI_PROVIDER_FALLBACK",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "AI_REQUEST_TIMEOUT_MS",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "AI_PROVIDER_TIMEOUT_MS",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "AI_PROVIDER_MAX_RETRIES",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "GEMINI_API_KEY",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "GEMINI_MODEL_ID",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "GEMINI_MODEL_DEFAULT",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "OPENROUTER_API_KEY",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "OPENROUTER_MODEL_ID",
+        "present": false,
+        "nonempty": false,
+        "format": "not-configured",
+        "source": null,
+        "overriddenIn": []
+      },
+      {
+        "name": "OPENROUTER_MODEL_DEFAULT",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      },
+      {
+        "name": "VITE_AUTH_PROVIDER",
+        "present": true,
+        "nonempty": true,
+        "format": "valid",
+        "source": ".env",
+        "overriddenIn": []
+      }
+    ],
+    "duplicates": [],
+    "projectSafety": "identity-verification-required"
+  },
+  "productionAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "architectureSha256": "eb706028e80dd9e15db10ee676b36ed13cbf2d885d461e17838fff3bf65f7e41",
+  "lockfileSha256": "509d11a14a2da5035c0a5891ab24464f250d7169cea88c29d4a1bbb97d0167af",
+  "releaseEligible": false
+}
