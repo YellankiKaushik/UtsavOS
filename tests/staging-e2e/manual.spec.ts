@@ -99,7 +99,9 @@ test("HOSTED MANUAL ONLY: real Vercel/Auth/DB planning, private RSVP, refresh an
   await expect(
     page.getByRole("heading", { name: "Synthetic photographer" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Functions", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Functions · preview", exact: true })
+    .click();
   await page.getByRole("button", { name: "Add function", exact: true }).click();
   await page.getByLabel("Function name").fill("Hosted reception");
   await page
@@ -170,13 +172,46 @@ test("HOSTED MANUAL ONLY: real Vercel/Auth/DB planning, private RSVP, refresh an
     404,
   );
   await page.getByRole("button", { name: "Revoke invitation" }).click();
+  await expect(
+    page.getByRole("listitem").filter({ hasText: "Revoked" }),
+  ).toHaveCount(1);
   await guestPage.reload();
   await guestPage
     .getByLabel("Invitation code")
     .fill(new URL(invitation).hash.slice(1));
+  const revokedResponse = guestPage.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname === "/api/rsvp" &&
+      response.request().method() === "POST",
+  );
   await guestPage.getByRole("button", { name: "Open invitation" }).click();
+  expect((await revokedResponse).status()).toBe(404);
   await expect(
     guestPage.getByRole("alert").filter({ hasText: "This invitation" }),
+  ).toBeVisible();
+  const before = (await read(page, `/api/v1/events/${eventId}`)).body.data;
+  await page.getByRole("link", { name: "Replan", exact: true }).click();
+  await page.getByLabel("New expected guest count").fill("180");
+  await page
+    .getByRole("checkbox", { name: "Do not exceed my event budget" })
+    .uncheck();
+  await page.getByRole("button", { name: "Preview the impact" }).click();
+  await expect(page.getByText("150 → 180 guests")).toBeVisible();
+  expect(
+    (await read(page, `/api/v1/events/${eventId}`)).body.data.event.version,
+  ).toBe(before.event.version);
+  await page.getByRole("button", { name: "Review approval" }).click();
+  await page.getByRole("button", { name: "Approve and save changes" }).click();
+  await expect(page.getByRole("status")).toContainText(
+    "approved changes are saved",
+  );
+  await page.reload();
+  const after = (await read(page, `/api/v1/events/${eventId}`)).body.data;
+  expect(after.event.guestCount).toBe(180);
+  expect(after.event.version).toBe(before.event.version + 1);
+  await page.getByRole("link", { name: "History", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "approve", exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Sign out" }).click();
   await expect(page).toHaveURL(/\/login$/);

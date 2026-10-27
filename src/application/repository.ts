@@ -34,6 +34,7 @@ export function databaseError(error: {
     "FUNCTION_IN_USE",
     "RESOURCE_UNAVAILABLE",
     "HOUSEHOLD_IN_USE",
+    "INVITE_ALREADY_USED",
   ];
   const code =
     known.find((c) => error.message === c) ||

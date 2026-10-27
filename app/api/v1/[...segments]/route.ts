@@ -25,6 +25,7 @@ import { aiConfig } from "@/infrastructure/config";
 import { functionMutation, functionLink } from "@/domain/event-functions";
 import type { Json } from "@/generated/database.types";
 import { guestRoute } from "@/application/guest-http";
+import { teamRoute } from "@/application/team-http";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 type Context = { params: Promise<{ segments: string[] }> };
@@ -51,6 +52,23 @@ async function route(request: Request, ctx: Context) {
           .order("created_at", { ascending: false })
           .limit(20);
         if (usageError) databaseError(usageError);
+        let workspaceItems = workspaces ?? [];
+        if (process.env.FEATURE_TEAMS === "true") {
+          const memberships = await db
+            .from("workspace_members")
+            .select("workspace_id,role,state")
+            .eq("user_id", user.id)
+            .eq("state", "active");
+          if (memberships.error) databaseError(memberships.error);
+          workspaceItems = workspaceItems.map((w) => ({
+            ...w,
+            canCreate: memberships.data.some(
+              (m) =>
+                m.workspace_id === w.id &&
+                ["owner", "planner_manager"].includes(m.role),
+            ),
+          }));
+        }
         return {
           user: {
             id: user.id,
@@ -60,7 +78,7 @@ async function route(request: Request, ctx: Context) {
                 ? user.user_metadata.display_name
                 : null,
           },
-          workspaces,
+          workspaces: workspaceItems,
           usage,
           aiConfigured:
             providerSettings.enabled &&
@@ -71,11 +89,13 @@ async function route(request: Request, ctx: Context) {
           aiProviderPrimary: providerSettings.primary,
           aiProviderFallback: providerSettings.fallback,
           features: {
+            teams: process.env.FEATURE_TEAMS === "true",
             guests: process.env.FEATURE_GUESTS === "true",
             eventFunctions: process.env.FEATURE_EVENT_FUNCTIONS === "true",
           },
         };
       }
+      if (path === "team") return teamRoute(request, db, requestId);
       if (path === "workspaces/personal" && method === "POST") {
         key(request);
         const { data, error } = await db.rpc("create_personal_workspace");
@@ -177,7 +197,15 @@ async function route(request: Request, ctx: Context) {
         }
       }
       const eventId = uuid.parse(s[1]);
-      if (s.length === 2 && method === "GET") return snapshot(db, eventId);
+      if (s.length === 2 && method === "GET") {
+        const state = await snapshot(db, eventId);
+        if (process.env.FEATURE_TEAMS !== "true") return state;
+        const permissions = await db.rpc("event_permissions", {
+          p_event_id: eventId,
+        });
+        if (permissions.error) databaseError(permissions.error);
+        return { ...state, permissions: permissions.data };
+      }
       if (s.length === 2 && method === "PATCH") {
         const body = await readBody(request);
         const raw = z.record(z.string(), z.unknown()).parse(body);

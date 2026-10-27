@@ -1,5 +1,16 @@
 # Test report
 
+## Active 2026-10-28 evidence
+
+- Unit/integration: 181 passed before the team slice, zero failures/skips.
+- Native PostgreSQL: 16 passed after the team authorization layer, including RSVP duplicate/archive races and membership revocation racing a waiting mutation.
+- Hosted publishable-key sessions: baseline manual integration 1 passed (3 AI cases filtered); guest/session-refresh integration 1 passed (4 other cases filtered). These counts are separate runs, not six live passes.
+- GitHub `40572301093` passed both jobs for `0b54d31`, including Docker Supabase and full browser regression. Later commits need their own CI result.
+- READY Preview `dpl_CaDcMcKh9UxwUtk3EPQ1UvKRo8nc` serves commit `947185e` on Node 24. Hosted browser checks have exercised login, creation, budgets/tasks/vendors, functions and guest replies. The complete journey is still being repaired/verified; failed assertions are not counted as passes. Full AI-dependent browser and corpus gates remain blocked.
+- Fresh Gemini smoke failed authentication; two bounded fixed free OpenRouter attempts failed output validation. No paid calls or privacy relaxation.
+
+Detailed running evidence: [LIVE_RELEASE_PROGRESS.md](LIVE_RELEASE_PROGRESS.md). The following section is the earlier checkpoint.
+
 2026-10-27. Tested implementationa98fdecfa07dc0cee18609330f764158224b65e6; Node24.16.0 on Windows. No dependency changes. Historical evidence from15be61c is retained separately; current counts below are executed results, not copied claims.
 
 | Command / category                                                                                             | Outcome                                                                 | Passed | Failed | Skipped | Duration ms        |

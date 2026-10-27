@@ -27,6 +27,7 @@ export function RsvpPortal() {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   const pending = useRef<{ body: string; key: string } | null>(null);
+  const initialToken = useRef<string | null>(null);
   async function request(body: Record<string, unknown>) {
     setBusy(true);
     setError("");
@@ -49,8 +50,9 @@ export function RsvpPortal() {
   }
   useEffect(() => {
     let active = true;
-    const candidate = window.location.hash.slice(1);
+    const candidate = initialToken.current ?? window.location.hash.slice(1);
     if (/^[a-f0-9]{64}$/.test(candidate)) {
+      initialToken.current = candidate;
       window.history.replaceState(null, "", window.location.pathname);
       void postRsvp(
         JSON.stringify({ action: "read", token: candidate }),

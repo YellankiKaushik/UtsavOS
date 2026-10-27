@@ -1,5 +1,11 @@
 # External action register
 
+## Active 2026-10-28 reconciliation
+
+The dated entries below describe the earlier checkpoint. Supabase target access, initial migrations, synthetic session provisioning, ordinary persistence/isolation and Docker-capable CI are now resolved through verified authenticated access. A staging Preview is deployed; complete hosted acceptance is still in progress. Real email delivery/confirmation/recovery remain unverified; administrative confirmation is not delivery evidence.
+
+Gemini still returns authentication failure with the replaced local configuration. OpenRouter key/catalogue access succeeds, but two bounded tests of an eligible fixed free route produced no valid draft. Exact provider-side cause is not established. Owner actions remain API authorization/configuration for Gemini and an approved usable route/budget for OpenRouter; do not paste keys in chat. No unchanged generation retry is scheduled. See [LIVE_RELEASE_PROGRESS.md](LIVE_RELEASE_PROGRESS.md) for current service IDs and evidence.
+
 2026-10-27. No secret values should be pasted in chat. Credentials belong in ignored environment files or approved secret storage. All current actions below remain BLOCKED; new diagnostic evidence replaces repeated speculative retries. No external purchase/migration/deployment was made.
 
 ## EXT-01 — Gemini

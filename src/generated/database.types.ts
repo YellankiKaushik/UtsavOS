@@ -240,6 +240,33 @@ export type Database = {
         };
         Relationships: [];
       };
+      event_assignments: {
+        Row: {
+          workspace_id: string;
+          event_id: string;
+          user_id: string;
+          can_edit: boolean;
+          can_approve: boolean;
+          can_view_contacts: boolean;
+        };
+        Insert: {
+          workspace_id: string;
+          event_id: string;
+          user_id: string;
+          can_edit?: boolean;
+          can_approve?: boolean;
+          can_view_contacts?: boolean;
+        };
+        Update: {
+          workspace_id?: string;
+          event_id?: string;
+          user_id?: string;
+          can_edit?: boolean;
+          can_approve?: boolean;
+          can_view_contacts?: boolean;
+        };
+        Relationships: [];
+      };
       event_functions: {
         Row: {
           id: string;
@@ -674,6 +701,7 @@ export type Database = {
           personal_owner_user_id: string | null;
           created_at: string;
           updated_at: string;
+          team_version: number;
         };
         Insert: {
           id?: string;
@@ -682,6 +710,7 @@ export type Database = {
           personal_owner_user_id?: string | null;
           created_at?: string;
           updated_at?: string;
+          team_version?: number;
         };
         Update: {
           id?: string;
@@ -690,6 +719,7 @@ export type Database = {
           personal_owner_user_id?: string | null;
           created_at?: string;
           updated_at?: string;
+          team_version?: number;
         };
         Relationships: [];
       };
@@ -729,6 +759,7 @@ export type Database = {
         Args: { p_event_id: string | null };
         Returns: Json;
       };
+      event_permissions: { Args: { p_event_id: string | null }; Returns: Json };
       event_snapshot: { Args: { p_event_id: string | null }; Returns: Json };
       guest_command: {
         Args: {
@@ -747,6 +778,18 @@ export type Database = {
         Returns: Json;
       };
       rsvp_view: { Args: { p_token: string }; Returns: Json };
+      team_command: {
+        Args: {
+          p_workspace_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      team_overview: { Args: Record<string, never>; Returns: Json };
     };
   };
 };

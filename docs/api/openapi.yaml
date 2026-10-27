@@ -49,6 +49,338 @@
                 },
             },
         },
+      "/team":
+        {
+          "get":
+            {
+              "summary": "Role-scoped workspaces and restricted client summaries (FEATURE_TEAMS required)",
+              "operationId": "get__team",
+              "security": [{ "sessionCookie": [] }],
+              "parameters": [],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Owner membership, scoped assignments and authenticated invite consent",
+              "operationId": "post__team",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "$schema": "https://json-schema.org/draft/2020-12/schema",
+                              "oneOf":
+                                [
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "create",
+                                          },
+                                        "name":
+                                          {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 120,
+                                          },
+                                      },
+                                    "required": ["action", "name"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "invite",
+                                          },
+                                        "workspaceId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "email":
+                                          {
+                                            "type": "string",
+                                            "maxLength": 254,
+                                            "format": "email",
+                                            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+                                          },
+                                        "role":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "planner_manager",
+                                                "planner_member",
+                                                "client_viewer",
+                                              ],
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "action",
+                                        "workspaceId",
+                                        "expectedVersion",
+                                        "email",
+                                        "role",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "accept",
+                                          },
+                                        "token":
+                                          {
+                                            "type": "string",
+                                            "pattern": "^[a-f0-9]{64}$",
+                                          },
+                                      },
+                                    "required": ["action", "token"],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "revoke_invite",
+                                          },
+                                        "workspaceId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "id":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "action",
+                                        "workspaceId",
+                                        "expectedVersion",
+                                        "id",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "member",
+                                          },
+                                        "workspaceId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "userId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "role":
+                                          {
+                                            "type": "string",
+                                            "enum":
+                                              [
+                                                "planner_manager",
+                                                "planner_member",
+                                                "client_viewer",
+                                              ],
+                                          },
+                                        "state":
+                                          {
+                                            "type": "string",
+                                            "enum": ["active", "revoked"],
+                                          },
+                                      },
+                                    "required":
+                                      [
+                                        "action",
+                                        "workspaceId",
+                                        "expectedVersion",
+                                        "userId",
+                                        "role",
+                                        "state",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties":
+                                      {
+                                        "action":
+                                          {
+                                            "type": "string",
+                                            "const": "assign",
+                                          },
+                                        "workspaceId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "expectedVersion":
+                                          {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 9007199254740991,
+                                          },
+                                        "eventId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "userId":
+                                          {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                          },
+                                        "assigned": { "type": "boolean" },
+                                        "canEdit": { "type": "boolean" },
+                                        "canApprove": { "type": "boolean" },
+                                        "canViewContacts":
+                                          { "type": "boolean" },
+                                      },
+                                    "required":
+                                      [
+                                        "action",
+                                        "workspaceId",
+                                        "expectedVersion",
+                                        "eventId",
+                                        "userId",
+                                        "assigned",
+                                        "canEdit",
+                                        "canApprove",
+                                        "canViewContacts",
+                                      ],
+                                    "additionalProperties": false,
+                                  },
+                                ],
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
       "/events/{eventId}/guests":
         {
           "get":

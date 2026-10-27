@@ -73,7 +73,11 @@ export function AiPage({ state, reload }: Props) {
     payload = draft?.payload;
   const stale = draft && draft.base_version !== e.version,
     expired = draft && Date.parse(draft.expires_at) <= now,
-    ready = draft?.status === "ready" && !stale && !expired;
+    ready =
+      draft?.status === "ready" &&
+      !stale &&
+      !expired &&
+      state.permissions?.canApprove !== false;
   const allIds = payload
     ? [
         ...payload.budgetSuggestions,
@@ -631,7 +635,11 @@ export function ReplanPage({ state, reload }: Props) {
       (w) => w.code === "BUDGET_CONSTRAINT_UNRESOLVED",
     ),
     canApprove =
-      proposal?.status === "pending" && !stale && !expired && !blocked;
+      proposal?.status === "pending" &&
+      !stale &&
+      !expired &&
+      !blocked &&
+      state.permissions?.canApprove !== false;
   async function preview() {
     try {
       setFeedback("");
@@ -927,7 +935,11 @@ export function ReplanPage({ state, reload }: Props) {
             <button
               className="button"
               disabled={
-                proposal.status !== "pending" || !!stale || !!expired || m.busy
+                proposal.status !== "pending" ||
+                !!stale ||
+                !!expired ||
+                m.busy ||
+                state.permissions?.canApprove === false
               }
               onClick={() => decide("reject")}
             >

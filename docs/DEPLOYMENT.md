@@ -1,5 +1,13 @@
 # Deployment and operations
 
+## Active 2026-10-28 staging execution
+
+The dated statements below are historical. The verified Vercel project is `utsavos` / `prj_PqBVW2XZqRNqmkhNVgoBOMEysCbm`, team `team_UYEpjjRaObtrYF55SYu5rqUl`, linked to `YellankiKaushik/UtsavOS`, production branch `main`. Work is isolated on `codex/live-release-completion`; main has not been updated. Preview `https://utsavos-4plh919j5-kaushik-yellanki-project.vercel.app` (`dpl_CaDcMcKh9UxwUtk3EPQ1UvKRo8nc`) is READY for `947185e`, Node 24.x. Native Next.js output, `npm ci`, and `npm run build` are used. This is a staging deployment, not a production release.
+
+Preview AI flags are false. Functions/guests are enabled only for this branch after real hosted tests against isolated Supabase `upbwahlegwcwiladfwwd`. Five migrations are applied; no reset or seed ran. New unverified modules remain off. Exact Vercel deployment origin is trusted through system configuration; user Host/forwarded headers are not trusted. `.vercelignore` excludes local env, synthetic identities, runtime files and the user's untracked image. Service-role credentials are absent from Vercel.
+
+Use `playwright.staging.config.ts` for the explicitly manual-only hosted journey with a verified exact Preview URL and ignored synthetic credentials. Vercel protection stays enabled; inject a short-lived development OIDC header only for that exact origin. Traces/video/screenshots are off. The full `test:e2e:live` gate still requires a successful real AI smoke. See [LIVE_RELEASE_PROGRESS.md](LIVE_RELEASE_PROGRESS.md).
+
 Current checkpoint: 2026-10-27 (Asia/Kolkata). See CODEX_FINAL_COMPLETION_REPORT.md and EXTERNAL_ACTION_REGISTER.md for current diagnostics and gates. P1 event functions may be tested independently under the latest user directive, while release remains blocked. Never enable the preview in production based only on local tests.
 
 2026-10-26. Target: native Next.js on Vercel-compatible Node hosting, Supabase PostgreSQL/Auth, direct Gemini and OpenRouter. **No staging or public deployment has been created or verified.** No public URL, successful provider draft or hosted Auth session is claimed. Current blockers and exact external actions: [FOUNDER_ACTIONS_REQUIRED.md](FOUNDER_ACTIONS_REQUIRED.md).

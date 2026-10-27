@@ -25,13 +25,16 @@ export default defineConfig({
   outputDir: "test-results-staging",
   workers: 1,
   retries: 0,
-  timeout: 120000,
+  timeout: 180000,
+  expect: { timeout: 20000 },
   reporter: [
     ["list"],
     ["json", { outputFile: ".runtime/release-20261028/staging-browser.json" }],
   ],
   use: {
     baseURL: url,
+    actionTimeout: 20000,
+    navigationTimeout: 30000,
     trace: "off",
     screenshot: "off",
     video: "off",

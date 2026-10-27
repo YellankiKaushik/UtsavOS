@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { z } from "zod";
 import { functionFields } from "../src/domain/event-functions.ts";
 import { guestMutation, rsvpRequest } from "../src/domain/guests.ts";
+import { teamMutation } from "../src/domain/teams.ts";
 import { format } from "prettier";
 import {
   eventFields,
@@ -88,6 +89,17 @@ function flat(name, metadata, partial = false) {
   };
 }
 add("/me", "get", "Current verified identity, workspaces and AI usage");
+add(
+  "/team",
+  "get",
+  "Role-scoped workspaces and restricted client summaries (FEATURE_TEAMS required)",
+);
+add(
+  "/team",
+  "post",
+  "Owner membership, scoped assignments and authenticated invite consent",
+  z.toJSONSchema(teamMutation, { io: "input" }),
+);
 add(
   "/events/{eventId}/guests",
   "get",

@@ -34,6 +34,7 @@ import { BudgetPage, TasksPage, VendorsPage } from "./resources";
 import { AiPage, ReplanPage } from "./planning";
 import { EventFunctionsPage } from "./event-functions";
 import { GuestsPage } from "./guests";
+import { TeamsPage } from "./teams";
 import {
   dateLabel,
   localDateValue,
@@ -47,7 +48,7 @@ import {
 const typeIcons = { wedding: Flower2, birthday: Cake, community: Users };
 type Me = {
   user: { email: string; id: string; displayName?: string | null };
-  workspaces: { id: string; name: string }[];
+  workspaces: { id: string; name: string; canCreate?: boolean }[];
   usage: {
     id: string;
     operation: string;
@@ -61,6 +62,7 @@ type Me = {
   aiProviderFallback?: string;
 };
 export function Planner({ path }: { path: string[] }) {
+  if (path[0] === "team") return <TeamsPage />;
   if (path[0] === "settings") return <SettingsPage />;
   if (path.length === 0 || (path[0] === "events" && path.length === 1))
     return <EventList />;
@@ -277,6 +279,9 @@ export function EventWizard() {
     [zone, setZone] = useState("Asia/Kolkata"),
     [budget, setBudget] = useState("500000"),
     [preferences, setPreferences] = useState("");
+  const [workspaceId, setWorkspaceId] = useState("");
+  const editableWorkspaces =
+    me?.workspaces.filter((w) => w.canCreate !== false) ?? [];
   function next() {
     try {
       if (step === 0 && !title.trim())
@@ -314,7 +319,9 @@ export function EventWizard() {
         preferences,
         status: "planning",
       });
-      const workspace = me?.workspaces[0];
+      const workspace =
+        editableWorkspaces.find((w) => w.id === workspaceId) ??
+        editableWorkspaces[0];
       if (!workspace)
         throw new Error(
           "Your workspace is not provisioned. Sign in again to finish setup.",
@@ -352,6 +359,21 @@ export function EventWizard() {
         {step === 0 ? (
           <>
             <h2>What are we celebrating?</h2>
+            {editableWorkspaces.length > 1 ? (
+              <Field label="Planning workspace" id="planning-workspace">
+                <select
+                  id="planning-workspace"
+                  value={workspaceId || editableWorkspaces[0]?.id}
+                  onChange={(e) => setWorkspaceId(e.target.value)}
+                >
+                  {editableWorkspaces.map((w) => (
+                    <option key={w.id} value={w.id}>
+                      {w.name}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            ) : null}
             <div className="grid three" role="group" aria-label="Event type">
               {(["wedding", "birthday", "community"] as const).map((t) => {
                 const Icon = typeIcons[t];
@@ -538,7 +560,8 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
     ["ai-plan", "AI planning"],
     ["replan", "Replan"],
     ["history", "History"],
-    ...(capabilities.data?.features?.guests
+    ...(capabilities.data?.features?.guests &&
+    state.permissions?.canViewContacts !== false
       ? [["guests", "Guests & RSVP"]]
       : []),
     ...(capabilities.data?.features?.eventFunctions
@@ -566,7 +589,11 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
           </p>
         </div>
         <div className="actions">
-          <button className="button" onClick={() => setEditing(true)}>
+          <button
+            className="button"
+            disabled={state.permissions?.canEdit === false}
+            onClick={() => setEditing(true)}
+          >
             <Settings size={15} />
             Event details
           </button>
@@ -588,42 +615,54 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
         ))}
       </nav>
       <ErrorNotice error={resource.error} retry={resource.reload} />
-      {tab === "overview" ? (
-        <Overview state={state} />
-      ) : tab === "budget" ? (
-        <BudgetPage state={state} reload={resource.reload} />
-      ) : tab === "timeline" ? (
-        <TasksPage state={state} reload={resource.reload} />
-      ) : tab === "vendors" ? (
-        <VendorsPage state={state} reload={resource.reload} />
-      ) : tab === "ai-plan" ? (
-        <AiPage state={state} reload={resource.reload} />
-      ) : tab === "replan" ? (
-        <ReplanPage state={state} reload={resource.reload} />
-      ) : tab === "history" ? (
-        <History id={id} zone={e.timeZone} />
-      ) : tab === "guests" && capabilities.data?.features?.guests ? (
-        <GuestsPage state={state} reload={resource.reload} />
-      ) : tab === "functions" && capabilities.data?.features?.eventFunctions ? (
-        <EventFunctionsPage state={state} reload={resource.reload} />
-      ) : (
-        <div className="notice error">Unknown event module.</div>
-      )}
-      <Modal
-        title="Your celebration details"
-        description="Changes are saved with version protection. Guest changes use the Replan workflow."
-        open={editing}
-        onOpenChange={setEditing}
+      {state.permissions?.canEdit === false ? (
+        <p className="notice">
+          You have read-only access to this event. Ask the workspace owner to
+          change your assignment.
+        </p>
+      ) : null}
+      <fieldset
+        disabled={state.permissions?.canEdit === false}
+        style={{ border: 0, padding: 0, minWidth: 0 }}
       >
-        <EventEditor
-          key={`${e.id}-${e.version}`}
-          event={e}
-          onSaved={async () => {
-            setEditing(false);
-            await resource.reload();
-          }}
-        />
-      </Modal>
+        {tab === "overview" ? (
+          <Overview state={state} />
+        ) : tab === "budget" ? (
+          <BudgetPage state={state} reload={resource.reload} />
+        ) : tab === "timeline" ? (
+          <TasksPage state={state} reload={resource.reload} />
+        ) : tab === "vendors" ? (
+          <VendorsPage state={state} reload={resource.reload} />
+        ) : tab === "ai-plan" ? (
+          <AiPage state={state} reload={resource.reload} />
+        ) : tab === "replan" ? (
+          <ReplanPage state={state} reload={resource.reload} />
+        ) : tab === "history" ? (
+          <History id={id} zone={e.timeZone} />
+        ) : tab === "guests" && capabilities.data?.features?.guests ? (
+          <GuestsPage state={state} reload={resource.reload} />
+        ) : tab === "functions" &&
+          capabilities.data?.features?.eventFunctions ? (
+          <EventFunctionsPage state={state} reload={resource.reload} />
+        ) : (
+          <div className="notice error">Unknown event module.</div>
+        )}
+        <Modal
+          title="Your celebration details"
+          description="Changes are saved with version protection. Guest changes use the Replan workflow."
+          open={editing}
+          onOpenChange={setEditing}
+        >
+          <EventEditor
+            key={`${e.id}-${e.version}`}
+            event={e}
+            onSaved={async () => {
+              setEditing(false);
+              await resource.reload();
+            }}
+          />
+        </Modal>
+      </fieldset>
     </>
   );
 }

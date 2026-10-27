@@ -1,5 +1,13 @@
 # Architecture decisions
 
+## ADR-024 — Verified staging isolation and granular capabilities (2026-10-28)
+
+Use the positively identified isolated Supabase project and the existing repository-linked Vercel Preview. Preserve main and production. Verify each new migration locally, with real PostgreSQL concurrency where relevant, then dry-run before hosted apply. Preview AI remains disabled until genuine validated generation succeeds; service-role access is limited to synthetic account provisioning and never deployed for ordinary user operations.
+
+FR-016 uses hashed expiring revocable invitation capabilities with frozen guest/function scopes. Anonymous responses share the event lock, revalidate after waiting, use receipts and never change planned guest count or money. Contacts and invitation hashes are excluded from anonymous responses and audit diffs.
+
+FR-017 adds active database membership and event assignments. Managers operate workspace events; members require assignments and separate edit/approval/contact grants. Client viewers receive only assigned, restricted summaries. Mutating entry points lock the workspace before the event and recheck authorization after waiting, so a completed revocation prevents queued writes. Existing financial commands remain authoritative behind guarded wrappers, with old direct execution revoked and public SQL wrappers explicitly replaced for pooled-session correctness. Owner membership/billing administration cannot be delegated through user metadata or role invitations. Rejoining after revocation requires a fresh invitation and matching-email consent.
+
 ## ADR-023 — Diagnostic evidence and process environment precedence (2026-10-27)
 
 Use read-only configured Gemini model metadata and OpenRouter key/model metadata before further generation. Retain only status, latency, whitelisted reason/category and capability booleans/model IDs. Never persist raw errors, messages, headers, URL query keys or account labels. Distinguish HTTP401 authentication from403 authorization, unavailable model from no compatible route, and nested DNS/TLS/network failures. TLS/authorization/routing errors cannot trigger automatic fallback; JSON/schema/semantic rejection stages remain distinct diagnostics and cannot reroute. Live verification is still required; catalogue metadata cannot prove generated output.

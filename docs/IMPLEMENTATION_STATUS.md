@@ -1,5 +1,11 @@
 # Implementation status
 
+## Active 2026-10-28 release execution
+
+See [LIVE_RELEASE_PROGRESS.md](LIVE_RELEASE_PROGRESS.md) for current evidence. The dated assessment below is historical. The dedicated Supabase project is now identified and has five applied migrations; real ordinary-user persistence, isolation, atomic approval, session refresh and scoped guest RSVP tests pass. GitHub CI passed for `0b54d31`; staging Preview `947185e` is READY on Node 24 with AI disabled. Hosted browser verification is in progress. Gemini authentication and validated OpenRouter output remain blocked. FR-016 is implemented and tested locally/hosted; FR-017 is being implemented and has not been migrated remotely. Full commercial product remains incomplete.
+
+## Earlier checkpoint
+
 2026-10-27 (Asia/Kolkata). Starting checkpoint15be61c preserved; tested implementation **a98fdecfa07dc0cee18609330f764158224b65e6**. Current milestone7 external release gate **BLOCKED**; independent milestone8 FR-015 **IMPLEMENTED / TESTED LOCALLY, preview off by default**. Full product incomplete.
 
 ## Gate assessment

@@ -149,7 +149,7 @@ beforeAll(async () => {
   });
   await admin.connect();
   await admin.query(
-    `create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}'),('${B}');`,
+    `create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}','a@example.test'),('${B}','b@example.test');`,
   );
   for (const f of readdirSync("supabase/migrations")
     .filter((f) => f.endsWith(".sql"))
@@ -775,6 +775,112 @@ it("rejects an RSVP waiting behind a concurrent guest archive", async () => {
   }
   results.push({
     scenario: "RSVP waits for host archive then revalidates",
+    passed: true,
+  });
+});
+
+it("rechecks membership after a command waits behind a workspace revocation", async () => {
+  const owner = await session(A),
+    member = await session(B);
+  let teamVersion: number;
+  const team = async (
+    c: Client,
+    wid: string | null,
+    action: string,
+    p: unknown,
+  ) => {
+    const r = (
+      await c.query(
+        "select public.team_command($1,$2,$3::jsonb,$4,$5,'native-team') r",
+        [
+          wid,
+          action,
+          JSON.stringify(p),
+          teamVersion ?? null,
+          crypto.randomUUID(),
+        ],
+      )
+    ).rows[0].r;
+    teamVersion = r.version;
+    return r;
+  };
+  const workspace = (
+    await team(owner, null, "create", { name: "Synthetic revocation agency" })
+  ).workspaceId;
+  const event = await command(owner, "create", fields, null, null, workspace);
+  const token = randomBytes(32).toString("hex");
+  await team(owner, workspace, "invite", {
+    email: "b@example.test",
+    role: "planner_member",
+    tokenHash: createHash("sha256").update(token).digest("hex"),
+  });
+  await team(member, null, "accept", { token });
+  await team(owner, workspace, "assign", {
+    userId: B,
+    eventId: event.id,
+    assigned: true,
+    canEdit: true,
+    canApprove: false,
+    canViewContacts: false,
+  });
+  const pid = (await member.query("select pg_backend_pid() pid")).rows[0].pid;
+  await owner.query("begin");
+  try {
+    await team(owner, workspace, "invite", {
+      email: "unused@example.test",
+      role: "client_viewer",
+      tokenHash: randomBytes(32).toString("hex"),
+    });
+    const waiting = command(
+      member,
+      "put_task",
+      {
+        fields: {
+          title: "Must not be written",
+          status: "todo",
+          priority: "normal",
+          dueAt: null,
+          dependencyIds: [],
+          isLocked: false,
+        },
+      },
+      event.id,
+      event.version,
+    ).then(
+      () => "unexpected success",
+      (e) => e.message as string,
+    );
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+    await team(owner, workspace, "member", {
+      userId: B,
+      role: "planner_member",
+      state: "revoked",
+    });
+    await owner.query("commit");
+    expect(await waiting).toContain("NOT_FOUND");
+    expect(
+      (
+        await owner.query("select id from public.tasks where event_id=$1", [
+          event.id,
+        ])
+      ).rows,
+    ).toHaveLength(0);
+  } finally {
+    await owner.query("rollback");
+  }
+  results.push({
+    scenario: "workspace revocation wins against a waiting member command",
     passed: true,
   });
 });
