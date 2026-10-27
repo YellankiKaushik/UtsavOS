@@ -1,0 +1,10 @@
+node_modules
+.next
+package-lock.json
+DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md
+supabase/migrations
+test-results
+test-results-live-public
+test-results-live
+playwright-report
+.runtime
