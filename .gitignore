@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.env*
+!.env.example
+!.env.live.example
+coverage/
+playwright-report/
+test-results/
+test-results-live-public/
+test-results-live/
+*.tsbuildinfo
+.runtime/
+.supabase/
