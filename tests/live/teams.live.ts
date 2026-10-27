@@ -13,8 +13,7 @@ it("LIVE teams: matching-email consent, assigned access, delegated approval and 
       auth: { persistSession: false, autoRefreshToken: false },
     });
   let userId = "",
-    version: number,
-    workspaceId: string;
+    version: number;
   for (const [db, suffix] of [
     [a, "A"],
     [b, "B"],
@@ -44,7 +43,7 @@ it("LIVE teams: matching-email consent, assigned access, delegated approval and 
     version = r.data.version;
     return r.data;
   }
-  workspaceId = (
+  const workspaceId = (
     await team(a, "create", { name: "SYNTHETIC LIVE AGENCY" }, null)
   ).workspaceId;
   const fields = {
