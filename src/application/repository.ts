@@ -35,6 +35,11 @@ export function databaseError(error: {
     "RESOURCE_UNAVAILABLE",
     "HOUSEHOLD_IN_USE",
     "INVITE_ALREADY_USED",
+    "QUOTE_EXPIRED",
+    "FINANCIAL_RECORD_IN_USE",
+    "COMMITMENT_EXCEEDED",
+    "DUPLICATE_REFERENCE",
+    "OVERPAYMENT",
   ];
   const code =
     known.find((c) => error.message === c) ||

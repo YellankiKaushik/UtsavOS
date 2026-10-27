@@ -884,3 +884,134 @@ it("rechecks membership after a command waits behind a workspace revocation", as
     passed: true,
   });
 });
+
+async function financeFixture() {
+  const f = await fixture();
+  const vendor = await command(
+    f.c,
+    "put_vendor",
+    {
+      fields: {
+        title: "Synthetic vendor",
+        category: "other",
+        status: "needed",
+        notes: "",
+        quoteSource: null,
+        isLocked: false,
+        estimatedCostMinor: null,
+        dueAt: null,
+      },
+    },
+    f.eventId,
+    f.version,
+  );
+  f.version = vendor.version;
+  async function finance(
+    c: Client,
+    action: string,
+    p: unknown,
+    version = f.version,
+    key = crypto.randomUUID(),
+  ) {
+    return (
+      await c.query(
+        "select public.vendor_finance_command($1,$2,$3::jsonb,$4,$5,'native-finance') r",
+        [f.eventId, action, JSON.stringify(p), version, key],
+      )
+    ).rows[0].r;
+  }
+  let r = await finance(f.c, "quote", {
+    vendorRequirementId: vendor.id,
+    supplierName: "Synthetic supplier",
+    reference: "Q-1",
+    totalMinor: "1000",
+    expiresOn: null,
+    notes: "",
+  });
+  const quote = r.id;
+  f.version = r.version;
+  r = await finance(f.c, "commit", {
+    quoteId: quote,
+    depositDueMinor: "0",
+    confirmed: true,
+  });
+  const commitment = r.id;
+  f.version = r.version;
+  r = await finance(f.c, "invoice", {
+    commitmentId: commitment,
+    reference: "I-1",
+    amountMinor: "1000",
+    issuedOn: "2026-10-01",
+    dueOn: null,
+  });
+  const invoice = r.id;
+  f.version = r.version;
+  return { ...f, finance, invoice };
+}
+it("prevents parallel overpayment and preserves a single financial version", async () => {
+  const f = await financeFixture(),
+    c2 = await session(A);
+  const payload = (reference: string) => ({
+    invoiceId: f.invoice,
+    reference,
+    amountMinor: "800",
+    paidOn: "2026-10-01",
+    method: "cash",
+    confirmed: true,
+  });
+  const replies = await Promise.allSettled([
+    f.finance(f.c, "payment", payload(crypto.randomUUID())),
+    f.finance(c2, "payment", payload(crypto.randomUUID())),
+  ]);
+  expect(replies.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+  const snapshot = (
+    await f.c.query("select public.vendor_finance($1) r", [f.eventId])
+  ).rows[0].r;
+  expect(snapshot.summary.paidMinor).toBe("800");
+  expect(snapshot.eventVersion).toBe(f.version + 1);
+  await expect(
+    f.finance(
+      c2,
+      "payment",
+      payload(crypto.randomUUID()),
+      snapshot.eventVersion,
+    ),
+  ).rejects.toThrow("OVERPAYMENT");
+  results.push({ scenario: "parallel financial payment bounds", passed: true });
+});
+it("replays concurrent payment records with one row and one audit", async () => {
+  const f = await financeFixture(),
+    c2 = await session(A),
+    key = crypto.randomUUID(),
+    payload = {
+      invoiceId: f.invoice,
+      reference: crypto.randomUUID(),
+      amountMinor: "500",
+      paidOn: "2026-10-01",
+      method: "cash",
+      confirmed: true,
+    };
+  const replies = await Promise.all([
+    f.finance(f.c, "payment", payload, f.version, key),
+    f.finance(c2, "payment", payload, f.version, key),
+  ]);
+  expect(replies.filter((r) => r.replayed)).toHaveLength(1);
+  expect(replies[0].id).toBe(replies[1].id);
+  expect(
+    (
+      await f.c.query(
+        "select id from public.vendor_payment_records where event_id=$1",
+        [f.eventId],
+      )
+    ).rows,
+  ).toHaveLength(1);
+  expect(
+    (
+      await f.c.query(
+        "select id from public.audit_events where event_id=$1 and action='finance_payment'",
+        [f.eventId],
+      )
+    ).rows,
+  ).toHaveLength(1);
+  results.push({ scenario: "duplicate financial record replay", passed: true });
+});

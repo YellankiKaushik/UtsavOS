@@ -615,6 +615,180 @@ export type Database = {
         };
         Relationships: [];
       };
+      vendor_commitments: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          quote_id: string;
+          total_minor: number;
+          deposit_due_minor: number;
+          state: string;
+          created_at: string;
+          cancelled_at: string | null;
+          cancellation_reason: string | null;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          quote_id: string;
+          total_minor: number;
+          deposit_due_minor?: number;
+          state?: string;
+          created_at?: string;
+          cancelled_at?: string | null;
+          cancellation_reason?: string | null;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          quote_id?: string;
+          total_minor?: number;
+          deposit_due_minor?: number;
+          state?: string;
+          created_at?: string;
+          cancelled_at?: string | null;
+          cancellation_reason?: string | null;
+        };
+        Relationships: [];
+      };
+      vendor_invoices: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          commitment_id: string;
+          reference: string;
+          amount_minor: number;
+          issued_on: unknown;
+          due_on: unknown | null;
+          state: string;
+          void_reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          commitment_id: string;
+          reference: string;
+          amount_minor: number;
+          issued_on: unknown;
+          due_on?: unknown | null;
+          state?: string;
+          void_reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          commitment_id?: string;
+          reference?: string;
+          amount_minor?: number;
+          issued_on?: unknown;
+          due_on?: unknown | null;
+          state?: string;
+          void_reason?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      vendor_payment_records: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          invoice_id: string;
+          reference: string;
+          amount_minor: number;
+          paid_on: unknown;
+          method: string;
+          state: string;
+          reversal_reason: string | null;
+          reversed_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          invoice_id: string;
+          reference: string;
+          amount_minor: number;
+          paid_on: unknown;
+          method: string;
+          state?: string;
+          reversal_reason?: string | null;
+          reversed_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          invoice_id?: string;
+          reference?: string;
+          amount_minor?: number;
+          paid_on?: unknown;
+          method?: string;
+          state?: string;
+          reversal_reason?: string | null;
+          reversed_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      vendor_quotes: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          vendor_requirement_id: string;
+          supplier_name: string;
+          reference: string;
+          total_minor: number;
+          currency: string;
+          expires_on: unknown | null;
+          notes: string;
+          state: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          vendor_requirement_id: string;
+          supplier_name: string;
+          reference: string;
+          total_minor: number;
+          currency?: string;
+          expires_on?: unknown | null;
+          notes?: string;
+          state?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          vendor_requirement_id?: string;
+          supplier_name?: string;
+          reference?: string;
+          total_minor?: number;
+          currency?: string;
+          expires_on?: unknown | null;
+          notes?: string;
+          state?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       vendor_requirements: {
         Row: {
           id: string;
@@ -790,6 +964,18 @@ export type Database = {
         Returns: Json;
       };
       team_overview: { Args: Record<string, never>; Returns: Json };
+      vendor_finance: { Args: { p_event_id: string | null }; Returns: Json };
+      vendor_finance_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
     };
   };
 };

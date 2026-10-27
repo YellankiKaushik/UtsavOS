@@ -35,6 +35,7 @@ import { AiPage, ReplanPage } from "./planning";
 import { EventFunctionsPage } from "./event-functions";
 import { GuestsPage } from "./guests";
 import { TeamsPage } from "./teams";
+import { VendorFinancePage } from "./vendor-finance";
 import {
   dateLabel,
   localDateValue,
@@ -542,7 +543,11 @@ export function EventWizard() {
 }
 function EventWorkspace({ id, tab }: { id: string; tab: string }) {
   const capabilities = useResource<{
-    features?: { eventFunctions?: boolean; guests?: boolean };
+    features?: {
+      eventFunctions?: boolean;
+      guests?: boolean;
+      vendorFinance?: boolean;
+    };
   }>("me");
   const resource = useResource<EventSnapshot>(`events/${id}`),
     [editing, setEditing] = useState(false);
@@ -557,6 +562,9 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
     ["budget", "Budget"],
     ["timeline", "Tasks & timeline"],
     ["vendors", "Vendors"],
+    ...(capabilities.data?.features?.vendorFinance
+      ? [["finance", "Vendor finance"]]
+      : []),
     ["ai-plan", "AI planning"],
     ["replan", "Replan"],
     ["history", "History"],
@@ -633,6 +641,8 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
           <TasksPage state={state} reload={resource.reload} />
         ) : tab === "vendors" ? (
           <VendorsPage state={state} reload={resource.reload} />
+        ) : tab === "finance" && capabilities.data?.features?.vendorFinance ? (
+          <VendorFinancePage state={state} reload={resource.reload} />
         ) : tab === "ai-plan" ? (
           <AiPage state={state} reload={resource.reload} />
         ) : tab === "replan" ? (

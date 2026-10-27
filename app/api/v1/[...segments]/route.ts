@@ -26,6 +26,7 @@ import { functionMutation, functionLink } from "@/domain/event-functions";
 import type { Json } from "@/generated/database.types";
 import { guestRoute } from "@/application/guest-http";
 import { teamRoute } from "@/application/team-http";
+import { financeRoute } from "@/application/finance-http";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 type Context = { params: Promise<{ segments: string[] }> };
@@ -89,6 +90,7 @@ async function route(request: Request, ctx: Context) {
           aiProviderPrimary: providerSettings.primary,
           aiProviderFallback: providerSettings.fallback,
           features: {
+            vendorFinance: process.env.FEATURE_VENDOR_FINANCE === "true",
             teams: process.env.FEATURE_TEAMS === "true",
             guests: process.env.FEATURE_GUESTS === "true",
             eventFunctions: process.env.FEATURE_EVENT_FUNCTIONS === "true",
@@ -242,6 +244,8 @@ async function route(request: Request, ctx: Context) {
       const resourceName = s[2],
         recordId = s[3];
       const state = await snapshot(db, eventId); // RLS/auth check before every child path.
+      if (resourceName === "finance" && s.length === 3)
+        return financeRoute(request, db, eventId, requestId);
       if (resourceName === "guests" && s.length === 3) {
         return guestRoute(request, db, eventId, requestId);
       }

@@ -6,6 +6,8 @@ See [LIVE_RELEASE_PROGRESS.md](LIVE_RELEASE_PROGRESS.md) for current evidence. T
 
 ## Earlier checkpoint
 
+FR-017 now has six applied migrations, ordinary hosted role/delegation/revocation verification and default-off UI/API. FR-018 adds a seventh applied migration and hosted-tested financial records; no payment processing is implied. Current local regression 194 tests and native concurrency 18 tests pass. The first hosted manual vertical passes; a discovered anonymous audit-actor crash is fixed locally and needs hosted recheck. See the active progress log for exact commits and deployment identities.
+
 2026-10-27 (Asia/Kolkata). Starting checkpoint15be61c preserved; tested implementation **a98fdecfa07dc0cee18609330f764158224b65e6**. Current milestone7 external release gate **BLOCKED**; independent milestone8 FR-015 **IMPLEMENTED / TESTED LOCALLY, preview off by default**. Full product incomplete.
 
 ## Gate assessment

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { functionFields } from "../src/domain/event-functions.ts";
 import { guestMutation, rsvpRequest } from "../src/domain/guests.ts";
 import { teamMutation } from "../src/domain/teams.ts";
+import { financeMutation } from "../src/domain/vendor-finance.ts";
 import { format } from "prettier";
 import {
   eventFields,
@@ -89,6 +90,17 @@ function flat(name, metadata, partial = false) {
   };
 }
 add("/me", "get", "Current verified identity, workspaces and AI usage");
+add(
+  "/events/{eventId}/finance",
+  "get",
+  "Distinct quotation, commitment, invoice and payment records (FEATURE_VENDOR_FINANCE required)",
+);
+add(
+  "/events/{eventId}/finance",
+  "post",
+  "Versioned financial bookkeeping; no payment processing",
+  z.toJSONSchema(financeMutation, { io: "input" }),
+);
 add(
   "/team",
   "get",
