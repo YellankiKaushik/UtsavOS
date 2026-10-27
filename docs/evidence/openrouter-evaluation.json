@@ -1,0 +1,82 @@
+{
+  "provider": "openrouter",
+  "clientDate": "2026-10-27",
+  "liveCorpusStatus": "BLOCKED",
+  "casesExecuted": 0,
+  "automatedSchemaMetrics": null,
+  "qualitativeHumanReview": "NOT RUN",
+  "evidence": {
+    "requestedModels": [
+      "openrouter/free (historical)",
+      "liquid/lfm-2.5-2.6b:free",
+      "nvidia/nemotron-3.5-super-vl:free"
+    ],
+    "actualRoutedModel": null,
+    "metadata": {
+      "keyStatus": {
+        "provider": "openrouter-key",
+        "status": 200,
+        "latencyMs": 393,
+        "attempts": 1
+      },
+      "status": {
+        "provider": "openrouter-models",
+        "status": 200,
+        "latencyMs": 785,
+        "attempts": 1
+      },
+      "candidates": [
+        {
+          "id": "xingchen-agi/xing4.0-29b-a4b:free",
+          "structuredOutput": true,
+          "zeroTokenPrice": true
+        },
+        {
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "structuredOutput": true,
+          "zeroTokenPrice": true
+        },
+        {
+          "id": "dots-studio/dots-3-note-preview:free",
+          "structuredOutput": true,
+          "zeroTokenPrice": true
+        },
+        {
+          "id": "liquid/lfm-2.5-2.6b:free",
+          "structuredOutput": true,
+          "zeroTokenPrice": true
+        },
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "structuredOutput": true,
+          "zeroTokenPrice": true
+        },
+        {
+          "id": "openrouter/free",
+          "structuredOutput": true,
+          "zeroTokenPrice": true
+        }
+      ],
+      "account": {
+        "isFreeTier": true,
+        "hasRemainingAllowance": true
+      },
+      "compatibleFreeCandidateCount": 6
+    },
+    "latestGenuineSmoke": {
+      "status": "FAILED",
+      "provider": "openrouter",
+      "requestedModel": "nvidia/nemotron-3.5-super-vl:free",
+      "code": "AI_ROUTE_UNAVAILABLE",
+      "category": "routing",
+      "validationStage": null,
+      "latencyMs": 1364
+    },
+    "structuredValidity": null,
+    "inputTokens": null,
+    "outputTokens": null,
+    "cost": null,
+    "fallback": "None in live tests; policy/authorization/TLS/routing/validation failures cannot automatically reroute. Eligible fallback tested only with controlled doubles.",
+    "remaining": "Key and capability metadata work, but no permitted tested completion route. Privacy retained. No live model usefulness result."
+  }
+}
