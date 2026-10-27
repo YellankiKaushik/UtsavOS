@@ -942,7 +942,7 @@ function History({ id, zone }: { id: string; zone: string }) {
   type Row = {
     id: string;
     action: string;
-    actor_id: string;
+    actor_id: string | null;
     occurred_at: string;
     safe_diff: Record<string, unknown>;
     request_id: string;
@@ -966,7 +966,7 @@ function History({ id, zone }: { id: string; zone: string }) {
             <h3>{row.action.replaceAll("_", " ")}</h3>
             <small>
               {dateLabel(row.occurred_at, zone)} · Actor{" "}
-              {row.actor_id.slice(0, 8)}
+              {row.actor_id ? row.actor_id.slice(0, 8) : "Guest invitation"}
             </small>
             <details style={{ marginTop: 10 }}>
               <summary>View recorded changes</summary>
