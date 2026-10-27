@@ -8,3 +8,5 @@ test-results-live-public
 test-results-live
 playwright-report
 .runtime
+supabase/.temp
+.vercel

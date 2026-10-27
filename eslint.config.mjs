@@ -6,6 +6,9 @@ export default defineConfig([
   ...nextTs,
   globalIgnores([
     ".next/**",
+    ".runtime/**",
+    ".vercel/**",
+    "supabase/.temp/**",
     "node_modules/**",
     "playwright-report/**",
     "test-results/**",

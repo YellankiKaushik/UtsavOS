@@ -11,3 +11,4 @@ test-results-live/
 *.tsbuildinfo
 .runtime/
 .supabase/
+.vercel/

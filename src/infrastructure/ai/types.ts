@@ -40,8 +40,11 @@ export class ProviderError extends DomainError {
   readonly retryable: boolean;
   attemptCount?: number;
   latencyMs?: number;
+  fallbackOccurred?: boolean;
   observation?: Omit<ModelResponse, "text">;
-  validationStage?: "json" | "schema" | "semantic" | "size";
+  validationStage?: "json" | "schema" | "semantic" | "size" | "response";
+  finishReason?:
+    "stop" | "length" | "tool_calls" | "content_filter" | "error" | "unknown";
   diagnostic?: ReturnType<typeof diagnoseFailure>;
   constructor(
     public provider: ProviderId,

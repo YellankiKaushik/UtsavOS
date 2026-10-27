@@ -146,7 +146,8 @@ export async function generateStructured<T>(
       if (error instanceof DomainError && !(error instanceof ProviderError))
         throw error;
       last = classifyFailure(error, provider, controller.signal);
-      last.observation = observation;
+      last.observation = observation ?? last.observation;
+      last.fallbackOccurred = provider !== primary;
       last.attemptCount = attempt + 1;
       last.latencyMs = Date.now() - started;
       if (
@@ -204,6 +205,7 @@ export async function generatePlan(
     error.validationStage = "semantic";
     error.attemptCount = result.attemptCount;
     error.latencyMs = result.latencyMs;
+    error.fallbackOccurred = result.fallbackOccurred;
     error.observation = {
       actualModel: result.actualModel ?? undefined,
       inputTokens: result.inputTokens ?? undefined,
@@ -268,7 +270,14 @@ export function failureMetadata(error: unknown) {
         ? error.observation?.reportedCost
         : undefined,
     errorCode: error instanceof DomainError ? error.code : "AI_UNAVAILABLE",
-    fallbackOccurred: provider !== config.primary,
+    validationStage:
+      error instanceof ProviderError ? error.validationStage : undefined,
+    finishReason:
+      error instanceof ProviderError ? error.finishReason : undefined,
+    fallbackOccurred:
+      error instanceof ProviderError
+        ? (error.fallbackOccurred ?? false)
+        : false,
     attemptCount:
       error instanceof ProviderError ? (error.attemptCount ?? 1) : 1,
     latencyMs:

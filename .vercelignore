@@ -1,0 +1,9 @@
+.git
+.env*
+!.env.example
+.runtime
+.next
+node_modules
+test-results
+playwright-report
+ChatGPT Image Oct 26, 2026, 06_25_05 PM.png

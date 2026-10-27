@@ -1,6 +1,10 @@
 import { it, expect } from "vitest";
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
-import { generatePlan } from "@/infrastructure/ai/service";
+import {
+  generatePlan,
+  failureMetadata,
+  failureUsage,
+} from "@/infrastructure/ai/service";
 import { aiConfig } from "@/infrastructure/config";
 import { ProviderError } from "@/infrastructure/ai/types";
 const event = {
@@ -59,6 +63,8 @@ for (const provider of ["gemini", "openrouter"] as const)
       console.info(JSON.stringify({ ...safe, payload: undefined }));
     } catch (error) {
       const safe = {
+        ...failureMetadata(error),
+        ...failureUsage(error),
         status: "FAILED",
         provider,
         requestedModel: config.models[provider] ?? null,
