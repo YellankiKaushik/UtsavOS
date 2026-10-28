@@ -61,6 +61,11 @@ export async function handle(
   const started = performance.now();
   try {
     const data = await work(requestId);
+    if (data instanceof Response) {
+      data.headers.set("Cache-Control", "private, no-store");
+      data.headers.set("X-Request-Id", requestId);
+      return data;
+    }
     console.info(
       JSON.stringify({
         component: "api",

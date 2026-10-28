@@ -81,6 +81,7 @@ export type VendorFinance = {
     expiresOn: string | null;
     notes: string;
     state: "received" | "withdrawn";
+    sourceDocumentId?: string | null;
   }[];
   commitments: {
     id: string;

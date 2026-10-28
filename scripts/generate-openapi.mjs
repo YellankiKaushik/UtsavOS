@@ -4,6 +4,7 @@ import { functionFields } from "../src/domain/event-functions.ts";
 import { guestMutation, rsvpRequest } from "../src/domain/guests.ts";
 import { teamMutation } from "../src/domain/teams.ts";
 import { financeMutation } from "../src/domain/vendor-finance.ts";
+import { prepareDocument, documentAction } from "../src/domain/documents.ts";
 import { format } from "prettier";
 import {
   eventFields,
@@ -90,6 +91,58 @@ function flat(name, metadata, partial = false) {
   };
 }
 add("/me", "get", "Current verified identity, workspaces and AI usage");
+add(
+  "/events/{eventId}/documents",
+  "get",
+  "Contact-authorized private document metadata (FEATURE_DOCUMENTS required)",
+);
+add(
+  "/events/{eventId}/documents",
+  "post",
+  "Reserve an immutable private document path",
+  z.toJSONSchema(prepareDocument, { io: "input" }),
+);
+add(
+  "/events/{eventId}/documents/{documentId}",
+  "get",
+  "Private source text and review suggestions",
+);
+add(
+  "/events/{eventId}/documents/{documentId}",
+  "post",
+  "Local text parsing, consent-gated suggestions and explicit quote review",
+  z.toJSONSchema(documentAction, { io: "input" }),
+);
+add(
+  "/events/{eventId}/documents/{documentId}/upload",
+  "post",
+  "Upload raw file bytes up to 2 MB; exact Content-Type and X-Event-Version required",
+);
+paths["/events/{eventId}/documents/{documentId}/upload"].post.requestBody = {
+  required: true,
+  content: Object.fromEntries(
+    ["application/pdf", "image/png", "image/jpeg", "text/plain"].map((type) => [
+      type,
+      { schema: { type: "string", format: "binary" } },
+    ]),
+  ),
+};
+paths["/events/{eventId}/documents/{documentId}/upload"].post.parameters.push({
+  name: "X-Event-Version",
+  in: "header",
+  required: true,
+  schema: version,
+});
+add(
+  "/events/{eventId}/documents/{documentId}/download",
+  "get",
+  "Private attachment download; no public or reusable capability URL",
+);
+paths[
+  "/events/{eventId}/documents/{documentId}/download"
+].get.responses[200].content = {
+  "application/octet-stream": { schema: { type: "string", format: "binary" } },
+};
 add(
   "/events/{eventId}/finance",
   "get",

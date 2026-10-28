@@ -267,6 +267,51 @@ export type Database = {
         };
         Relationships: [];
       };
+      event_documents: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          created_by: string;
+          filename: string;
+          media_type: string;
+          byte_size: number;
+          object_path: string;
+          state: string;
+          original_cleanup: string;
+          created_at: string;
+          verified_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          created_by: string;
+          filename: string;
+          media_type: string;
+          byte_size: number;
+          object_path: string;
+          state?: string;
+          original_cleanup?: string;
+          created_at?: string;
+          verified_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          created_by?: string;
+          filename?: string;
+          media_type?: string;
+          byte_size?: number;
+          object_path?: string;
+          state?: string;
+          original_cleanup?: string;
+          created_at?: string;
+          verified_at?: string | null;
+        };
+        Relationships: [];
+      };
       event_functions: {
         Row: {
           id: string;
@@ -491,6 +536,45 @@ export type Database = {
           request_hash?: string;
           response_ref?: Json;
           expires_at?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      quotation_extractions: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          document_id: string;
+          payload: Json;
+          provenance: Json;
+          state: string;
+          quote_id: string | null;
+          created_by: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          document_id: string;
+          payload: Json;
+          provenance: Json;
+          state?: string;
+          quote_id?: string | null;
+          created_by: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          document_id?: string;
+          payload?: Json;
+          provenance?: Json;
+          state?: string;
+          quote_id?: string | null;
+          created_by?: string;
           created_at?: string;
         };
         Relationships: [];
@@ -756,6 +840,7 @@ export type Database = {
           state: string;
           created_at: string;
           updated_at: string;
+          source_document_id: string | null;
         };
         Insert: {
           id?: string;
@@ -771,6 +856,7 @@ export type Database = {
           state?: string;
           created_at?: string;
           updated_at?: string;
+          source_document_id?: string | null;
         };
         Update: {
           id?: string;
@@ -786,6 +872,7 @@ export type Database = {
           state?: string;
           created_at?: string;
           updated_at?: string;
+          source_document_id?: string | null;
         };
         Relationships: [];
       };
@@ -905,6 +992,21 @@ export type Database = {
       create_personal_workspace: {
         Args: Record<string, never>;
         Returns: string;
+      };
+      document_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      document_detail: {
+        Args: { p_event_id: string | null; p_document_id: string };
+        Returns: Json;
       };
       event_command: {
         Args: {

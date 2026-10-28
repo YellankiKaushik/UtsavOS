@@ -40,6 +40,9 @@ export function databaseError(error: {
     "COMMITMENT_EXCEEDED",
     "DUPLICATE_REFERENCE",
     "OVERPAYMENT",
+    "DOCUMENT_NOT_READY",
+    "RETENTION_REVIEW_REQUIRED",
+    "INVALID_SOURCE_SPAN",
   ];
   const code =
     known.find((c) => error.message === c) ||

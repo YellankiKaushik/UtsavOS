@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import type { EventSnapshot } from "@/domain/contracts";
 import type { VendorFinance } from "@/domain/vendor-finance";
@@ -234,6 +235,15 @@ export function VendorFinancePage({
                   : "No expiry entered"}
               </p>
               <p>{quote.notes}</p>
+              {quote.sourceDocumentId &&
+              state.permissions?.canViewContacts !== false ? (
+                <Link
+                  className="button"
+                  href={`/app/events/${state.event.id}/documents`}
+                >
+                  Review linked private original
+                </Link>
+              ) : null}
               <div className="actions">
                 <button
                   className="button"

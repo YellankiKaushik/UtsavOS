@@ -3,13 +3,20 @@ import { readFileSync, readdirSync } from "node:fs";
 export const A = "11111111-1111-4111-8111-111111111111";
 export const B = "22222222-2222-4222-8222-222222222222";
 export const C = "33333333-3333-4333-8333-333333333333";
-export async function database() {
+export async function database(options: { storage?: boolean } = {}) {
   const db = new PGlite();
   await db.exec(`create role anon;create role authenticated;create role service_role;
     create schema auth;create table auth.users(id uuid primary key,email text);
     create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
     grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;
     insert into auth.users values('${A}','a@example.test'),('${B}','b@example.test'),('${C}','c@example.test');`);
+  if (options.storage)
+    await db.exec(`create schema storage;
+    create table storage.buckets(id text primary key,name text,public boolean not null default false,file_size_limit bigint,allowed_mime_types text[]);
+    create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text references storage.buckets(id),name text not null,metadata jsonb,unique(bucket_id,name));
+    alter table storage.objects enable row level security;
+    grant usage on schema storage to authenticated,anon;
+    grant select,insert,update,delete on storage.objects to authenticated,anon;`);
   for (const file of readdirSync("supabase/migrations")
     .filter((f) => f.endsWith(".sql"))
     .sort())

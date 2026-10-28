@@ -1,10 +1,10 @@
 export class DomainError extends Error {
-  constructor(
-    public code: string,
-    message = code,
-    public status = 422,
-  ) {
+  public code: string;
+  public status: number;
+  constructor(code: string, message = code, status = 422) {
     super(message);
+    this.code = code;
+    this.status = status;
   }
 }
 export function invariant(
