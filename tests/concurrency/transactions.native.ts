@@ -17,6 +17,23 @@ let server: EmbeddedPostgres,
   primedEventId = "";
 const clients: Client[] = [];
 const results: { scenario: string; passed: boolean }[] = [];
+async function assertBlocked(c: Client) {
+  const pid = (await c.query("select pg_backend_pid() pid")).rows[0].pid;
+  return async () => {
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+  };
+}
 async function freePort() {
   const s = createServer();
   await new Promise<void>((r) => s.listen(0, "127.0.0.1", r));
@@ -151,6 +168,11 @@ beforeAll(async () => {
   await admin.query(
     `create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}','a@example.test'),('${B}','b@example.test');`,
   );
+  // Synthetic Storage catalogue for exercising real PostgreSQL policy races.
+  // Hosted Storage API behavior is verified separately with ordinary sessions.
+  await admin.query(
+    "create schema storage; create table storage.buckets(id text primary key,name text,public boolean not null default false,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text references storage.buckets(id),name text not null,metadata jsonb,unique(bucket_id,name));alter table storage.objects enable row level security;grant usage on schema storage to authenticated,anon;grant select,insert,update,delete on storage.objects to authenticated,anon",
+  );
   for (const f of readdirSync("supabase/migrations")
     .filter((f) => f.endsWith(".sql"))
     .sort()) {
@@ -195,6 +217,86 @@ afterAll(async () => {
       2,
     ) + "\n",
   );
+});
+it("serializes Storage INSERT policy transactions with deletion cleanup in both orders", async () => {
+  async function prepared() {
+    const f = await fixture(),
+      uploader = await session(A);
+    const r = (
+      await f.c.query(
+        "select public.document_command($1,'prepare',$2,$3,$4,'native-storage') r",
+        [
+          f.eventId,
+          JSON.stringify({
+            filename: "synthetic.txt",
+            mediaType: "text/plain",
+            byteSize: 4,
+          }),
+          f.version,
+          crypto.randomUUID(),
+        ],
+      )
+    ).rows[0].r;
+    const path = (
+      await f.c.query(
+        "select object_path from public.event_documents where id=$1",
+        [r.id],
+      )
+    ).rows[0].object_path;
+    return { ...f, uploader, path, version: r.version };
+  }
+  const first = await prepared(),
+    blockedDeletion = await assertBlocked(first.c);
+  await first.uploader.query("begin");
+  try {
+    await first.uploader.query(
+      'insert into storage.objects(bucket_id,name,metadata) values(\'utsavos-documents\',$1,\'{"size":4,"mimetype":"text/plain"}\')',
+      [first.path],
+    );
+    const deletion = first.c.query(
+      "select public.event_lifecycle_command($1,'request_deletion',$2,$3,'native-storage') r",
+      [first.eventId, first.version, crypto.randomUUID()],
+    );
+    await blockedDeletion();
+    await first.uploader.query("commit");
+    const state = (await deletion).rows[0].r;
+    await expect(
+      first.c.query(
+        "select public.event_lifecycle_command($1,'erase',$2,$3,'native-storage')",
+        [first.eventId, state.eventVersion, crypto.randomUUID()],
+      ),
+    ).rejects.toThrow("DOCUMENT_NOT_READY");
+  } finally {
+    await first.uploader.query("rollback");
+  }
+  const second = await prepared(),
+    blockedUpload = await assertBlocked(second.uploader);
+  await second.c.query("begin");
+  try {
+    await second.c.query(
+      "select public.event_lifecycle_command($1,'request_deletion',$2,$3,'native-storage')",
+      [second.eventId, second.version, crypto.randomUUID()],
+    );
+    const upload = second.uploader
+      .query(
+        'insert into storage.objects(bucket_id,name,metadata) values(\'utsavos-documents\',$1,\'{"size":4,"mimetype":"text/plain"}\')',
+        [second.path],
+      )
+      .then(
+        () => "unexpected success",
+        (e) => e.message as string,
+      );
+    await blockedUpload();
+    await second.c.query("commit");
+    expect(await upload).toContain("row-level security");
+  } finally {
+    await second.c.query("rollback");
+  }
+  results.push({
+    scenario:
+      "Storage insertion and deletion hold serialization in both orders",
+    passed: true,
+  });
 });
 
 it("serializes parallel event creation at the authoritative workspace entitlement", async () => {
