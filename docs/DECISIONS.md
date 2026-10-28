@@ -1,5 +1,15 @@
 # Architecture decisions
 
+## ADR-025 — Private source review, fail-closed billing and verified operational erasure (2026-10-28)
+
+Private originals use ordinary server-held user sessions for bounded proxy upload and attachment download, never public URLs or persistent browser JWTs. PDF parsing executes in a separate bounded Node process without application credentials. Source spans and canonical money are validated; the user explicitly reviews fields before saving one quotation. No automatic OCR, booking, commitment or payment is claimed. Storage INSERT authorization takes the workspace lock and re-reads lifecycle state, closing both orders of the upload/deletion race.
+
+Private expiring administrative entitlements enforce active-event, AI attempt, seat and reserved storage quotas under existing locks. Default pilot limits are safety bounds, not prices. Marketplace Stripe provisioning requires owner terms acceptance; do not install an SDK or build a pretend checkout before provider provisioning. The webhook returns503 and cannot grant entitlements. FR-020 remains partial.
+
+Owner event exports omit invitation capabilities and neutralize CSV formulas. Deletion freezes writes/revokes invitations; any financial commitment or recent in-flight AI forces retention review. Eligible operational erasure runs only after actual Storage object absence, deletes old snapshot receipts and source records, and retains opaque event/audit/usage identifiers. Account requests are durable self-scoped reviews, not false claims of Auth or backup erasure. Financial/backup/operator process and larger assisted export require commercial readiness work.
+
+Exact tested Preview callback URLs are allowed; production URLs and email confirmation remain intact. Reported email_address_invalid for reserved synthetic addresses is not proof of an SMTP outage or successful email delivery. All P1 UI flags remain off by default and are enabled only for the separately verified review branch.
+
 ## ADR-024 — Verified staging isolation and granular capabilities (2026-10-28)
 
 Use the positively identified isolated Supabase project and the existing repository-linked Vercel Preview. Preserve main and production. Verify each new migration locally, with real PostgreSQL concurrency where relevant, then dry-run before hosted apply. Preview AI remains disabled until genuine validated generation succeeds; service-role access is limited to synthetic account provisioning and never deployed for ordinary user operations.
