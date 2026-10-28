@@ -989,6 +989,7 @@ export type Database = {
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
     Functions: {
+      account_data_request: { Args: { p_action: string }; Returns: Json };
       create_personal_workspace: {
         Args: Record<string, never>;
         Returns: string;
@@ -1020,6 +1021,7 @@ export type Database = {
         };
         Returns: Json;
       };
+      event_export: { Args: { p_event_id: string | null }; Returns: Json };
       event_function_command: {
         Args: {
           p_event_id: string | null;
@@ -1032,6 +1034,20 @@ export type Database = {
         Returns: Json;
       };
       event_functions_snapshot: {
+        Args: { p_event_id: string | null };
+        Returns: Json;
+      };
+      event_lifecycle_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      event_lifecycle_status: {
         Args: { p_event_id: string | null };
         Returns: Json;
       };
@@ -1076,6 +1092,10 @@ export type Database = {
           p_idempotency_key: string;
           p_request_id: string;
         };
+        Returns: Json;
+      };
+      workspace_dashboard: {
+        Args: { p_workspace_id: string | null };
         Returns: Json;
       };
     };

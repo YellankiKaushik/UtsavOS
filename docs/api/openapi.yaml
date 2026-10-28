@@ -5109,6 +5109,355 @@
                 { "200": { "description": "Process is serving requests" } },
             },
         },
+      "/workspaces/{workspaceId}/dashboard":
+        {
+          "get":
+            {
+              "summary": "Managed workspace progress and authoritative entitlement usage",
+              "operationId": "get__workspaces__workspaceId__dashboard",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "workspaceId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/export":
+        {
+          "get":
+            {
+              "summary": "Owner event JSON export or formula-safe guest CSV; private originals downloaded separately",
+              "operationId": "get__events__eventId__export",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "format",
+                    "in": "query",
+                    "schema":
+                      {
+                        "type": "string",
+                        "enum": ["json", "guests_csv"],
+                        "default": "json",
+                      },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Private attachment; exports above 3 MB require assisted export",
+                      "content":
+                        {
+                          "application/json":
+                            { "schema": { "type": "object" } },
+                          "text/csv": { "schema": { "type": "string" } },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/events/{eventId}/data-lifecycle":
+        {
+          "get":
+            {
+              "summary": "Owner lifecycle and retention state",
+              "operationId": "get__events__eventId__data_lifecycle",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Freeze deletion request or erase eligible event data after original cleanup",
+              "operationId": "post__events__eventId__data_lifecycle",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "eventId",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "$schema": "https://json-schema.org/draft/2020-12/schema",
+                              "type": "object",
+                              "properties":
+                                {
+                                  "action":
+                                    {
+                                      "type": "string",
+                                      "enum": ["request_deletion", "erase"],
+                                    },
+                                  "expectedVersion":
+                                    {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 9007199254740991,
+                                    },
+                                  "confirmed":
+                                    { "type": "boolean", "const": true },
+                                },
+                              "required":
+                                ["action", "expectedVersion", "confirmed"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
+      "/account/data-request":
+        {
+          "get":
+            {
+              "summary": "Self account deletion review status; no completion claim",
+              "operationId": "get__account_data_request",
+              "security": [{ "sessionCookie": [] }],
+              "parameters": [],
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+          "post":
+            {
+              "summary": "Request or cancel a durable operator review; no automatic Auth or backup erasure",
+              "operationId": "post__account_data_request",
+              "security": [{ "sessionCookie": [] }],
+              "parameters":
+                [
+                  {
+                    "name": "Idempotency-Key",
+                    "in": "header",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" },
+                  },
+                ],
+              "requestBody":
+                {
+                  "required": true,
+                  "content":
+                    {
+                      "application/json":
+                        {
+                          "schema":
+                            {
+                              "$schema": "https://json-schema.org/draft/2020-12/schema",
+                              "type": "object",
+                              "properties":
+                                {
+                                  "action":
+                                    {
+                                      "type": "string",
+                                      "enum": ["request", "cancel"],
+                                    },
+                                  "confirmed":
+                                    { "type": "boolean", "const": true },
+                                },
+                              "required": ["action", "confirmed"],
+                              "additionalProperties": false,
+                            },
+                        },
+                    },
+                },
+              "responses":
+                {
+                  "200":
+                    {
+                      "description": "Persisted or non-mutating result in data/meta envelope",
+                      "content":
+                        {
+                          "application/json":
+                            {
+                              "schema":
+                                { "$ref": "#/components/schemas/Success" },
+                            },
+                        },
+                    },
+                  "400": { "description": "Invalid input" },
+                  "401": { "description": "Authentication required" },
+                  "403": { "description": "Origin or authorization denied" },
+                  "404": { "description": "Unavailable resource" },
+                  "409":
+                    { "description": "Stale version or idempotency conflict" },
+                  "422":
+                    {
+                      "description": "Domain constraint, protection or dependency violation",
+                    },
+                  "429": { "description": "Quota exceeded" },
+                  "503":
+                    {
+                      "description": "Provider/database/configuration unavailable",
+                    },
+                },
+            },
+        },
     },
   "components":
     {

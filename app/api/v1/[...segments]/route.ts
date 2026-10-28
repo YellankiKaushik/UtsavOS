@@ -28,6 +28,7 @@ import { guestRoute } from "@/application/guest-http";
 import { teamRoute } from "@/application/team-http";
 import { financeRoute } from "@/application/finance-http";
 import { documentRoute } from "@/application/document-http";
+import { eventDataRoute } from "@/application/workspace-tools-http";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 type Context = { params: Promise<{ segments: string[] }> };
@@ -91,6 +92,9 @@ async function route(request: Request, ctx: Context) {
           aiProviderPrimary: providerSettings.primary,
           aiProviderFallback: providerSettings.fallback,
           features: {
+            workspaceDashboard:
+              process.env.FEATURE_WORKSPACE_DASHBOARD === "true",
+            dataLifecycle: process.env.FEATURE_DATA_LIFECYCLE === "true",
             documents: process.env.FEATURE_DOCUMENTS === "true",
             vendorFinance: process.env.FEATURE_VENDOR_FINANCE === "true",
             teams: process.env.FEATURE_TEAMS === "true",
@@ -100,6 +104,41 @@ async function route(request: Request, ctx: Context) {
         };
       }
       if (path === "team") return teamRoute(request, db, requestId);
+      if (path === "account/data-request" && ["GET", "POST"].includes(method)) {
+        if (process.env.FEATURE_DATA_LIFECYCLE !== "true")
+          throw new DomainError("NOT_FOUND", "Module not enabled", 404);
+        let action = "status";
+        if (method === "POST") {
+          const input = z
+            .object({
+              action: z.enum(["request", "cancel"]),
+              confirmed: z.literal(true),
+            })
+            .strict()
+            .parse(await readBody(request));
+          key(request);
+          action = input.action;
+        }
+        const result = await db.rpc("account_data_request", {
+          p_action: action,
+        });
+        if (result.error) databaseError(result.error);
+        return result.data;
+      }
+      if (
+        s[0] === "workspaces" &&
+        s[2] === "dashboard" &&
+        s.length === 3 &&
+        method === "GET"
+      ) {
+        if (process.env.FEATURE_WORKSPACE_DASHBOARD !== "true")
+          throw new DomainError("NOT_FOUND", "Module not enabled", 404);
+        const result = await db.rpc("workspace_dashboard", {
+          p_workspace_id: uuid.parse(s[1]),
+        });
+        if (result.error) databaseError(result.error);
+        return result.data;
+      }
       if (path === "workspaces/personal" && method === "POST") {
         key(request);
         const { data, error } = await db.rpc("create_personal_workspace");
@@ -246,6 +285,8 @@ async function route(request: Request, ctx: Context) {
       const resourceName = s[2],
         recordId = s[3];
       const state = await snapshot(db, eventId); // RLS/auth check before every child path.
+      if (["export", "data-lifecycle"].includes(resourceName) && s.length === 3)
+        return eventDataRoute(request, db, eventId, resourceName, requestId);
       if (resourceName === "documents")
         return documentRoute(request, db, eventId, s.slice(3), requestId);
       if (resourceName === "finance" && s.length === 3)

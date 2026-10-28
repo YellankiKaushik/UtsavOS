@@ -13,10 +13,12 @@ export function AppShell({
   children,
   email,
   teamsEnabled = false,
+  dashboardEnabled = false,
 }: {
   children: React.ReactNode;
   email: string;
   teamsEnabled?: boolean;
+  dashboardEnabled?: boolean;
 }) {
   const path = usePathname(),
     router = useRouter();
@@ -37,6 +39,14 @@ export function AppShell({
         <Brand />
         <div className="eyebrow">Your workspace</div>
         <nav aria-label="Workspace">
+          {dashboardEnabled && (
+            <Link
+              className={`side-link ${path === "/app/dashboard" ? "active" : ""}`}
+              href="/app/dashboard"
+            >
+              Workspace dashboard
+            </Link>
+          )}
           {teamsEnabled ? (
             <Link
               className={`side-link ${path === "/app/team" ? "active" : ""}`}

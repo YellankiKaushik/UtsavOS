@@ -196,6 +196,97 @@ afterAll(async () => {
     ) + "\n",
   );
 });
+
+it("serializes parallel event creation at the authoritative workspace entitlement", async () => {
+  const c1 = await session(A),
+    c2 = await session(A);
+  const w = (await c1.query("select public.create_personal_workspace() id"))
+    .rows[0].id;
+  const used = Number(
+    (
+      await admin.query(
+        "select count(*) n from public.events where workspace_id=$1 and status<>'archived'",
+        [w],
+      )
+    ).rows[0].n,
+  );
+  await admin.query(
+    "insert into private.workspace_entitlements(workspace_id,plan,state,valid_until,event_limit,ai_daily_limit,member_limit,storage_limit_bytes) values($1,'pilot','active',now()+interval '1 day',$2,20,20,209715200)",
+    [w, used + 1],
+  );
+  try {
+    const replies = await Promise.allSettled([
+      command(c1, "create", fields, null, null, w),
+      command(c2, "create", fields, null, null, w),
+    ]);
+    expect(replies.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const rejected = replies.find((r) => r.status === "rejected");
+    expect(
+      rejected?.status === "rejected" && rejected.reason.message,
+    ).toContain("ENTITLEMENT_LIMIT");
+  } finally {
+    await admin.query(
+      "delete from private.workspace_entitlements where workspace_id=$1",
+      [w],
+    );
+  }
+  results.push({
+    scenario: "parallel event entitlement enforcement",
+    passed: true,
+  });
+});
+
+it("rechecks a deletion hold after an event writer waits for the workspace", async () => {
+  const f = await fixture(),
+    writer = await session(A),
+    pid = (await writer.query("select pg_backend_pid() pid")).rows[0].pid;
+  await f.c.query("begin");
+  try {
+    await f.c.query(
+      "select public.event_lifecycle_command($1,'request_deletion',$2,$3,'native-deletion')",
+      [f.eventId, f.version, crypto.randomUUID()],
+    );
+    const waiting = command(
+      writer,
+      "put_task",
+      {
+        fields: {
+          title: "Must not save after deletion",
+          status: "todo",
+          priority: "normal",
+          dueAt: null,
+          dependencyIds: [],
+          isLocked: false,
+        },
+      },
+      f.eventId,
+      f.version,
+    ).then(
+      () => "unexpected success",
+      (e) => e.message as string,
+    );
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+    await f.c.query("commit");
+    expect(await waiting).toContain("DATA_LIFECYCLE_HOLD");
+  } finally {
+    await f.c.query("rollback");
+  }
+  results.push({
+    scenario: "deletion hold rejects a queued writer",
+    passed: true,
+  });
+});
 describe("genuine parallel PostgreSQL transactions", () => {
   it("upgrades an already-used public RPC to the provenance wrapper", async () => {
     const r = await command(

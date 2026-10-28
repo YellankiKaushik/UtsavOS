@@ -37,7 +37,11 @@ export default async function Layout({
     redirect("/login");
   }
   return (
-    <AppShell email={email} teamsEnabled={process.env.FEATURE_TEAMS === "true"}>
+    <AppShell
+      email={email}
+      teamsEnabled={process.env.FEATURE_TEAMS === "true"}
+      dashboardEnabled={process.env.FEATURE_WORKSPACE_DASHBOARD === "true"}
+    >
       {children}
     </AppShell>
   );

@@ -43,6 +43,8 @@ export function databaseError(error: {
     "DOCUMENT_NOT_READY",
     "RETENTION_REVIEW_REQUIRED",
     "INVALID_SOURCE_SPAN",
+    "ENTITLEMENT_LIMIT",
+    "DATA_LIFECYCLE_HOLD",
   ];
   const code =
     known.find((c) => error.message === c) ||

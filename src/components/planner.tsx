@@ -38,6 +38,11 @@ import { TeamsPage } from "./teams";
 import { VendorFinancePage } from "./vendor-finance";
 import { DocumentsPage } from "./documents";
 import {
+  ProfessionalDashboard,
+  EventDataPage,
+  AccountDataRequest,
+} from "./workspace-tools";
+import {
   dateLabel,
   localDateValue,
   Field,
@@ -62,8 +67,10 @@ type Me = {
   aiConfigured: boolean;
   aiProviderPrimary?: string;
   aiProviderFallback?: string;
+  features?: { dataLifecycle?: boolean };
 };
 export function Planner({ path }: { path: string[] }) {
+  if (path[0] === "dashboard") return <ProfessionalDashboard />;
   if (path[0] === "team") return <TeamsPage />;
   if (path[0] === "settings") return <SettingsPage />;
   if (path.length === 0 || (path[0] === "events" && path.length === 1))
@@ -549,6 +556,7 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
       guests?: boolean;
       vendorFinance?: boolean;
       documents?: boolean;
+      dataLifecycle?: boolean;
     };
   }>("me");
   const resource = useResource<EventSnapshot>(`events/${id}`),
@@ -574,6 +582,10 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
     ["ai-plan", "AI planning"],
     ["replan", "Replan"],
     ["history", "History"],
+    ...(capabilities.data?.features?.dataLifecycle &&
+    state.permissions?.canManageData === true
+      ? [["data", "Export & data"]]
+      : []),
     ...(capabilities.data?.features?.guests &&
     state.permissions?.canViewContacts !== false
       ? [["guests", "Guests & RSVP"]]
@@ -641,6 +653,8 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
       >
         {tab === "overview" ? (
           <Overview state={state} />
+        ) : tab === "data" && capabilities.data?.features?.dataLifecycle ? (
+          <EventDataPage id={id} />
         ) : tab === "budget" ? (
           <BudgetPage state={state} reload={resource.reload} />
         ) : tab === "timeline" ? (
@@ -1100,6 +1114,7 @@ function SettingsPage() {
         <h1>Settings & account.</h1>
         <p>A few details that make this space yours.</p>
       </div>
+      {data?.features?.dataLifecycle && <AccountDataRequest />}
       <ErrorNotice error={error ?? m.error} retry={reload} />
       {m.message && (
         <div className="notice" role="status">
