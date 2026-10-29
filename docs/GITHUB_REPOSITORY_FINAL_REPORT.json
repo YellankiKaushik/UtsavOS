@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-29T16:56:08.187Z",
-  "checkpoint": "presentation branch verification; merge/CI states below are checkpoint-specific",
+  "generatedAt": "2026-10-29T17:06:53.159Z",
+  "checkpoint": "Ready-to-merge presentation branch; main publication held for explicit PR2 approval requested by automatic approval review",
   "executive": {
     "completed": [
       "Released-state README rewrite and verified YouTube thumbnail",
@@ -10,6 +10,7 @@
       "Main-only active ruleset with exact Actions contexts; no bypass"
     ],
     "incomplete": [
+      "Explicit PR2 merge approval required by automatic review; current main has not received this presentation PR",
       "Presentation PR merge/final main verification pending",
       "Actual published LinkedIn URL",
       "Organizer tool eligibility/private judge credential channel",
@@ -21,7 +22,7 @@
     "repository": "https://github.com/YellankiKaushik/UtsavOS",
     "defaultBranch": "main",
     "initialCommit": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
-    "verifiedContentCommit": "f8a80f07a510a2857e5ce77c3e96c7fcd8e13808",
+    "verifiedContentCommit": "390199bef44fad3f06029ad857968bfdcce05da1",
     "finalPresentationCommit": null,
     "pr": {
       "number": 2,
@@ -99,26 +100,26 @@
     ],
     "retained": "All initial branches retained; archive/master have4 unique commits; publication worktree is occupied; merged live branch is referenced by historical Previews and PR1. No branch/tag deleted.",
     "ci": {
-      "sha": "f8a80f07a510a2857e5ce77c3e96c7fcd8e13808",
+      "sha": "390199bef44fad3f06029ad857968bfdcce05da1",
       "runs": [
         {
-          "id": 40916042178,
-          "status": "in_progress",
-          "conclusion": null,
+          "id": 40916585914,
+          "status": "completed",
+          "conclusion": "success",
           "event": "pull_request",
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178"
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914"
         },
         {
-          "id": 40915892132,
-          "status": "in_progress",
-          "conclusion": null,
+          "id": 40916574803,
+          "status": "completed",
+          "conclusion": "success",
           "event": "push",
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132"
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803"
         }
       ],
       "checks": [
         {
-          "id": 123596507926,
+          "id": 123598858787,
           "name": "Vercel Preview Comments",
           "appId": 8329,
           "status": "completed",
@@ -126,40 +127,49 @@
           "url": "https://vercel.com/github"
         },
         {
-          "id": 123596410788,
-          "name": "supabase-platform",
-          "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178/job/123596410788"
-        },
-        {
-          "id": 123596410207,
+          "id": 123598316755,
           "name": "validate",
           "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178/job/123596410207"
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316755"
         },
         {
-          "id": 123595884281,
+          "id": 123598316261,
           "name": "supabase-platform",
           "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132/job/123595884281"
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316261"
         },
         {
-          "id": 123595883934,
+          "id": 123598278677,
+          "name": "supabase-platform",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598278677"
+        },
+        {
+          "id": 123598277857,
           "name": "validate",
           "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132/job/123595883934"
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598277857"
         }
       ]
     },
-    "mainProtected": true
+    "mainProtected": true,
+    "branchPurposes": {
+      "archive/utsavos-original-history": "Original supplied history;4 unique commits; retain",
+      "master": "Original-history pointer;4 unique commits; retain",
+      "publication/utsavos-granular": "Occupied publication worktree and historical release checkpoint;retain",
+      "codex/live-release-completion": "Merged engineering PR1 and historical protected Preview reference;retain",
+      "codex/hackathon-release-handoff": "Previous released handoff checkpoint;retain",
+      "codex/github-presentation": "Current presentation PR2;retain while review/approval is open",
+      "origin/main": "Default stable production/submission ref"
+    }
   },
   "readme": {
     "sections": [
@@ -241,7 +251,21 @@
       "desktopScreenshot": ".runtime/github-presentation/readme-desktop.png",
       "galleryScreenshot": ".runtime/github-presentation/readme-gallery.png",
       "mobileScreenshot": ".runtime/github-presentation/readme-mobile.png",
-      "review": "Visually reviewed actual anonymous GitHub desktop, gallery and390px mobile captures;7 images loaded,5 real demo links; responsive hero and readable expandable gallery. Mermaid source remains supported GFM markup; no diagram visibility claim beyond separate capture."
+      "review": "Actual anonymous GitHub desktop, gallery, video, Mermaid and390px mobile reviewed.7 images loaded;1 clickable video image;5 video links. Actual diagram node text and loaded rendering verified after transient spinner.",
+      "mermaid": {
+        "videoImageLinks": 1,
+        "mermaidRendered": true,
+        "diagramText": "integrated, inactive\n\nBrowser / React UI\n\nNext.js pages and API\n\nSupabase Auth\n\nApplication services\n\nDomain validation and exact calculations\n\nAuthorized transactional RPC\n\nPostgreSQL + RLS + audit\n\nPrivate Supabase Storage\n\nServer-only AI adapters\n\nOpenRouter: verified route\n\nGoogle Gemini",
+        "iframeTitles": ["File display"]
+      },
+      "reviewImage": {
+        "path": "docs/evidence/readme-gallery-review.png",
+        "width": 1440,
+        "height": 1000,
+        "bytes": 87365,
+        "source": "Actual anonymous GitHub branch rendering; desktop gallery",
+        "privacy": "No authenticated account or private credentials"
+      }
     }
   },
   "media": {
@@ -459,12 +483,12 @@
     "repository": "https://github.com/YellankiKaushik/UtsavOS",
     "branch": "main",
     "size": {
-      "generatedAt": "2026-10-29T16:53:45.573Z",
-      "commit": "f8a80f07a510a2857e5ce77c3e96c7fcd8e13808",
-      "trackedFiles": 255,
-      "trackedBytes": 2926675,
-      "headZipBytes": 1099514,
-      "localGitMetadataBytes": 1650427,
+      "generatedAt": "2026-10-29T16:58:04.426Z",
+      "commit": "390199bef44fad3f06029ad857968bfdcce05da1",
+      "trackedFiles": 259,
+      "trackedBytes": 3059011,
+      "headZipBytes": 1196170,
+      "localGitMetadataBytes": 1523770,
       "limitBytes": 10000000,
       "trackedAndZipStrictlyUnderLimit": true,
       "methods": {
@@ -485,6 +509,10 @@
         {
           "path": "DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md",
           "bytes": 139458
+        },
+        {
+          "path": "docs/evidence/readme-gallery-review.png",
+          "bytes": 87365
         },
         {
           "path": "docs/CODEX_FINAL_COMPLETION_REPORT.json",
@@ -509,10 +537,6 @@
         {
           "path": "docs/CODEX_VERCEL_RELEASE_REPORT.json",
           "bytes": 49984
-        },
-        {
-          "path": "docs/CODEX_COMPLETION_REPORT.json",
-          "bytes": 49279
         }
       ]
     },
@@ -614,28 +638,36 @@
         "ok": true
       }
     ],
-    "secretAudit": null,
+    "secretAudit": {
+      "scope": "All locally available reachable Git refs; not deleted/unreachable server objects",
+      "objects": 1158,
+      "blobs": 505,
+      "configuredSecretComparison": true,
+      "credentialPatterns": true,
+      "findings": [],
+      "status": "PASS"
+    },
     "ci": {
-      "sha": "f8a80f07a510a2857e5ce77c3e96c7fcd8e13808",
+      "sha": "390199bef44fad3f06029ad857968bfdcce05da1",
       "runs": [
         {
-          "id": 40916042178,
-          "status": "in_progress",
-          "conclusion": null,
+          "id": 40916585914,
+          "status": "completed",
+          "conclusion": "success",
           "event": "pull_request",
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178"
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914"
         },
         {
-          "id": 40915892132,
-          "status": "in_progress",
-          "conclusion": null,
+          "id": 40916574803,
+          "status": "completed",
+          "conclusion": "success",
           "event": "push",
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132"
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803"
         }
       ],
       "checks": [
         {
-          "id": 123596507926,
+          "id": 123598858787,
           "name": "Vercel Preview Comments",
           "appId": 8329,
           "status": "completed",
@@ -643,36 +675,36 @@
           "url": "https://vercel.com/github"
         },
         {
-          "id": 123596410788,
-          "name": "supabase-platform",
-          "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178/job/123596410788"
-        },
-        {
-          "id": 123596410207,
+          "id": 123598316755,
           "name": "validate",
           "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178/job/123596410207"
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316755"
         },
         {
-          "id": 123595884281,
+          "id": 123598316261,
           "name": "supabase-platform",
           "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132/job/123595884281"
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316261"
         },
         {
-          "id": 123595883934,
+          "id": 123598278677,
+          "name": "supabase-platform",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598278677"
+        },
+        {
+          "id": 123598277857,
           "name": "validate",
           "appId": 15368,
-          "status": "in_progress",
-          "conclusion": null,
-          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132/job/123595883934"
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598277857"
         }
       ]
     },
@@ -701,9 +733,25 @@
       "Real mail delivery/expiry/replay unverified; owner selected synthetic reviewer workflow",
       "Hosted AI quotation extraction/checkout/full account-backup operations incomplete",
       "Default social preview unchanged; optional manual custom upload only"
-    ]
+    ],
+    "secretScan": {
+      "scope": "All locally available reachable Git refs; not deleted/unreachable server objects",
+      "objects": 1158,
+      "blobs": 505,
+      "configuredSecretComparison": true,
+      "credentialPatterns": true,
+      "findings": [],
+      "status": "PASS"
+    }
   },
   "ownerActions": [
+    {
+      "action": "Explicitly approve protected PR2 merge after required checks pass",
+      "website": "https://github.com/YellankiKaushik/UtsavOS/pull/2",
+      "settings": "Review the presentation branch; authorize normal protected PR merge",
+      "completed": "Presentation, media, metadata, effective ruleset and exact-head push/PR CI passed; merge did not execute",
+      "verify": "Agent merges only after approval and final checks, without bypassing protection"
+    },
     {
       "action": "Resolve tool eligibility and permitted private reviewer-credential channel",
       "website": "https://hack2skill.com/login",
@@ -741,12 +789,60 @@
     }
   ],
   "verdict": {
-    "repositoryPresentation": "COMPLETE",
+    "repositoryPresentation": "PARTIAL",
     "documentation": "COMPLETE",
     "media": "COMPLETE",
     "mainProtection": "VERIFIED",
     "hackathonLinks": "INCOMPLETE",
-    "application": "VERIFICATION PENDING",
+    "application": "UNCHANGED AND VERIFIED",
     "submission": "OWNER ACTIONS REQUIRED"
+  },
+  "applicationGuard": {
+    "observedAt": "2026-10-29T17:05:20.154Z",
+    "deployment": "dpl_7845EjqLm8CJA7vuT1QpN32mioLv",
+    "sha": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+    "actualAiRequests": 0,
+    "previewBypass": false,
+    "runtime": {
+      "status": 200,
+      "aiConfigured": true,
+      "primary": "openrouter",
+      "fallback": "none",
+      "features": {
+        "workspaceDashboard": true,
+        "dataLifecycle": true,
+        "documents": true,
+        "vendorFinance": true,
+        "teams": true,
+        "guests": true,
+        "eventFunctions": true
+      }
+    },
+    "cookies": [
+      {
+        "secure": true,
+        "httpOnly": true,
+        "sameSite": "Lax",
+        "path": "/"
+      }
+    ],
+    "invalidInput": {
+      "status": 400,
+      "code": "INVALID_INPUT"
+    },
+    "signedOutApi": {
+      "status": 401,
+      "code": "UNAUTHENTICATED"
+    },
+    "invalidCallback": {
+      "finalOrigin": "https://utsavos.vercel.app",
+      "path": "/login"
+    }
+  },
+  "automaticApprovalBlocker": {
+    "action": "Merge PR2 head390199b into protected main",
+    "executed": false,
+    "reason": "Automatic approval review requires explicit PR2 owner merge approval before this consequential repository-side effect.",
+    "approvalQuestionPending": true
   }
 }

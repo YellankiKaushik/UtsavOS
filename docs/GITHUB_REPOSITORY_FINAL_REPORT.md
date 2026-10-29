@@ -1,6 +1,6 @@
 # UtsavOS — GitHub repository final report
 
-Generated 2026-10-29T16:56:08.187Z. **Evidence checkpoint:** presentation branch verification; merge/CI states below are checkpoint-specific. Source verification commits are named explicitly; a report-only descendant does not change the tested application. No pending merge or CI result is reported as complete.
+Generated 2026-10-29T17:06:53.159Z. **Evidence checkpoint:** Ready-to-merge presentation branch; main publication held for explicit PR2 approval requested by automatic approval review. Source verification commits are named explicitly; a report-only descendant does not change the tested application. No pending merge or CI result is reported as complete.
 
 ## A. Executive summary
 
@@ -15,7 +15,7 @@ Presentation branch verification is complete locally; PR/CI and main verificatio
 | Repository                | https://github.com/YellankiKaushik/UtsavOS        |
 | Default/submission branch | main                                              |
 | Initial main              | db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8          |
-| Verified content commit   | f8a80f07a510a2857e5ce77c3e96c7fcd8e13808          |
+| Verified content commit   | 390199bef44fad3f06029ad857968bfdcce05da1          |
 | Presentation merge commit | pending at this checkpoint                        |
 | PR                        | https://github.com/YellankiKaushik/UtsavOS/pull/2 |
 | PR state                  | open                                              |
@@ -36,10 +36,10 @@ Presentation branch verification is complete locally; PR/CI and main verificatio
 
 Archive/master each have four unique commits; the publication worktree is occupied. The merged live branch is associated with historical Previews and PR #1. No reset, history rewrite or branch deletion was used. PR #1 remains merged and was not merged again.
 
-| CI event     | Run                                                                 | State       | Conclusion |
-| ------------ | ------------------------------------------------------------------- | ----------- | ---------- |
-| pull_request | https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916042178 | in_progress | pending    |
-| push         | https://github.com/YellankiKaushik/UtsavOS/actions/runs/40915892132 | in_progress | pending    |
+| CI event     | Run                                                                 | State     | Conclusion |
+| ------------ | ------------------------------------------------------------------- | --------- | ---------- |
+| pull_request | https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914 | completed | success    |
+| push         | https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803 | completed | success    |
 
 ## C. README
 
@@ -112,7 +112,7 @@ docs/hackathon/LINKEDIN_POST.md is a copy-ready narrative with real app/reposito
 
 Public repository: https://github.com/YellankiKaushik/UtsavOS ; default main. Public application: https://utsavos.vercel.app . Demo: https://www.youtube.com/watch?v=Z5bo9ydn7JE . The GitHub URL/updates/GenAI text remain42/795/755 characters under their1024 limits. The owner still selects the exact official challenge option. Attempts remain owner-reported0/3; none consumed. Deadline:1 November2026,23:59 IST.
 
-Measured commit f8a80f07a510a2857e5ce77c3e96c7fcd8e13808: 2926675 tracked bytes, 1099514 ZIP bytes, 1650427 local Git metadata bytes, each below10,000,000. The organizer's exact size definition is unspecified; these methods are kept distinct. Tool eligibility remains unresolved because public organizer statements conflict; no Antigravity use, organizer approval, award, score or submission receipt was invented. readyToSubmit stays false until the actual LinkedIn link and owner account steps are complete.
+Measured commit 390199bef44fad3f06029ad857968bfdcce05da1: 3059011 tracked bytes, 1196170 ZIP bytes, 1523770 local Git metadata bytes, each below10,000,000. The organizer's exact size definition is unspecified; these methods are kept distinct. Tool eligibility remains unresolved because public organizer statements conflict; no Antigravity use, organizer approval, award, score or submission receipt was invented. readyToSubmit stays false until the actual LinkedIn link and owner account steps are complete.
 
 ## L. Testing
 
@@ -141,15 +141,17 @@ Residual limits: free-provider throttling/timeouts; unverified real email delive
 
 ## N. Owner actions
 
-1. **Resolve tool eligibility and permitted private reviewer-credential channel.** https://hack2skill.com/login — Official Challenge5 instructions/organizer communication. Already completed: Real Codex attribution and isolated reviewer workflow documented. Verify: Obtain actual organizer clarification; privately share credentials only through permitted channel.
+1. **Explicitly approve protected PR2 merge after required checks pass.** https://github.com/YellankiKaushik/UtsavOS/pull/2 — Review the presentation branch; authorize normal protected PR merge. Already completed: Presentation, media, metadata, effective ruleset and exact-head push/PR CI passed; merge did not execute. Verify: Agent merges only after approval and final checks, without bypassing protection.
 
-2. **Publish reviewed LinkedIn draft and supply actual post URL.** https://www.linkedin.com/feed/ — Create post using docs/hackathon/LINKEDIN_POST.md. Already completed: Copy-ready text includes verified app/repository/YouTube links. Verify: Open actual post URL signed out and place it in submission fields.
+2. **Resolve tool eligibility and permitted private reviewer-credential channel.** https://hack2skill.com/login — Official Challenge5 instructions/organizer communication. Already completed: Real Codex attribution and isolated reviewer workflow documented. Verify: Obtain actual organizer clarification; privately share credentials only through permitted channel.
 
-3. **Manually select exact Challenge5 option and submit before1Nov2026 23:59IST.** https://hack2skill.com/login — PromptWars Virtual → Challenge5 → Submission. Already completed: Public main/app/video and field-length drafts verified; no attempt consumed. Verify: Check actual required URLs and receipt; agent never submits.
+3. **Publish reviewed LinkedIn draft and supply actual post URL.** https://www.linkedin.com/feed/ — Create post using docs/hackathon/LINKEDIN_POST.md. Already completed: Copy-ready text includes verified app/repository/YouTube links. Verify: Open actual post URL signed out and place it in submission fields.
 
-4. **Optional: choose an open-source license if desired.** https://github.com/YellankiKaushik/UtsavOS — Add LICENSE only after explicit owner choice. Already completed: No license rights invented; direct dependency licenses inventoried. Verify: Review selected license and third-party obligations before labeling open-source.
+4. **Manually select exact Challenge5 option and submit before1Nov2026 23:59IST.** https://hack2skill.com/login — PromptWars Virtual → Challenge5 → Submission. Already completed: Public main/app/video and field-length drafts verified; no attempt consumed. Verify: Check actual required URLs and receipt; agent never submits.
 
-5. **Optional: customize GitHub social preview.** https://github.com/YellankiKaushik/UtsavOS/settings — General → Social preview → upload approved docs/assets/demo-thumbnail.png. Already completed: Actual screenshot prepared; default preview left unchanged because REST has no supported upload field. Verify: Inspect repository link preview after owner upload.
+5. **Optional: choose an open-source license if desired.** https://github.com/YellankiKaushik/UtsavOS — Add LICENSE only after explicit owner choice. Already completed: No license rights invented; direct dependency licenses inventoried. Verify: Review selected license and third-party obligations before labeling open-source.
+
+6. **Optional: customize GitHub social preview.** https://github.com/YellankiKaushik/UtsavOS/settings — General → Social preview → upload approved docs/assets/demo-thumbnail.png. Already completed: Actual screenshot prepared; default preview left unchanged because REST has no supported upload field. Verify: Inspect repository link preview after owner upload.
 
 The optional license/social-preview choices do not block the verified main-protection or video integration. No technical code troubleshooting is assigned to the owner.
 
@@ -157,10 +159,10 @@ The optional license/social-preview choices do not block the verified main-prote
 
 | Dimension              | Verdict                |
 | ---------------------- | ---------------------- |
-| repositoryPresentation | COMPLETE               |
+| repositoryPresentation | PARTIAL                |
 | documentation          | COMPLETE               |
 | media                  | COMPLETE               |
 | mainProtection         | VERIFIED               |
 | hackathonLinks         | INCOMPLETE             |
-| application            | VERIFICATION PENDING   |
+| application            | UNCHANGED AND VERIFIED |
 | submission             | OWNER ACTIONS REQUIRED |
