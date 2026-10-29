@@ -1,0 +1,86 @@
+{
+  "capturedAt": "2026-10-29",
+  "origin": "https://utsavos.vercel.app",
+  "aiRequestsForCapture": 0,
+  "planningDataMutations": 0,
+  "privacy": "Account email/avatar hidden only for capture; no cookies/tokens/contact records visible. Synthetic event names are not customer data.",
+  "images": [
+    {
+      "path": "docs/assets/ai-planning.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 44621,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/budget.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 41255,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/change-impact.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 38173,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/dashboard.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 34296,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/demo-thumbnail.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 39590,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/landing.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 38835,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/overview.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 39590,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    },
+    {
+      "path": "docs/assets/timeline.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 38908,
+      "source": "Read-only production session; isolated synthetic reviewer/event",
+      "fixture": false,
+      "privacyReviewed": true
+    }
+  ],
+  "thumbnail": {
+    "path": "docs/assets/demo-thumbnail.png",
+    "source": "Exact copy of production overview.png",
+    "video": "https://www.youtube.com/watch?v=Z5bo9ydn7JE"
+  }
+}

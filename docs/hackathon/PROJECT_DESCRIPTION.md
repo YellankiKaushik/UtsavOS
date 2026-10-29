@@ -9,3 +9,5 @@ The distinctive flow is AI draft → editable operational records → determinis
 The stack is Next.js/React/TypeScript/Zod with Supabase Auth, RLS, PostgreSQL and private Storage. OpenRouter's dots-studio/dots-3-note-preview:free route genuinely produced accepted wedding, birthday and community plans. Direct Gemini support exists but authorization remains unsuccessful. Codex assisted implementation, tests and diagnostics; Antigravity use is not claimed.
 
 Guests/RSVP, delegated teams, financial records, private document review and workspace controls extend the core behind flags. Paid billing, AI quotation extraction, managed recovery operations and P2 integrations remain incomplete. Public judge access and competition tool eligibility still require resolution; the verified deployment is protected Preview.
+
+Public app: https://utsavos.vercel.app . Verified owner-supplied demonstration: https://www.youtube.com/watch?v=Z5bo9ydn7JE . Main contains the released implementation; PR #1 is merged. The LinkedIn build narrative is [prepared here](LINKEDIN_POST.md); the external form still needs the actual published post URL.

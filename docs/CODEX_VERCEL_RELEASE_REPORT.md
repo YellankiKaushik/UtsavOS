@@ -1,3 +1,5 @@
+Historical checkpoint: this dated record is preserved, including failures. Current public release/owner actions are in [the release handoff](HACKATHON_RELEASE_HANDOFF.md) and [repository report](GITHUB_REPOSITORY_FINAL_REPORT.md). PR #1 is merged; older pending-release statements below describe their original checkpoint.
+
 # UtsavOS — verified release handoff
 
 2026-10-28 (Asia/Calcutta). **P0 LOCALLY VERIFIED — LIVE RELEASE BLOCKED.**

@@ -1,3 +1,5 @@
+Historical checkpoint: this dated record is preserved, including failures. Current public release/owner actions are in [the release handoff](HACKATHON_RELEASE_HANDOFF.md) and [repository report](GITHUB_REPOSITORY_FINAL_REPORT.md). PR #1 is merged; older pending-release statements below describe their original checkpoint.
+
 # Live release execution — 2026-10-28
 
 Working branch: `codex/live-release-completion`, starting at published `0798627de160425a9a5925a1291bfe37fce825be`. Main and archived original history remain intact. This is an active execution log; the final release report will reconcile all evidence.

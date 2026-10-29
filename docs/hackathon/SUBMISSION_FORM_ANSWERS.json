@@ -21,8 +21,8 @@
       "status": "Verified owner-approved production release; signed-out guards and synthetic reviewer AI acceptance/persistence passed. Retained rate-limit failures and successful affected reruns are documented."
     },
     "videoUrl": {
-      "value": null,
-      "status": "OWNER UPLOAD PENDING; only use a genuinely uploaded unlisted YouTube or accessible Drive URL"
+      "value": "https://www.youtube.com/watch?v=Z5bo9ydn7JE",
+      "status": "Owner-supplied corrected UtsavOS walkthrough; anonymous oEmbed/watch HTTP200 and playability OK, title UtsavOS | AI-native Event Planning Platform, channel Kaushik. No original download is hosted in Git."
     },
     "deployedUpdates": {
       "value": "UtsavOS turns a personalized AI plan into editable budgets, tasks and vendor requirements for weddings, birthdays and community events. Users review and selectively accept suggestions. Exact INR calculations and versioned PostgreSQL transactions power explainable guest-count changes: a 150-guest plan with ₹300,000 fixed expenses and ₹850 catering per guest totals ₹427,500;180 guests total ₹453,000 with ₹47,000 remaining from ₹500,000. Changes save only after approval. Authentication, tenant isolation, persistence, audit history and mobile workflows are tested. Guests/RSVP, delegated teams, financial records, private source-reviewed documents, workspace limits and eligible data export/deletion are implemented behind rollout flags. No real vendor booking or payment execution is claimed.",

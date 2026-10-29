@@ -45,3 +45,7 @@ All **15 migrations** match remote; dry run is up to date. Canonical `APP_BASE_U
 - [ ] **Owner:** upload the existing film as unlisted YouTube or access-granted Drive; verify signed out and provide its actual URL.
 - [ ] **Owner:** publish the reviewed LinkedIn draft with verified app/video links and provide the real post URL.
 - [ ] **Owner:** select the matching official Challenge 5 dropdown option and manually submit all fields by **1 November 2026, 23:59 IST**. Last owner-reported attempts **0/3**; none consumed here. Video/LinkedIn fields remain null, so `readyToSubmit=false`.
+
+## Repository presentation follow-up
+
+The corrected owner-supplied YouTube walkthrough is now verified: https://www.youtube.com/watch?v=Z5bo9ydn7JE . It is distinct from the local82-second edit. Video/form drafts are updated; LinkedIn publication, organizer eligibility/private reviewer delivery and manual form submission remain pending. See [the repository final report](GITHUB_REPOSITORY_FINAL_REPORT.md) for presentation PR/CI/main-protection evidence. The release checkpoint above and earlier pending-video statements are retained historically.
