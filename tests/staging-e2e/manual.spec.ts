@@ -12,7 +12,7 @@ test.describe.serial("Hosted manual verticals", () => {
     expect((await read(page, "/api/health/live")).status).toBe(200);
     await login(page, "A");
     const me = (await read(page, "/api/v1/me")).body.data;
-    expect(me.aiConfigured).toBe(false);
+    expect(me.aiConfigured).toBe(process.env.LIVE_EXPECT_AI_ENABLED === "true");
     expect(me.features).toMatchObject({ eventFunctions: true, guests: true });
     await page.getByRole("link", { name: "New celebration" }).click();
     const title = `SYNTHETIC HOSTED MANUAL ${Date.now()}`;

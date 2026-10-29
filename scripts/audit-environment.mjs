@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import nextEnv from "@next/env";
+import { credentialFormat } from "../src/infrastructure/ai/credential-format.ts";
 const names = [
   "SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_URL",
@@ -52,6 +53,15 @@ const diagnostics = names.map((name) => {
     present: value !== undefined,
     nonempty: !!value,
     format,
+    ...(["GEMINI_API_KEY", "OPENROUTER_API_KEY"].includes(name)
+      ? {
+          credentialFormat: credentialFormat(
+            name === "GEMINI_API_KEY" ? "gemini" : "openrouter",
+            value,
+          ),
+          formatIsAuthorizationProof: false,
+        }
+      : {}),
     source: inherited.has(name) ? "process" : (sources[0]?.path ?? null),
     overriddenIn: sources.slice(1).map((f) => f.path),
   };

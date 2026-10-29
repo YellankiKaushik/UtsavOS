@@ -53,6 +53,7 @@ type DraftRecord = {
 export function AiPage({ state, reload }: Props) {
   const now = useNow();
   const providerInfo = useResource<{
+    aiConfigured?: boolean;
     aiProviderPrimary?: string;
     aiProviderFallback?: string;
   }>("me");
@@ -216,12 +217,23 @@ export function AiPage({ state, reload }: Props) {
           </Field>
           <button
             className="button primary"
-            disabled={m.busy || providerInfo.loading || !providerInfo.data}
+            disabled={
+              m.busy ||
+              providerInfo.loading ||
+              !providerInfo.data ||
+              providerInfo.data.aiConfigured === false
+            }
             onClick={generate}
           >
             <Sparkles size={15} />
             {m.busy ? "Working on your request…" : "Generate a planning draft"}
           </button>
+          {providerInfo.data?.aiConfigured === false && (
+            <p className="notice" role="status">
+              AI generation is unavailable. Your saved plans and manual planning
+              remain available.
+            </p>
+          )}
           {m.busy && (
             <p className="notice" role="status">
               Waiting for the AI provider. Your current plan remains unchanged.

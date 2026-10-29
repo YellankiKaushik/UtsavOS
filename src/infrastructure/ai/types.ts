@@ -1,6 +1,7 @@
 import { DomainError } from "@/domain/errors";
 import type { ProviderId } from "../config";
 import { diagnoseFailure } from "./diagnostic";
+import type { DraftValidationRule } from "@/domain/ai-contract";
 export type ModelResponse = {
   text: string;
   inputTokens?: number;
@@ -43,6 +44,7 @@ export class ProviderError extends DomainError {
   fallbackOccurred?: boolean;
   observation?: Omit<ModelResponse, "text">;
   validationStage?: "json" | "schema" | "semantic" | "size" | "response";
+  validationRule?: DraftValidationRule;
   finishReason?:
     "stop" | "length" | "tool_calls" | "content_filter" | "error" | "unknown";
   diagnostic?: ReturnType<typeof diagnoseFailure>;

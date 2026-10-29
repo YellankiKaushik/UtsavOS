@@ -56,7 +56,10 @@ async function route(request: Request, ctx: Context) {
           .limit(20);
         if (usageError) databaseError(usageError);
         let workspaceItems = workspaces ?? [];
-        if (process.env.FEATURE_TEAMS === "true") {
+        if (
+          process.env.FEATURE_TEAMS === "true" ||
+          process.env.FEATURE_WORKSPACE_DASHBOARD === "true"
+        ) {
           const memberships = await db
             .from("workspace_members")
             .select("workspace_id,role,state")
@@ -242,7 +245,11 @@ async function route(request: Request, ctx: Context) {
       const eventId = uuid.parse(s[1]);
       if (s.length === 2 && method === "GET") {
         const state = await snapshot(db, eventId);
-        if (process.env.FEATURE_TEAMS !== "true") return state;
+        if (
+          process.env.FEATURE_TEAMS !== "true" &&
+          process.env.FEATURE_DATA_LIFECYCLE !== "true"
+        )
+          return state;
         const permissions = await db.rpc("event_permissions", {
           p_event_id: eventId,
         });
@@ -523,6 +530,12 @@ async function route(request: Request, ctx: Context) {
             409,
           );
         const idem = key(request);
+        if (!aiConfig().enabled)
+          throw new DomainError(
+            "AI_UNAVAILABLE",
+            "AI generation is disabled. Manual planning remains available.",
+            503,
+          );
         const reservation = await command(db, {
           eventId,
           action: "reserve_ai",

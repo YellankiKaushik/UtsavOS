@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { budgetFields, eventType, instant, moneySchema } from "./contracts";
-import { invariant } from "./errors";
+import { DomainError, invariant } from "./errors";
 import { assertDag } from "./tasks";
 import { calculateBudget } from "./money";
 const short = z.string().trim().min(1).max(500);
@@ -19,7 +19,15 @@ export const draftSchema = z
             category: z.string().min(1).max(80),
             pricingBasis: z.enum(["fixed", "per_guest", "per_unit"]),
             unitPriceMinor: moneySchema,
-            quantity: z.number().int().min(0).max(100000).nullable(),
+            quantity: z
+              .number()
+              .int()
+              .min(0)
+              .max(100000)
+              .nullable()
+              .describe(
+                "Set null for fixed and per_guest pricing. Set an integer only for per_unit pricing; never put the guest count here.",
+              ),
             sourceKind: z.literal("ai_estimate"),
             evidenceStatus: z.literal("unverified"),
             reason: short,
@@ -71,6 +79,38 @@ export const draftSchema = z
   })
   .strict();
 export type PlanDraft = z.infer<typeof draftSchema>;
+export type DraftValidationRule =
+  | "event_type"
+  | "duplicate_ids"
+  | "unknown_dependency"
+  | "dependency_cycle"
+  | "tbd_date"
+  | "deadline"
+  | "unsupported_claim"
+  | "pricing_quantity"
+  | "money"
+  | "schema"
+  | "unknown";
+export function draftValidationRule(error: unknown): DraftValidationRule {
+  if (error instanceof z.ZodError) return "schema";
+  if (!(error instanceof DomainError)) return "unknown";
+  if (error.code === "UNKNOWN_DEPENDENCY") return "unknown_dependency";
+  if (error.code === "DEPENDENCY_CYCLE") return "dependency_cycle";
+  if (["BUDGET_OVERFLOW", "INVALID_MONEY"].includes(error.code)) return "money";
+  const messages: Record<string, DraftValidationRule> = {
+    "Duplicate draft identifiers": "duplicate_ids",
+    "TBD events cannot receive fabricated dates": "tbd_date",
+    "Planning deadline follows event": "deadline",
+    "Unsupported external claim": "unsupported_claim",
+    "Invalid pricing quantity": "pricing_quantity",
+  };
+  return (
+    messages[error.message] ??
+    (error.code === "AI_INVALID_OUTPUT" && error.message === "AI_INVALID_OUTPUT"
+      ? "event_type"
+      : "unknown")
+  );
+}
 export function validateDraft(
   raw: unknown,
   context: {
@@ -120,6 +160,13 @@ export function validateDraft(
     ),
     "AI_INVALID_OUTPUT",
     "Unsupported external claim",
+  );
+  invariant(
+    draft.budgetSuggestions.every((b) =>
+      b.pricingBasis === "per_unit" ? b.quantity !== null : b.quantity === null,
+    ),
+    "AI_INVALID_OUTPUT",
+    "Invalid pricing quantity",
   );
   const items = draft.budgetSuggestions.map((b) => ({
     ...budgetFields.parse({

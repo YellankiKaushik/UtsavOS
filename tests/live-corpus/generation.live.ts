@@ -7,6 +7,7 @@ for (const type of ["wedding", "birthday", "community"] as const)
       for (const dateStatus of ["tbd", "scheduled"] as const) {
         it(`LIVE corpus ${type}/${budgetMinor}/${guestCount}/${dateStatus}`, async () => {
           const provider = (process.env.LIVE_AI_PROVIDER ||
+            process.env.AI_PROVIDER_PRIMARY ||
             "gemini") as ProviderId;
           if (!["gemini", "openrouter"].includes(provider))
             throw new Error("LIVE_AI_PROVIDER must be gemini or openrouter.");
@@ -39,7 +40,7 @@ for (const type of ["wedding", "birthday", "community"] as const)
             JSON.stringify({
               operation: "live-evaluation",
               schemaVersion: 1,
-              promptVersion: "event-plan.v1",
+              promptVersion: result.promptVersion,
               model: result.model,
               provider: result.provider,
               requestedModel: result.requestedModel,
