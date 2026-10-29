@@ -1,27 +1,38 @@
 # UtsavOS
 
-Persistent event planning for weddings, birthdays and community celebrations, built against the unchanged `DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md`. Stack: Next.js App Router, React, TypeScript, Tailwind, Zod, Supabase Auth/PostgreSQL/RLS, direct Google Gemini and OpenRouter using the OpenAI SDK.
+AI event planning for weddings, birthdays and community celebrations. A personalized draft becomes editable tasks, budgets and vendor requirements. Exact INR calculations explain the impact of changes; only explicit approval updates the saved plan.
 
-**P0 IS NOT RELEASE VERIFIED.** Gemini's configured-model diagnostic returns HTTP401. OpenRouter accepts the key, but tested fixed free models have no permitted route under the current request policy. Hosted Supabase identity/Auth and deployment remain blocked. P1 multi-function scheduling is implemented and tested locally behind an off-by-default flag; the rest of P1 and P2 remain incomplete. See the [current final report](docs/CODEX_FINAL_COMPLETION_REPORT.md) and [external action register](docs/EXTERNAL_ACTION_REGISTER.md). The older completion report is historical evidence from checkpoint15be61c.
+**29 October 2026: genuine GenAI and hosted acceptance verified in isolated staging. Public release, email delivery, competition tool eligibility and owner submission actions remain pending. Commercial production is incomplete.** See the [master report](docs/UTSAVOS_FINAL_MASTER_REPORT.md) and [owner checklist](docs/OWNER_FINAL_ACTIONS.md). Earlier dated completion reports are historical.
 
-The application includes personal workspaces, event CRUD, exact INR budgets, tasks and dependency timelines, vendor checklists, editable AI draft review/selective acceptance, deterministic guest/catering replanning, atomic approval, version checks, locks, idempotency and immutable history. Manual planning remains available during AI outages. Fixtures are confined to tests.
+Start with the [project description](docs/hackathon/PROJECT_DESCRIPTION.md), [demo script](docs/hackathon/DEMO_VIDEO_SCRIPT.md) and [challenge compliance matrix](docs/hackathon/CHALLENGE_COMPLIANCE_MATRIX.md). The current implementation is on [PR #1](https://github.com/YellankiKaushik/UtsavOS/pull/1), branch codex/live-release-completion. The default main branch and existing public production have not been promoted to this candidate.
 
-Use **Node 24.16.0**, npm 11.9.0 and the exact dependency lockfile.
+## Run locally
+
+Use Node 24.16.0 and npm 11.9.0 with the committed lockfile.
 
 ```powershell
 npm ci
-# Only if no environment file exists: copy .env.example to .env.local and configure securely.
+# For a new setup only, copy .env.example to .env.local and configure securely.
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). Do not overwrite or print an existing environment file. Supabase accepts `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` or the corresponding `NEXT_PUBLIC_` names. Conflicting nonempty aliases fail safely. The application uses publishable keys and end-user sessions, never a service-role key. `VITE_AUTH_PROVIDER` is unused.
+Open [localhost:3000](http://localhost:3000). Never overwrite an existing environment file. Configure an isolated Supabase project, publishable key and APP_BASE_URL. Apply all 14 forward migrations in filename order through the authenticated Supabase CLI; never reset a customer database. Enable confirmation and configure Auth Site URL/callback allowlists for the exact intended origin. The ordinary app uses end-user sessions, never a service-role key.
 
-Gemini accepts `GEMINI_MODEL_ID` or `GEMINI_MODEL_DEFAULT`. OpenRouter accepts `OPENROUTER_MODEL_ID` or `OPENROUTER_MODEL_DEFAULT`, defaulting to `openrouter/free`. Keys stay server-side. `AI_PROVIDER_PRIMARY` defaults to `gemini`; `AI_PROVIDER_FALLBACK` defaults to `none`. Explicitly select the approved other provider for fallback. `AI_PROVIDER_MODE` must be `live`; no automatic mock mode exists.
+The verified AI route is OpenRouter, dots-studio/dots-3-note-preview:free, with AI_PROVIDER_PRIMARY=openrouter, AI_PROVIDER_FALLBACK=none, OPENROUTER_REQUIRE_FREE=true, OPENROUTER_DISABLE_REASONING=true, AI_PROVIDER_MAX_RETRIES=0 and AI_REQUEST_TIMEOUT_MS=45000. Set FEATURE_AI_GENERATION=true only after checking the configured route/privacy policy and running a successful bounded smoke. Keep OPENROUTER_API_KEY server-side. Gemini remains integrated but the supplied credential returned401; it is inactive. Model availability can change.
 
-`AI_REQUEST_TIMEOUT_MS` defaults to 20000 (1000–45000 allowed). Provider timeout is clamped to the shared deadline. `AI_PROVIDER_MAX_RETRIES` is 0–2, sharing at most three attempts including fallback; zero disables additional attempts. SDK retries are disabled. Temporary failures may retry; authentication, credits, refusal, capability and invalid output never reroute automatically. Changing model/provider requires another live smoke and privacy review.
+Supabase accepts SUPABASE_URL/SUPABASE_PUBLISHABLE_KEY or corresponding NEXT_PUBLIC_ aliases; conflicting aliases fail safely. Provider MODEL_ID/MODEL_DEFAULT aliases must agree. No automatic fixture mode exists. .env.live.example documents separately gated synthetic staging tests.
+
+## Try the core journey
+
+Create an event with type, optional date/time zone, guests, budget and preferences. Generate a draft, inspect assumptions, edit/select useful records and accept them. Review tasks/dependencies and unconfirmed vendor categories. Add your own verified estimates. Preview a guest-count or catering-price change, inspect exact effects and approve. Refresh or return later to the saved plan and history.
+
+Golden scenario: ₹300,000 fixed +150×₹850 =₹427,500. Changing to180 guests previews ₹453,000 and ₹47,000 remaining from ₹500,000. Money is stored/calculated as exact paise; the model cannot approve transactions. AI prices can be unrealistic and require human review. Tests intentionally exclude generated budget lines from this deterministic vector.
+
+## Architecture and verification
+
+Next.js App Router/React/TypeScript/Tailwind; Zod domain validation; Supabase Auth/PostgreSQL/RLS/private Storage; direct Gemini SDK and OpenRouter through the OpenAI SDK. src/domain contains deterministic rules, src/application HTTP and use cases, src/infrastructure service adapters, and supabase/migrations transaction/authorization guarantees. See [architecture](DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md), [decisions](docs/DECISIONS.md) and [OpenAPI](docs/api/openapi.yaml).
 
 ```powershell
-node scripts/audit-environment.mjs
 npm run format:check
 npm run lint
 npm run typecheck
@@ -31,35 +42,10 @@ npm run api:generate
 npm run db:types
 npm run build
 npm run security:client
-npm audit --omit=dev
-npx playwright install chromium
 npm run test:e2e
-```
-
-`npm test` runs domain, controlled HTTP/AI and PGlite PostgreSQL tests. `test:concurrency` starts disposable loopback PostgreSQL 17.10 and races independent TCP sessions. Synthetic Auth roles do not verify GoTrue/PostgREST. Neither suite needs Docker. Native binaries are development dependencies; test data stays in ignored `.runtime/`.
-
-Default browser tests start isolated production Next on 3002 with credentials blanked plus a visibly labeled synthetic planner harness on 3100. They cover 320/375/768/1024/1440 widths, keyboard interactions and axe checks. They do not authenticate real users or claim genuine AI outputs. Each browser configuration has a separate artifact directory.
-
-```powershell
-# Genuine bounded synthetic planning calls; may incur provider charges.
-npm run test:providers:smoke
-# Read-only public/auth-guard checks with configured environment, port 3004.
 npm run test:live:public
-# After isolated staging and two confirmed synthetic accounts are configured:
-npm run test:live
-npm run test:e2e:live
-# After matching successful smoke and an explicitly allowed 24-request budget:
-npm run test:ai:live
 ```
 
-Never run mutation suites against customer data. `.env.live.example` documents the ignored `.env.live.local` flags. Preflight rejects absent staging confirmation/accounts and stops browser/corpus runs without a successful matching provider smoke. Blocked preflight means zero tests executed. No deployment URL is claimed.
+Regression:225 passed. Native PostgreSQL:22 scenarios. Synthetic browser:28 passed. Hosted Preview:6 browser journeys passed, including3 genuine AI event types; a separate3-case provider run passed after correcting a Gemini-only test import. These are different layers, not one interchangeable test count. Do not run mutating/live suites against customer data. The 24-request live corpus requires its explicit evaluation gate; skipped/filtered/blocked cases are not passes.
 
-Golden calculation: ₹300,000 fixed + 150 × ₹850 = ₹427,500 against ₹500,000. Previewing 180 guests yields ₹453,000, +₹25,500 and ₹47,000 remaining; only approval changes the event. Monetary API values are exact paise strings. Locked prices and confirmed vendor selections remain protected.
-
-Source boundaries: `src/domain` (rules), `src/application` (HTTP/persistence), `src/infrastructure` (configuration, Supabase and AI), `src/components` and `app` (UI/routes), `supabase/migrations` (database integrity). Apply all four migrations in filename order. The seed is synthetic and local only.
-
-P1 functions: after applying the fourth migration to verified isolated staging, set `FEATURE_EVENT_FUNCTIONS=true` to expose Functions in event navigation. Functions have independent optional schedules/time zones, owner-only create/edit/archive, and resource assignments. They share the event version, audit history and idempotency controls. Locked expenses/vendors cannot be reassigned. Existing P0 snapshots and financial calculations stay compatible. See [module contract](docs/modules/EVENT_FUNCTIONS.md). This flag is a rollout control, not a billing entitlement or an authorization bypass.
-
-`node scripts/diagnose-providers.mjs` performs bounded read-only metadata diagnostics without generation. Run again only after a relevant configuration/access change. It never logs raw provider errors, headers or keys. Live test configs now honor process/secret-manager overrides before environment files; see `scripts/live-env.ts`.
-
-See [status](docs/IMPLEMENTATION_STATUS.md), [test evidence](docs/TEST_REPORT.md), [decisions](docs/DECISIONS.md), [deployment](docs/DEPLOYMENT.md), [OpenAPI](docs/api/openapi.yaml) and [JSON report](docs/CODEX_COMPLETION_REPORT.json).
+P1 includes event functions, private RSVP, teams, vendor finance, source-reviewed private PDFs, limits/dashboard and eligible event export/deletion. Rollout flags remain intentional. AI document extraction, verified billing, full account/backup erasure and P2 integrations remain incomplete. Billing has an offline test-mode reconciliation foundation; the live webhook continues returning503. [Billing contract](docs/modules/BILLING.md), [operations](docs/OPERATIONS_RUNBOOK.md).

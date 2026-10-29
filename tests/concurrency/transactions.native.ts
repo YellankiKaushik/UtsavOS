@@ -17,6 +17,45 @@ let server: EmbeddedPostgres,
   primedEventId = "";
 const clients: Client[] = [];
 const results: { scenario: string; passed: boolean }[] = [];
+it("serializes billing receipt deduplication and worker claims across independent sessions", async () => {
+  const f = await fixture(),
+    c2 = await session(A),
+    suffix = crypto.randomUUID();
+  await admin.query(
+    "insert into private.billing_bindings(workspace_id,customer_id,subscription_id) values($1,$2,$3)",
+    [f.w, `cus_${suffix}`, `sub_${suffix}`],
+  );
+  for (const c of [f.c, c2]) await c.query("reset role;set role service_role");
+  const receipt = `evt_${suffix}`,
+    digest = "a".repeat(64);
+  await Promise.all(
+    [f.c, c2].map((c) =>
+      c.query("select private.billing_enqueue($1,$2,$3,true)", [
+        receipt,
+        digest,
+        `sub_${suffix}`,
+      ]),
+    ),
+  );
+  const claims = await Promise.all(
+    [f.c, c2].map((c) =>
+      c.query("select private.billing_claim($1) claim", [receipt]),
+    ),
+  );
+  expect(claims.filter((r) => r.rows[0].claim !== null)).toHaveLength(1);
+  expect(
+    (
+      await admin.query(
+        "select count(*)::integer n from private.billing_receipts where event_id=$1",
+        [receipt],
+      )
+    ).rows[0].n,
+  ).toBe(1);
+  results.push({
+    scenario: "billing duplicate receipt and worker claim serialization",
+    passed: true,
+  });
+});
 async function assertBlocked(c: Client) {
   const pid = (await c.query("select pg_backend_pid() pid")).rows[0].pid;
   return async () => {
@@ -166,7 +205,7 @@ beforeAll(async () => {
   });
   await admin.connect();
   await admin.query(
-    `create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}','a@example.test'),('${B}','b@example.test');`,
+    `create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}','a@example.test'),('${B}','b@example.test');`,
   );
   // Synthetic Storage catalogue for exercising real PostgreSQL policy races.
   // Hosted Storage API behavior is verified separately with ordinary sessions.

@@ -1,0 +1,38 @@
+{
+  "asset": "C:/Users/YellankiKaushik/.codex/visualizations/2026/10/27/01a17bf0-1534-7b50-99db-ae173615c7ed/utsavos-challenge5-film/delivery/UtsavOS-Challenge5-demo.mp4",
+  "durationSeconds": 82.034,
+  "bytes": 11773092,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "videoCodec": "h264",
+  "audibleAudio": false,
+  "source": "Genuine protected Preview dpl_891BUcd8K6w3MVm2gadMPR9UedEW at implementation1be298b; synthetic wedding only",
+  "edits": [
+    "waiting/navigation shortened",
+    "capture-only identity masking",
+    "editorial framing and silent captions"
+  ],
+  "aiOutput": "Actual OpenRouter response; no synthetic replacement",
+  "attribution": "Owner-authorized UtsavOS UI captures; no external stock, music or voice",
+  "publicUrl": null,
+  "review": {
+    "sourceQuality": "passed",
+    "settledFramesViewed": 9,
+    "transitionSheetsViewed": 8,
+    "overviewSheetsViewed": 1,
+    "annotatedEvidenceFramesViewed": 6,
+    "additionalProductFramesViewed": 6,
+    "materialCorrection": "Removed inactive media nodes and awaited media readiness to fix frozen loading frames; reduced shadow and repositioned text into safe areas",
+    "acceptedCandidates": [
+      "Soft product-shadow bounds overlap caption/header geometry without obscuring actual glyphs; inspected in normal frames",
+      "Brief real navigation/loading within recorded interaction",
+      "Intentional still proof holds and silent audio"
+    ]
+  },
+  "screenshots": [
+    "UtsavOS-personalized-ideas.png",
+    "UtsavOS-exact-budget.png",
+    "UtsavOS-timeline.png"
+  ]
+}
