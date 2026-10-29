@@ -11,10 +11,10 @@ The engineering lesson: useful AI needs explicit structured contracts and human 
 OpenAI Codex assisted implementation, debugging, tests and release preparation. The stack includes Next.js, TypeScript, Supabase, Vercel, GitHub Actions, Vitest and Playwright. I have not claimed Antigravity use; organizer clarification about tool eligibility is still pending.
 
 Repository: https://github.com/YellankiKaushik/UtsavOS
-Live app: add only the verified public GenAI release URL after approval.
+Live app: https://utsavos.vercel.app
 Demo: add only the actual accessible uploaded video URL.
 
-The hosted candidate is verified in isolated staging. Public release/email delivery and commercial operations remain separate gates. No vendor booking or payment execution is claimed.
+The owner-approved production release has verified wedding, birthday and community AI acceptance and persistence. Initial production birthday/community rate limits and successful affected reruns remain documented; free-model availability is not guaranteed. An isolated synthetic reviewer is prepared. Real confirmation/recovery email delivery remains unverified because no controlled inbox was available. No vendor booking or payment execution is claimed.
 
 #PromptWars #BuildInPublic #GenAI #EventPlanning #UtsavOS
 

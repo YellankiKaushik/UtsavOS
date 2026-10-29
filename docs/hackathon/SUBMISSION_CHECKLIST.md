@@ -1,21 +1,18 @@
-# Submission checklist — 29 October 2026
+# Challenge 5 final submission checklist
 
-Latest verification: [release handoff](../HACKATHON_RELEASE_HANDOFF.md). Candidate `fa15104` has green CI and three fresh real AI journeys; isolated reviewer sessions and tenant denial pass. Email delivery and approved public release remain pending. Historical failures are retained.
+Deadline: **1 November 2026, 23:59 IST**. Owner-reported attempts: **0/3**; none consumed here. Current evidence: [final release handoff](../HACKATHON_RELEASE_HANDOFF.md).
 
-Deadline: **1 November 2026,23:59 IST**. Owner supplied the authenticated official dashboard text; attempts reported0/3. Do not submit automatically or consume an attempt while required links are missing.
+- [x] Wedding, birthday and community flows implemented; strict genuine AI output, edited selective acceptance and persistence verified in Preview and production.
+- [x] Owner approved release after final CI passed; PR #1 merged; public canonical application https://utsavos.vercel.app verified without Preview bypass headers.
+- [x] Initial production 1 pass / 2 rate-limit failures retained; bounded affected rerun 2 passes / 0 failures. No uninterrupted-availability claim.
+- [x] Exact budgets, approved replanning/history, authentication, secure cookies and tenant denial verified. All 15 migrations match remote.
+- [x] Isolated synthetic reviewer prepared; credentials remain private. Owner selected this workflow with controlled-inbox delivery/expiry/replay tests documented as unverified; RLS and global confirmation remain enabled.
+- [x] Public repository https://github.com/YellankiKaushik/UtsavOS contains the approved implementation on default main; exact tracked/archive/local Git measurements are each below 10,000,000 bytes at the release checkpoint.
+- [x] Official fields drafted: Challenges; GitHub URL; verified production URL; video URL pending; deployed changes 795/1024; GenAI explanation 755/1024; LinkedIn URL pending. Draft validation does not submit the form.
+- [x] Existing 82.034-second genuine film and screenshots verified locally outside Git; see DEMO_VIDEO_SCRIPT.md. Film capture predates production and is identified as Preview footage.
+- [ ] Organizer clarification of conflicting development-tool/Antigravity rules and permitted private judge-credential delivery.
+- [ ] Owner uploads the actual film to unlisted YouTube or access-granted Drive; verifies the actual URL signed out.
+- [ ] Owner publishes the reviewed LinkedIn draft using real verified links and supplies the actual post URL.
+- [ ] Owner selects the exact matching official challenge option and manually submits every required field before the deadline.
 
-- [x] Wedding, birthday and community planning implemented.
-- [x] Genuine GenAI response, structured validation, editable review, selective acceptance and persistence verified.
-- [x] Exact budgets, tasks/timeline, vendor checklist, ideas and approved change impact verified.
-- [x] Public repository URL: https://github.com/YellankiKaushik/UtsavOS . Current code is on PR #1; reviewed default-branch release is pending.
-- [x] Repository size measured in bytes by scripts/measure-repository.mjs; final HEAD must remain strictly below10,000,000 bytes under each reported method. Definition of the organizer's size measure is unspecified.
-- [x] Submission response drafts prepared and1024-character limits checked by scripts/validate-submission.mjs.
-- [x] Genuine video/screenshot assets prepared locally; see DEMO_VIDEO_SCRIPT.md for exact path and verification.
-- [ ] Competition tool eligibility resolved: public organizer guidance conflicts about Antigravity; supplied dashboard text does not resolve it.
-- [ ] Reviewed public GenAI release matches the candidate; protected Preview cannot be submitted as unrestricted access.
-- [ ] Authorized controlled inbox completes signup/recovery tests and permitted judge-access workflow.
-- [ ] Owner uploads final video unlisted on YouTube or Drive with access granted; verify in a signed-out window.
-- [ ] Owner publishes the reviewed LinkedIn draft and obtains its actual URL.
-- [ ] Owner chooses the matching Challenges option and submits all fields before the deadline.
-
-Official form fields: Challenges; Public GitHub Repository Link; Project Deployed Link; Project Demo Video Submission; deployed changes/updates (1024); GenAI services and where used (1024); LinkedIn Post URL with http/https. Title, short description, tools and innovation are supplemental drafts, not additional confirmed fields. Full sources and uncertainties: ORGANIZER_REQUIREMENTS.md. No model-provider mandate or judging weights were present in the supplied official text.
+No specific model-provider mandate or judging weights were present in the supplied authenticated dashboard transcription. No social post, upload URL, organizer confirmation or submission result has been fabricated. Required video/LinkedIn fields remain null and readyToSubmit remains false.

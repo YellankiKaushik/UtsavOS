@@ -1,50 +1,47 @@
-# UtsavOS — hackathon release handoff
+# UtsavOS — final hackathon release handoff
 
-29 October 2026. **Verified release candidate; production release and submission remain held.** PR [#1](https://github.com/YellankiKaushik/UtsavOS/pull/1) is open and unmerged. No production promotion, social publication or form submission was performed.
+29 October 2026. **Owner-approved release deployed and verified; submission still awaits owner publication/account actions.** [PR #1](https://github.com/YellankiKaushik/UtsavOS/pull/1) merged after final CI passed. No social post, video upload or form submission was performed.
 
-## Commit, CI and deployments
+| Release evidence                   | Result                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application release commit         | `d5751a2863e8c017bff3f5817e8266a35ef1d04f`; tested implementation `fa1510477dd11068cd63fc412607b45790d3a9c4`; approved PR head `ba5df4fb3d43117b7669c06219d2b058f60e7990`                                                                                                                                                    |
+| Production verification checkpoint | [https://utsavos.vercel.app](https://utsavos.vercel.app), deployment `dpl_DB6i53hJUpDztcMbKTDtFxMG2uM8`, production target, READY, SHA `d5751a2863e8c017bff3f5817e8266a35ef1d04f`                                                                                                                                            |
+| CI                                 | [Final candidate push](https://github.com/YellankiKaushik/UtsavOS/actions/runs/40883162894), [final PR](https://github.com/YellankiKaushik/UtsavOS/actions/runs/40883171122), [production merge](https://github.com/YellankiKaushik/UtsavOS/actions/runs/40884240524): **all successful**, validate and Docker Supabase jobs |
+| Local checks                       | **231 regression tests passed, 0 failed/skipped**; format, lint, typecheck, build, client and reachable-history secret scans passed                                                                                                                                                                                          |
+| Repository at release              | Public GitHub 200; 2,536,463 tracked bytes / 778,293 ZIP bytes / 1,943,510 local Git metadata bytes, each below 10,000,000. Film stays outside Git                                                                                                                                                                           |
 
-| Item                           | Verified state                                                                                                                                                                                                                                                          |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tested implementation          | `fa1510477dd11068cd63fc412607b45790d3a9c4`, branch `codex/live-release-completion`; subsequent handoff changes are documentation only                                                                                                                                   |
-| GitHub CI                      | [Push 40881249792](https://github.com/YellankiKaushik/UtsavOS/actions/runs/40881249792) and [PR 40881259082](https://github.com/YellankiKaushik/UtsavOS/actions/runs/40881259082): **success**, both `validate` and Docker `supabase-platform` jobs                     |
-| Local verification             | **231 regression tests passed, 0 failed/skipped**; format, lint, typecheck, optimized build and client secret scan passed                                                                                                                                               |
-| Tested protected Preview       | [utsavos-dp7i0j1tm](https://utsavos-dp7i0j1tm-kaushik-yellanki-project.vercel.app), deployment `dpl_4rhLMmRPWapSRYWjwUUhncPzZTfz`, SHA `fa1510477dd11068cd63fc412607b45790d3a9c4`, READY; anonymous access redirects to Vercel SSO, so **not a public submission link** |
-| Current production             | [utsavos.vercel.app](https://utsavos.vercel.app), deployment `dpl_8KWZiS3WCC8xUCKY6uRHWm9xYGyi`, SHA `0798627de160425a9a5925a1291bfe37fce825be`; older `main`, **not this release candidate**                                                                           |
-| Signed-out production baseline | Landing/health 200; application 307 to `/login`. Latest implementation and reviewer flow have **not** been tested on production because release approval is pending                                                                                                     |
+This records the production application checkpoint tested end to end. Subsequent handoff updates contain documentation only; any rebuilt deployment must have the same application tree and pass canonical-domain guard checks.
 
-## Genuine AI reliability and judge access
+## Live AI results and remaining reliability limit
 
-The previous 45,002 ms failure exhausted the shared deadline before a completion was available; it was not a JSON/schema parsing rejection. The earlier 15,547 ms failure remains unclassified. Upstream queue/processing/first-byte timings were not captured, so their exact contribution is unknown. There is no evidence of a response-parser defect causing that timeout.
+The prior 45,002 ms failure exhausted the shared deadline before a completion; no parser defect was established. Its upstream queue/network/inference split is unknown. The earlier 15,547 ms failure remains unclassified. The candidate enforces zero prompt/completion price, a 4,096-token output cap and one early transient retry within the same 45-second deadline. Strict schema/domain validation, privacy deny, fixed model, disabled reasoning and no fallback remain. Truncated output is rejected. No paid route or fixture replaced genuine AI.
 
-The existing free Dots route remains authorized and usable under `data_collection: deny`, required schema parameters and no fallback. A fresh alternate Xing probe failed with an embedded rate-limit error after 30,073 ms; it was not adopted. No privacy restriction was relaxed or paid route used. The candidate adds a request-level zero-token-price ceiling, reduces output allowance from 8,192 to 4,096 tokens, and the PR Preview enables one early transient retry within the same 45-second deadline. Strict validation rejects truncated output. These are safeguards and mitigations, **not proof that upstream intermittency is eliminated**.
+Protected Preview first passed **3/3** real journeys (22,196 / 20,303 / 18,902 ms). It remains protected and is not the submission link. On the public production domain, with no bypass header:
 
-| Fresh hosted journey | Generation latency | Input/output tokens | Result |
-| -------------------- | ------------------ | ------------------- | ------ |
-| Wedding              | 22,196 ms          | 324 / 1,087         | Passed |
-| Birthday, mobile     | 20,303 ms          | 321 / 1,111         | Passed |
-| Community            | 18,902 ms          | 321 / 1,057         | Passed |
+| Event                     | Verified generation latency | Input/output tokens |
+| ------------------------- | --------------------------- | ------------------- |
+| Wedding                   | 17325 ms                    | 324 / 838           |
+| Birthday, affected rerun  | 11631 ms                    | 321 / 871           |
+| Community, affected rerun | 20436 ms                    | 321 / 1209          |
 
-**3 passed, 0 failed/skipped**; actual model `dots-studio/dots-3-note-preview:free`, routing provider AtlasCloud, prompt `event-plan.v2`, one attempt each, reported cost `0` each. All four output sections validated. Each journey edited a task, selectively accepted 3 tasks/2 vendor requirements, excluded AI budget suggestions and verified saved records after reload. Wedding also verified the ₹427,500 → ₹453,000 replan, ₹47,000 remaining, approval/history, logout/relogin and another tenant's 404. Deterministic CI covers malformed output, deadline/cancellation, early retry, retry-after exhaustion and synthetic outage/manual-planning behavior; those are not counted as genuine AI successes. Earlier failures are retained in the [master report](UTSAVOS_FINAL_MASTER_REPORT.md) and [dated verification record](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md).
+All recorded actual `dots-studio/dots-3-note-preview:free`, AtlasCloud, `event-plan.v2`, one attempt and cost 0. All four structured sections validated; edited selective acceptance saved 3 tasks/2 vendor requirements per event and survived reload. AI budget lines were deliberately excluded. Wedding also passed the ₹427,500→₹453,000 replan, ₹47,000 remaining, approval/history, logout/relogin and cross-tenant 404.
 
-A separate synthetic reviewer account is prepared and verified in Preview: password login, refresh identity, persistence, local logout and tenant denial. Cookies are Secure, HttpOnly, SameSite=Lax. Credentials exist **only** in the ignored local `.runtime/hackathon-release-20261029/reviewer-private.json`; share privately with authorized judges, never in GitHub or a public post. This single synthetic account was administratively confirmed; global email confirmation and RLS remain enabled. **No controlled inbox is connected**, so real signup/recovery delivery, email-link expiry/replay and inbox callback completion remain unverified. Synthetic sessions do not establish email delivery.
+**Initial production suite: 1 passed / 2 rate-limit failures. Separate affected rerun after cooldown: 2 passed / 0 failed/skipped.** The failed events stayed version 1 with no draft or accepted records. Quota checks found free allowance remaining; the exact limiter was not captured. These successes do not eliminate upstream intermittency. Every prior timeout, validation/fixture failure, alternate-route rejection and new production failure is preserved in the [dated evidence](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md) and historical master report. Deterministic failure/outage tests are separate from genuine AI passes.
 
-## Release and submission checklist
+## Judge access, security and release configuration
 
-- [x] Scoped implementation and real hosted planning verified; no P2 work, Stripe enablement or page redesign.
-- [x] All **15 migrations** match the dedicated Supabase project; dry run up to date, no pending migration/reset/seed/RLS change.
-- [x] Canonical Auth Site URL and confirmation setting verified; exact Preview and canonical recovery callbacks configured, existing URLs preserved.
-- [x] Production settings and rollback prepared in the [release runbook](hackathon/RELEASE_RUNBOOK.md): canonical `APP_BASE_URL`, dedicated publishable-key database access, explicit free AI route/flags, fresh production-target build and recorded prior deployment. Production environment remains unchanged; masked values require explicit configuration/verification at release.
-- [x] Public [GitHub repository](https://github.com/YellankiKaushik/UtsavOS) returns 200. Current implementation is on the PR branch; default `main` awaits reviewed release. Submission draft text is within limits: repository URL 42/1024, deployed updates 795/1024, GenAI explanation 755/1024. Exact source/archive size is measured separately for the final handoff commit.
-- [x] Existing 82.034-second film verified locally: 11,773,092 bytes, outside Git; [asset and upload instructions](hackathon/DEMO_VIDEO_SCRIPT.md). [LinkedIn draft](hackathon/LINKEDIN_POST.md) retained.
-- [ ] Owner-approved release, then canonical-domain signed-out and synthetic-reviewer verification of the latest implementation.
-- [ ] Real accessible video and LinkedIn URLs; these fields remain null. Deployed URL stays null until the approved candidate is publicly verified. Exact Challenges dropdown text still requires the owner's selection.
-- [ ] Organizer tool-eligibility clarification: the [official public page](https://promptwars.in/promptwarsVirtual.html) still conflicts about mandatory Antigravity. Actual Codex use is disclosed; no Antigravity contribution is claimed.
+A separate synthetic reviewer is ready at [the production login](https://utsavos.vercel.app/login). Password login, refresh, persistence, logout/relogin and tenant isolation passed. Credentials exist only in ignored local `.runtime/hackathon-release-20261029/reviewer-private.json`; share privately through the organizer's permitted channel. Cookies are Secure/HttpOnly/Lax. Signed-out landing/health return 200, application redirects to login, API returns 401, invalid input returns 400 and an invalid external callback stays on the application origin.
 
-## Remaining owner account actions only
+The owner selected this reviewer workflow and documentation of the **controlled-inbox blocker**. The single synthetic account was administratively confirmed; global email confirmation and RLS remain enabled. Real confirmation/recovery mail delivery, email-link expiry/replay and inbox completion are **unverified** because no controlled inbox is connected.
 
-1. Obtain organizer clarification on development-tool eligibility and the permitted private judge-credential channel.
-2. Make a controlled inbox available to finish confirmation/recovery testing; no passwords or email tokens in chat. The isolated reviewer account already exists.
-3. **Explicitly approve release of the reviewed PR candidate.** Codex will then handle production configuration, reviewed merge/build/deployment and public/reviewer verification; approval has not yet been given.
-4. Upload the existing film as unlisted YouTube or accessible Drive, verify signed out, and supply the real URL.
-5. Publish the reviewed LinkedIn draft with verified app/video links, supply the actual post URL, then select the matching Challenge 5 option and manually submit the validated fields by **1 November 2026, 23:59 IST**. Dashboard attempts were owner-reported **0/3**; none were consumed here.
+All **15 migrations** match remote; dry run is up to date. Canonical `APP_BASE_URL`, exact Supabase callbacks, free AI settings and tested flags are applied. Document extraction stays false; Stripe/P2 remain inactive. Protection on unrelated deployments was unchanged. [Release configuration and rollback](hackathon/RELEASE_RUNBOOK.md) retain the prior deployment `dpl_8KWZiS3WCC8xUCKY6uRHWm9xYGyi` / SHA `0798627de160425a9a5925a1291bfe37fce825be`.
+
+## Final submission checklist and owner actions
+
+- [x] Public repository/default main, approved production app and private synthetic judge workflow verified.
+- [x] Required text limits pass: GitHub URL 42/1024; updates 795/1024; GenAI explanation 755/1024. Actual production URL is in the [form drafts](hackathon/SUBMISSION_FORM_ANSWERS.md).
+- [x] Existing genuine 82.034-second film verified locally, 11,773,092 bytes outside Git. [Upload instructions](hackathon/DEMO_VIDEO_SCRIPT.md); [LinkedIn draft](hackathon/LINKEDIN_POST.md). No public video/post URL exists yet.
+- [ ] **Owner:** clarify conflicting organizer Antigravity/tool-eligibility guidance and the permitted private judge-credential channel. Actual Codex use is disclosed.
+- [ ] **Owner:** upload the existing film as unlisted YouTube or access-granted Drive; verify signed out and provide its actual URL.
+- [ ] **Owner:** publish the reviewed LinkedIn draft with verified app/video links and provide the real post URL.
+- [ ] **Owner:** select the matching official Challenge 5 dropdown option and manually submit all fields by **1 November 2026, 23:59 IST**. Last owner-reported attempts **0/3**; none consumed here. Video/LinkedIn fields remain null, so `readyToSubmit=false`.
