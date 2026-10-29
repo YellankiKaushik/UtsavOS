@@ -2,6 +2,12 @@ import { defineConfig, devices } from "@playwright/test";
 import { loadLiveEnvironment } from "./scripts/live-env.ts";
 loadLiveEnvironment();
 const url = process.env.LIVE_PREVIEW_URL;
+const evidenceDir =
+  process.env.LIVE_EVIDENCE_DIR ?? ".runtime/release-20261028";
+if (!/^\.runtime\/[a-zA-Z0-9_-]+$/.test(evidenceDir))
+  throw new Error(
+    "Live evidence must stay in a single ignored runtime directory",
+  );
 if (
   process.env.LIVE_STAGING_CONFIRMED !== "true" ||
   !url ||
@@ -29,7 +35,7 @@ export default defineConfig({
   expect: { timeout: 20000 },
   reporter: [
     ["list"],
-    ["json", { outputFile: ".runtime/release-20261028/staging-browser.json" }],
+    ["json", { outputFile: `${evidenceDir}/staging-browser.json` }],
   ],
   use: {
     baseURL: url,

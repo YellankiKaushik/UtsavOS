@@ -130,6 +130,13 @@ describe("OpenRouter HTTP adapter", () => {
       enabled: false,
       exclude: true,
     });
+    expect(JSON.parse(String(call[1]?.body)).provider).toEqual({
+      require_parameters: true,
+      allow_fallbacks: false,
+      data_collection: "deny",
+      max_price: { prompt: 0, completion: 0 },
+    });
+    expect(JSON.parse(String(call[1]?.body)).max_tokens).toBe(4096);
     for (const model of [
       { ...catalog.data[0], reasoning: { mandatory: true } },
       { ...catalog.data[0], pricing: { prompt: "1", completion: "0" } },
@@ -287,6 +294,32 @@ describe("shared validated generation and bounded fallback", () => {
   const ok: ModelTransport = async () => ({
     text: JSON.stringify(plan),
     actualModel: "synthetic-actual",
+  });
+  it("retries an early temporary failure on the same approved model within the shared deadline", async () => {
+    const gemini = vi
+      .fn<ModelTransport>()
+      .mockRejectedValueOnce(new ProviderError("gemini", "unavailable"))
+      .mockImplementation(ok);
+    const result = await generatePlan(event, "", { transports: { gemini } });
+    expect(result.attemptCount).toBe(2);
+    expect(result.fallbackOccurred).toBe(false);
+    expect(gemini.mock.calls.map(([r]) => r.model)).toEqual([
+      "synthetic-gemini",
+      "synthetic-gemini",
+    ]);
+    expect(gemini.mock.calls[1][0].timeout).toBeLessThan(
+      gemini.mock.calls[0][0].timeout,
+    );
+  });
+  it("does not retry a rate limit whose wait exceeds the remaining deadline", async () => {
+    vi.stubEnv("AI_REQUEST_TIMEOUT_MS", "1000");
+    const gemini = vi
+      .fn<ModelTransport>()
+      .mockRejectedValue(new ProviderError("gemini", "rate_limit", 60000));
+    await expect(
+      generatePlan(event, "", { transports: { gemini } }),
+    ).rejects.toMatchObject({ category: "rate_limit", attemptCount: 1 });
+    expect(gemini).toHaveBeenCalledTimes(1);
   });
   it("switches to approved fallback once on temporary failure", async () => {
     vi.stubEnv("AI_PROVIDER_FALLBACK", "openrouter");

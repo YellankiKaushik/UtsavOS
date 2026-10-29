@@ -5,6 +5,12 @@ import { calculateBudget } from "../../src/domain/money";
 import type { EventSnapshot } from "../../src/domain/contracts";
 import type { PlanDraft } from "../../src/domain/ai-contract";
 const enabled = process.env.LIVE_EXPECT_AI_ENABLED === "true";
+const evidenceDir =
+  process.env.LIVE_EVIDENCE_DIR ?? ".runtime/release-20261029";
+if (!/^\.runtime\/[a-zA-Z0-9_-]+$/.test(evidenceDir))
+  throw new Error(
+    "Live evidence must stay in a single ignored runtime directory",
+  );
 let capture:
   | {
       context: BrowserContext;
@@ -176,9 +182,10 @@ test.describe("Genuine hosted GenAI acceptance", () => {
         payload = draft.payload as PlanDraft;
       mark("Genuine AI draft returned and validated");
       expect(draft.provider_id).toBe("openrouter");
-      expect(draft.actual_model_id).toBe(
-        "dots-studio/dots-3-note-preview:free",
-      );
+      const expectedModel =
+        process.env.LIVE_EXPECT_MODEL ?? "dots-studio/dots-3-note-preview:free";
+      expect(draft.requested_model_id).toBe(expectedModel);
+      expect(draft.actual_model_id).toBe(expectedModel);
       expect(draft.prompt_version).toBe("event-plan.v2");
       expect(payload.ideas.length).toBeGreaterThan(0);
       expect(payload.budgetSuggestions.length).toBeGreaterThan(0);
@@ -232,7 +239,7 @@ test.describe("Genuine hosted GenAI acceptance", () => {
         selectedVendors: accepted.vendors.length,
         budgetSuggestionsIntentionallyNotAccepted: true,
       };
-      const file = ".runtime/release-20261029/hosted-ai-browser-metadata.json",
+      const file = `${evidenceDir}/hosted-ai-browser-metadata.json`,
         all = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
       all[type] = meta;
       writeFileSync(file, JSON.stringify(all, null, 2));

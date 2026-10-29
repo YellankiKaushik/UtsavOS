@@ -83,6 +83,7 @@ export function createOpenRouterTransport(
           require_parameters: boolean;
           allow_fallbacks: boolean;
           data_collection: string;
+          max_price?: { prompt: number; completion: number };
         };
       } = {
         model: request.model,
@@ -98,7 +99,10 @@ export function createOpenRouterTransport(
             schema: request.schema as Record<string, unknown>,
           },
         },
-        max_tokens: 8192,
+        // Keep drafts bounded. A length-limited response is rejected below,
+        // never repaired or partially accepted. This also avoids asking the
+        // router to reserve an unnecessarily large completion allocation.
+        max_tokens: 4096,
         ...(config.openrouterDisableReasoning
           ? { reasoning: { enabled: false as const, exclude: true as const } }
           : {}),
@@ -106,6 +110,11 @@ export function createOpenRouterTransport(
           require_parameters: true,
           allow_fallbacks: false,
           data_collection: "deny",
+          // Enforce the price policy on the request as well as the catalogue:
+          // catalogue discovery alone is not an atomic spending guard.
+          ...(config.openrouterRequireFree
+            ? { max_price: { prompt: 0, completion: 0 } }
+            : {}),
         },
       };
       const completion = await client.chat.completions.create(body, {
