@@ -6,6 +6,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import { resolve, relative, sep } from "node:path";
 import type { EventSnapshot } from "@/domain/contracts";
 import { calculateBudget } from "@/domain/money";
+import { createHash, randomBytes } from "node:crypto";
 const A = "11111111-1111-4111-8111-111111111111",
   B = "22222222-2222-4222-8222-222222222222";
 let server: EmbeddedPostgres,
@@ -16,6 +17,62 @@ let server: EmbeddedPostgres,
   primedEventId = "";
 const clients: Client[] = [];
 const results: { scenario: string; passed: boolean }[] = [];
+it("serializes billing receipt deduplication and worker claims across independent sessions", async () => {
+  const f = await fixture(),
+    c2 = await session(A),
+    suffix = crypto.randomUUID();
+  await admin.query(
+    "insert into private.billing_bindings(workspace_id,customer_id,subscription_id) values($1,$2,$3)",
+    [f.w, `cus_${suffix}`, `sub_${suffix}`],
+  );
+  for (const c of [f.c, c2]) await c.query("reset role;set role service_role");
+  const receipt = `evt_${suffix}`,
+    digest = "a".repeat(64);
+  await Promise.all(
+    [f.c, c2].map((c) =>
+      c.query("select private.billing_enqueue($1,$2,$3,true)", [
+        receipt,
+        digest,
+        `sub_${suffix}`,
+      ]),
+    ),
+  );
+  const claims = await Promise.all(
+    [f.c, c2].map((c) =>
+      c.query("select private.billing_claim($1) claim", [receipt]),
+    ),
+  );
+  expect(claims.filter((r) => r.rows[0].claim !== null)).toHaveLength(1);
+  expect(
+    (
+      await admin.query(
+        "select count(*)::integer n from private.billing_receipts where event_id=$1",
+        [receipt],
+      )
+    ).rows[0].n,
+  ).toBe(1);
+  results.push({
+    scenario: "billing duplicate receipt and worker claim serialization",
+    passed: true,
+  });
+});
+async function assertBlocked(c: Client) {
+  const pid = (await c.query("select pg_backend_pid() pid")).rows[0].pid;
+  return async () => {
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+  };
+}
 async function freePort() {
   const s = createServer();
   await new Promise<void>((r) => s.listen(0, "127.0.0.1", r));
@@ -148,7 +205,12 @@ beforeAll(async () => {
   });
   await admin.connect();
   await admin.query(
-    `create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}'),('${B}');`,
+    `create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users values('${A}','a@example.test'),('${B}','b@example.test');`,
+  );
+  // Synthetic Storage catalogue for exercising real PostgreSQL policy races.
+  // Hosted Storage API behavior is verified separately with ordinary sessions.
+  await admin.query(
+    "create schema storage; create table storage.buckets(id text primary key,name text,public boolean not null default false,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text references storage.buckets(id),name text not null,metadata jsonb,unique(bucket_id,name));alter table storage.objects enable row level security;grant usage on schema storage to authenticated,anon;grant select,insert,update,delete on storage.objects to authenticated,anon",
   );
   for (const f of readdirSync("supabase/migrations")
     .filter((f) => f.endsWith(".sql"))
@@ -194,6 +256,177 @@ afterAll(async () => {
       2,
     ) + "\n",
   );
+});
+it("serializes Storage INSERT policy transactions with deletion cleanup in both orders", async () => {
+  async function prepared() {
+    const f = await fixture(),
+      uploader = await session(A);
+    const r = (
+      await f.c.query(
+        "select public.document_command($1,'prepare',$2,$3,$4,'native-storage') r",
+        [
+          f.eventId,
+          JSON.stringify({
+            filename: "synthetic.txt",
+            mediaType: "text/plain",
+            byteSize: 4,
+          }),
+          f.version,
+          crypto.randomUUID(),
+        ],
+      )
+    ).rows[0].r;
+    const path = (
+      await f.c.query(
+        "select object_path from public.event_documents where id=$1",
+        [r.id],
+      )
+    ).rows[0].object_path;
+    return { ...f, uploader, path, version: r.version };
+  }
+  const first = await prepared(),
+    blockedDeletion = await assertBlocked(first.c);
+  await first.uploader.query("begin");
+  try {
+    await first.uploader.query(
+      'insert into storage.objects(bucket_id,name,metadata) values(\'utsavos-documents\',$1,\'{"size":4,"mimetype":"text/plain"}\')',
+      [first.path],
+    );
+    const deletion = first.c.query(
+      "select public.event_lifecycle_command($1,'request_deletion',$2,$3,'native-storage') r",
+      [first.eventId, first.version, crypto.randomUUID()],
+    );
+    await blockedDeletion();
+    await first.uploader.query("commit");
+    const state = (await deletion).rows[0].r;
+    await expect(
+      first.c.query(
+        "select public.event_lifecycle_command($1,'erase',$2,$3,'native-storage')",
+        [first.eventId, state.eventVersion, crypto.randomUUID()],
+      ),
+    ).rejects.toThrow("DOCUMENT_NOT_READY");
+  } finally {
+    await first.uploader.query("rollback");
+  }
+  const second = await prepared(),
+    blockedUpload = await assertBlocked(second.uploader);
+  await second.c.query("begin");
+  try {
+    await second.c.query(
+      "select public.event_lifecycle_command($1,'request_deletion',$2,$3,'native-storage')",
+      [second.eventId, second.version, crypto.randomUUID()],
+    );
+    const upload = second.uploader
+      .query(
+        'insert into storage.objects(bucket_id,name,metadata) values(\'utsavos-documents\',$1,\'{"size":4,"mimetype":"text/plain"}\')',
+        [second.path],
+      )
+      .then(
+        () => "unexpected success",
+        (e) => e.message as string,
+      );
+    await blockedUpload();
+    await second.c.query("commit");
+    expect(await upload).toContain("row-level security");
+  } finally {
+    await second.c.query("rollback");
+  }
+  results.push({
+    scenario:
+      "Storage insertion and deletion hold serialization in both orders",
+    passed: true,
+  });
+});
+
+it("serializes parallel event creation at the authoritative workspace entitlement", async () => {
+  const c1 = await session(A),
+    c2 = await session(A);
+  const w = (await c1.query("select public.create_personal_workspace() id"))
+    .rows[0].id;
+  const used = Number(
+    (
+      await admin.query(
+        "select count(*) n from public.events where workspace_id=$1 and status<>'archived'",
+        [w],
+      )
+    ).rows[0].n,
+  );
+  await admin.query(
+    "insert into private.workspace_entitlements(workspace_id,plan,state,valid_until,event_limit,ai_daily_limit,member_limit,storage_limit_bytes) values($1,'pilot','active',now()+interval '1 day',$2,20,20,209715200)",
+    [w, used + 1],
+  );
+  try {
+    const replies = await Promise.allSettled([
+      command(c1, "create", fields, null, null, w),
+      command(c2, "create", fields, null, null, w),
+    ]);
+    expect(replies.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const rejected = replies.find((r) => r.status === "rejected");
+    expect(
+      rejected?.status === "rejected" && rejected.reason.message,
+    ).toContain("ENTITLEMENT_LIMIT");
+  } finally {
+    await admin.query(
+      "delete from private.workspace_entitlements where workspace_id=$1",
+      [w],
+    );
+  }
+  results.push({
+    scenario: "parallel event entitlement enforcement",
+    passed: true,
+  });
+});
+
+it("rechecks a deletion hold after an event writer waits for the workspace", async () => {
+  const f = await fixture(),
+    writer = await session(A),
+    pid = (await writer.query("select pg_backend_pid() pid")).rows[0].pid;
+  await f.c.query("begin");
+  try {
+    await f.c.query(
+      "select public.event_lifecycle_command($1,'request_deletion',$2,$3,'native-deletion')",
+      [f.eventId, f.version, crypto.randomUUID()],
+    );
+    const waiting = command(
+      writer,
+      "put_task",
+      {
+        fields: {
+          title: "Must not save after deletion",
+          status: "todo",
+          priority: "normal",
+          dueAt: null,
+          dependencyIds: [],
+          isLocked: false,
+        },
+      },
+      f.eventId,
+      f.version,
+    ).then(
+      () => "unexpected success",
+      (e) => e.message as string,
+    );
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+    await f.c.query("commit");
+    expect(await waiting).toContain("DATA_LIFECYCLE_HOLD");
+  } finally {
+    await f.c.query("rollback");
+  }
+  results.push({
+    scenario: "deletion hold rejects a queued writer",
+    passed: true,
+  });
 });
 describe("genuine parallel PostgreSQL transactions", () => {
   it("upgrades an already-used public RPC to the provenance wrapper", async () => {
@@ -647,4 +880,370 @@ it("replays concurrent identical function creation with one function/audit", asy
     scenario: "P1 duplicate function creation replay",
     passed: true,
   });
+});
+
+async function guestFixture() {
+  const f = await fixture();
+  async function mutate(action: string, payload: unknown) {
+    const r = (
+      await f.c.query(
+        "select public.guest_command($1,$2,$3::jsonb,$4,$5,'native-guests') r",
+        [
+          f.eventId,
+          action,
+          JSON.stringify(payload),
+          f.version,
+          crypto.randomUUID(),
+        ],
+      )
+    ).rows[0].r;
+    f.version = r.version;
+    return r.id as string;
+  }
+  const household = await mutate("household", {
+    fields: { name: "Synthetic household" },
+  });
+  const guest = await mutate("guest", {
+    fields: { householdId: household, displayName: "Synthetic invitee" },
+  });
+  const token = randomBytes(32).toString("hex");
+  await mutate("invite", {
+    householdId: household,
+    guestIds: [guest],
+    functionIds: [],
+    includeEvent: true,
+    expiresInHours: 1,
+    tokenHash: createHash("sha256").update(token).digest("hex"),
+  });
+  const anonymous = async () => {
+    const c = await session(A);
+    await c.query("reset role; set role anon");
+    return c;
+  };
+  const answers = JSON.stringify([
+    { guestId: guest, functionId: null, status: "accepted" },
+  ]);
+  return { ...f, mutate, guest, token, anonymous, answers };
+}
+it("replays concurrent anonymous replies with one audit and one event version", async () => {
+  const f = await guestFixture(),
+    a = await f.anonymous(),
+    b = await f.anonymous(),
+    key = crypto.randomUUID();
+  const replies = await Promise.all(
+    [a, b].map((c) =>
+      c.query("select public.rsvp_respond($1,$2::jsonb,$3) r", [
+        f.token,
+        f.answers,
+        key,
+      ]),
+    ),
+  );
+  expect(replies.filter((r) => r.rows[0].r.replayed)).toHaveLength(1);
+  expect(
+    (
+      await f.c.query("select version from public.events where id=$1", [
+        f.eventId,
+      ])
+    ).rows[0].version,
+  ).toBe(f.version + 1);
+  expect(
+    (
+      await f.c.query(
+        "select id from public.audit_events where event_id=$1 and action='guest_rsvp'",
+        [f.eventId],
+      )
+    ).rows,
+  ).toHaveLength(1);
+  results.push({ scenario: "anonymous RSVP duplicate replay", passed: true });
+});
+it("rejects an RSVP waiting behind a concurrent guest archive", async () => {
+  const f = await guestFixture(),
+    anonymous = await f.anonymous();
+  const pid = (await anonymous.query("select pg_backend_pid() pid")).rows[0]
+    .pid;
+  await f.c.query("begin");
+  try {
+    await f.mutate("attendance", {
+      guestId: f.guest,
+      functionId: null,
+      status: "pending",
+    });
+    const waiting = anonymous
+      .query("select public.rsvp_respond($1,$2::jsonb,$3)", [
+        f.token,
+        f.answers,
+        crypto.randomUUID(),
+      ])
+      .then(
+        () => "unexpected success",
+        (e) => e.message as string,
+      );
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+    await f.mutate("archive_guest", { id: f.guest });
+    await f.c.query("commit");
+    expect(await waiting).toContain("NOT_FOUND");
+    expect(
+      (
+        await f.c.query(
+          "select id from public.audit_events where event_id=$1 and action='guest_rsvp'",
+          [f.eventId],
+        )
+      ).rows,
+    ).toHaveLength(0);
+  } finally {
+    await f.c.query("rollback");
+  }
+  results.push({
+    scenario: "RSVP waits for host archive then revalidates",
+    passed: true,
+  });
+});
+
+it("rechecks membership after a command waits behind a workspace revocation", async () => {
+  const owner = await session(A),
+    member = await session(B);
+  let teamVersion: number;
+  const team = async (
+    c: Client,
+    wid: string | null,
+    action: string,
+    p: unknown,
+  ) => {
+    const r = (
+      await c.query(
+        "select public.team_command($1,$2,$3::jsonb,$4,$5,'native-team') r",
+        [
+          wid,
+          action,
+          JSON.stringify(p),
+          teamVersion ?? null,
+          crypto.randomUUID(),
+        ],
+      )
+    ).rows[0].r;
+    teamVersion = r.version;
+    return r;
+  };
+  const workspace = (
+    await team(owner, null, "create", { name: "Synthetic revocation agency" })
+  ).workspaceId;
+  const event = await command(owner, "create", fields, null, null, workspace);
+  const token = randomBytes(32).toString("hex");
+  await team(owner, workspace, "invite", {
+    email: "b@example.test",
+    role: "planner_member",
+    tokenHash: createHash("sha256").update(token).digest("hex"),
+  });
+  await team(member, null, "accept", { token });
+  await team(owner, workspace, "assign", {
+    userId: B,
+    eventId: event.id,
+    assigned: true,
+    canEdit: true,
+    canApprove: false,
+    canViewContacts: false,
+  });
+  const pid = (await member.query("select pg_backend_pid() pid")).rows[0].pid;
+  await owner.query("begin");
+  try {
+    await team(owner, workspace, "invite", {
+      email: "unused@example.test",
+      role: "client_viewer",
+      tokenHash: randomBytes(32).toString("hex"),
+    });
+    const waiting = command(
+      member,
+      "put_task",
+      {
+        fields: {
+          title: "Must not be written",
+          status: "todo",
+          priority: "normal",
+          dueAt: null,
+          dependencyIds: [],
+          isLocked: false,
+        },
+      },
+      event.id,
+      event.version,
+    ).then(
+      () => "unexpected success",
+      (e) => e.message as string,
+    );
+    let blocked = false;
+    for (let i = 0; i < 100; i++) {
+      blocked = (
+        await admin.query(
+          "select wait_event_type='Lock' blocked from pg_stat_activity where pid=$1",
+          [pid],
+        )
+      ).rows[0]?.blocked;
+      if (blocked) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(blocked).toBe(true);
+    await team(owner, workspace, "member", {
+      userId: B,
+      role: "planner_member",
+      state: "revoked",
+    });
+    await owner.query("commit");
+    expect(await waiting).toContain("NOT_FOUND");
+    expect(
+      (
+        await owner.query("select id from public.tasks where event_id=$1", [
+          event.id,
+        ])
+      ).rows,
+    ).toHaveLength(0);
+  } finally {
+    await owner.query("rollback");
+  }
+  results.push({
+    scenario: "workspace revocation wins against a waiting member command",
+    passed: true,
+  });
+});
+
+async function financeFixture() {
+  const f = await fixture();
+  const vendor = await command(
+    f.c,
+    "put_vendor",
+    {
+      fields: {
+        title: "Synthetic vendor",
+        category: "other",
+        status: "needed",
+        notes: "",
+        quoteSource: null,
+        isLocked: false,
+        estimatedCostMinor: null,
+        dueAt: null,
+      },
+    },
+    f.eventId,
+    f.version,
+  );
+  f.version = vendor.version;
+  async function finance(
+    c: Client,
+    action: string,
+    p: unknown,
+    version = f.version,
+    key = crypto.randomUUID(),
+  ) {
+    return (
+      await c.query(
+        "select public.vendor_finance_command($1,$2,$3::jsonb,$4,$5,'native-finance') r",
+        [f.eventId, action, JSON.stringify(p), version, key],
+      )
+    ).rows[0].r;
+  }
+  let r = await finance(f.c, "quote", {
+    vendorRequirementId: vendor.id,
+    supplierName: "Synthetic supplier",
+    reference: "Q-1",
+    totalMinor: "1000",
+    expiresOn: null,
+    notes: "",
+  });
+  const quote = r.id;
+  f.version = r.version;
+  r = await finance(f.c, "commit", {
+    quoteId: quote,
+    depositDueMinor: "0",
+    confirmed: true,
+  });
+  const commitment = r.id;
+  f.version = r.version;
+  r = await finance(f.c, "invoice", {
+    commitmentId: commitment,
+    reference: "I-1",
+    amountMinor: "1000",
+    issuedOn: "2026-10-01",
+    dueOn: null,
+  });
+  const invoice = r.id;
+  f.version = r.version;
+  return { ...f, finance, invoice };
+}
+it("prevents parallel overpayment and preserves a single financial version", async () => {
+  const f = await financeFixture(),
+    c2 = await session(A);
+  const payload = (reference: string) => ({
+    invoiceId: f.invoice,
+    reference,
+    amountMinor: "800",
+    paidOn: "2026-10-01",
+    method: "cash",
+    confirmed: true,
+  });
+  const replies = await Promise.allSettled([
+    f.finance(f.c, "payment", payload(crypto.randomUUID())),
+    f.finance(c2, "payment", payload(crypto.randomUUID())),
+  ]);
+  expect(replies.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+  const snapshot = (
+    await f.c.query("select public.vendor_finance($1) r", [f.eventId])
+  ).rows[0].r;
+  expect(snapshot.summary.paidMinor).toBe("800");
+  expect(snapshot.eventVersion).toBe(f.version + 1);
+  await expect(
+    f.finance(
+      c2,
+      "payment",
+      payload(crypto.randomUUID()),
+      snapshot.eventVersion,
+    ),
+  ).rejects.toThrow("OVERPAYMENT");
+  results.push({ scenario: "parallel financial payment bounds", passed: true });
+});
+it("replays concurrent payment records with one row and one audit", async () => {
+  const f = await financeFixture(),
+    c2 = await session(A),
+    key = crypto.randomUUID(),
+    payload = {
+      invoiceId: f.invoice,
+      reference: crypto.randomUUID(),
+      amountMinor: "500",
+      paidOn: "2026-10-01",
+      method: "cash",
+      confirmed: true,
+    };
+  const replies = await Promise.all([
+    f.finance(f.c, "payment", payload, f.version, key),
+    f.finance(c2, "payment", payload, f.version, key),
+  ]);
+  expect(replies.filter((r) => r.replayed)).toHaveLength(1);
+  expect(replies[0].id).toBe(replies[1].id);
+  expect(
+    (
+      await f.c.query(
+        "select id from public.vendor_payment_records where event_id=$1",
+        [f.eventId],
+      )
+    ).rows,
+  ).toHaveLength(1);
+  expect(
+    (
+      await f.c.query(
+        "select id from public.audit_events where event_id=$1 and action='finance_payment'",
+        [f.eventId],
+      )
+    ).rows,
+  ).toHaveLength(1);
+  results.push({ scenario: "duplicate financial record replay", passed: true });
 });

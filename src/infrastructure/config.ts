@@ -105,6 +105,8 @@ export function aiConfig(env: Env = process.env) {
     if (model && !/^[a-zA-Z0-9][a-zA-Z0-9/_.:-]{0,149}$/.test(model))
       failure("AI model identifier");
   return {
+    openrouterDisableReasoning: env.OPENROUTER_DISABLE_REASONING === "true",
+    openrouterRequireFree: env.OPENROUTER_REQUIRE_FREE === "true",
     primary: primary as ProviderId,
     fallback: fallback as ProviderId | "none",
     totalTimeoutMs,

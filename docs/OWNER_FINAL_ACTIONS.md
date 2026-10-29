@@ -1,0 +1,11 @@
+# Owner actions — Challenge 5 only
+
+Latest evidence: [release handoff](HACKATHON_RELEASE_HANDOFF.md). Deadline: **1 November 2026, 23:59 IST**.
+
+1. **Resolve organizer eligibility and private judge access.** Obtain clarification about conflicting Antigravity guidance in the official Challenge 5 instructions. Actual Codex use is disclosed. Confirm the permitted private channel for reviewer credentials; never post credentials publicly.
+2. **Make a controlled inbox available.** Confirmation/recovery delivery, email-link expiry and replay remain unverified because no inbox is connected. Keep confirmation enabled. A separate synthetic reviewer already passed login, refresh, persistence and tenant isolation in Preview; this does not prove email delivery. Do not paste passwords or tokens into chat.
+3. **Explicitly approve the reviewed production release.** [PR #1](https://github.com/YellankiKaushik/UtsavOS/pull/1), tested code `fa1510477dd11068cd63fc412607b45790d3a9c4`, has green CI and three fresh genuine AI journeys. Prior failures remain recorded. Codex will handle approved production configuration, reviewed merge/build/deployment and public/reviewer verification. Production is still older main. The protected Preview is not a public submission link. No paid upgrade is authorized.
+4. **Upload the existing film.** Use the exact MP4 in [DEMO_VIDEO_SCRIPT.md](hackathon/DEMO_VIDEO_SCRIPT.md). Upload as unlisted YouTube or access-granted Drive, verify the real URL signed out, and provide it. No new film production is needed.
+5. **Publish and manually submit.** Review [the LinkedIn draft](hackathon/LINKEDIN_POST.md), add verified public app/video links, publish and provide the actual post URL. In [Hack2skill](https://hack2skill.com/login), select the matching Challenge 5 option and manually submit the validated [form answers](hackathon/SUBMISSION_FORM_ANSWERS.md) before the deadline. Last owner-reported attempts: **0/3**; none consumed here.
+
+Production release and canonical-domain verification are engineering work waiting on approval. Organizer decisions, inbox access, uploads, social publication and submission require your account actions. Commercial features are outside this handoff.

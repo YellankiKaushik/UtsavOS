@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { DomainError } from "@/domain/errors";
+import { applicationOrigin } from "./origin";
 export function checkOrigin(request: Request) {
-  const configured = process.env.APP_BASE_URL;
   const origin = request.headers.get("origin");
-  const target = configured
-    ? new URL(configured).origin
-    : new URL(request.url).origin;
+  const target = applicationOrigin(request);
   if (!origin || origin !== target)
     throw new DomainError(
       "INVALID_ORIGIN",
@@ -63,6 +61,11 @@ export async function handle(
   const started = performance.now();
   try {
     const data = await work(requestId);
+    if (data instanceof Response) {
+      data.headers.set("Cache-Control", "private, no-store");
+      data.headers.set("X-Request-Id", requestId);
+      return data;
+    }
     console.info(
       JSON.stringify({
         component: "api",

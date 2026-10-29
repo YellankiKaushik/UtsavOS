@@ -8,6 +8,8 @@ playwright-report/
 test-results/
 test-results-live-public/
 test-results-live/
+test-results-staging/
 *.tsbuildinfo
 .runtime/
 .supabase/
+.vercel/

@@ -128,6 +128,12 @@ export type EventSnapshot = {
   budgetItems: BudgetItem[];
   tasks: Task[];
   vendors: Vendor[];
+  permissions?: {
+    canManageData?: boolean;
+    canEdit: boolean;
+    canApprove: boolean;
+    canViewContacts: boolean;
+  };
 };
 export type Operation =
   | {

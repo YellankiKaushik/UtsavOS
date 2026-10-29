@@ -8,7 +8,8 @@ const path = window.location.pathname
   .filter(Boolean);
 createRoot(document.getElementById("root")!).render(
   <>
-    <div
+    <aside
+      aria-label="Synthetic test environment"
       style={{
         position: "fixed",
         bottom: 0,
@@ -21,11 +22,10 @@ createRoot(document.getElementById("root")!).render(
         zIndex: 99,
         fontSize: 10,
       }}
-      role="note"
     >
       Synthetic UI test · Controlled API fixtures · No live authentication or
       Gemini
-    </div>
+    </aside>
     <AppShell email="synthetic@example.test">
       <Planner path={path} />
     </AppShell>

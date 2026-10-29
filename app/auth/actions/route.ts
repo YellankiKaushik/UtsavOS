@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createClient } from "@/infrastructure/supabase/server";
 import { checkOrigin, handle, readBody } from "@/application/http";
 import { DomainError } from "@/domain/errors";
+import { applicationOrigin } from "@/application/origin";
 export async function POST(request: Request) {
   return handle(async () => {
     checkOrigin(request);
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
       return { redirect: "/app/events" };
     }
     const email = z.email().parse(input.email),
-      base = process.env.APP_BASE_URL ?? new URL(request.url).origin;
+      base = applicationOrigin(request);
     if (input.action === "reset") {
       const { error } = await db.auth.resetPasswordForEmail(email, {
         redirectTo: `${base}/auth/callback?next=/reset-password`,

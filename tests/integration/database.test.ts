@@ -71,7 +71,7 @@ const budget = {
 beforeAll(async () => {
   db = new PGlite();
   await db.exec(
-    `create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key,email text,aud text,role text,created_at timestamptz,updated_at timestamptz);create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users(id) values('${A}'),('${B}');`,
+    `create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key,email text,aud text,role text,created_at timestamptz,updated_at timestamptz);create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;grant usage on schema public,auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;insert into auth.users(id) values('${A}'),('${B}');`,
   );
   for (const file of readdirSync("supabase/migrations")
     .filter((f) => f.endsWith(".sql"))

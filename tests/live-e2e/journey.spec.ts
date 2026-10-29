@@ -31,7 +31,7 @@ test.beforeAll(() => {
   if (provider === "openrouter" && !process.env.OPENROUTER_API_KEY)
     throw new Error("Configure OpenRouter credentials.");
 });
-test("LIVE: sign in, persist event, accept real Gemini draft, manual CRUD, approve and refresh", async ({
+test("LIVE: sign in, persist event, accept real configured-provider draft, manual CRUD, approve and refresh", async ({
   page,
   browser,
 }) => {
@@ -56,7 +56,7 @@ test("LIVE: sign in, persist event, accept real Gemini draft, manual CRUD, appro
   await page.getByRole("button", { name: "Generate a planning draft" }).click();
   await expect(
     page.getByRole("heading", { name: "Your planning draft" }),
-  ).toBeVisible({ timeout: 35000 });
+  ).toBeVisible({ timeout: 55000 });
   await page
     .getByRole("checkbox", { name: /Select all proposed records/ })
     .check();
@@ -149,7 +149,7 @@ test("LIVE: sign in, persist event, accept real Gemini draft, manual CRUD, appro
   ).toBeVisible();
   const contextB = await browser.newContext();
   const second = await contextB.newPage();
-  await second.goto("http://localhost:3000/login");
+  await second.goto("/login");
   await second.getByLabel("Email address").fill(process.env.LIVE_USER_B_EMAIL!);
   await second
     .getByLabel("Password", { exact: true })
@@ -164,17 +164,13 @@ test("LIVE: sign in, persist event, accept real Gemini draft, manual CRUD, appro
     "/history",
   ])
     expect(
-      (
-        await second.request.get(
-          `http://localhost:3000/api/v1/events/${eventId}${suffix}`,
-        )
-      ).status(),
+      (await second.request.get(`/api/v1/events/${eventId}${suffix}`)).status(),
     ).toBe(404);
   const denied = await second.request.post(
-    `http://localhost:3000/api/v1/events/${eventId}/replan-proposals`,
+    `/api/v1/events/${eventId}/replan-proposals`,
     {
       headers: {
-        Origin: "http://localhost:3000",
+        Origin: new URL(second.url()).origin,
         "Idempotency-Key": crypto.randomUUID(),
       },
       data: {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { createClient } from "@supabase/supabase-js";
-import { generatePlan } from "@/infrastructure/gemini";
+import { generatePlan } from "@/infrastructure/ai/service";
 import { calculateBudget } from "@/domain/money";
 import type { EventSnapshot } from "@/domain/contracts";
 import { supabaseConfig, aiConfig } from "@/infrastructure/config";
@@ -131,11 +131,12 @@ describe("LIVE provider release gate — requires explicit isolated staging cred
     await b.auth.signOut();
   });
   for (const type of ["wedding", "birthday", "community"] as const)
-    it(`verifies REAL Gemini structured generation: ${type}`, async () => {
-      required("GEMINI_API_KEY");
-      if (!aiConfig().models.gemini)
+    it(`verifies REAL configured-provider structured generation: ${type}`, async () => {
+      const provider = aiConfig().primary;
+      required(provider === "gemini" ? "GEMINI_API_KEY" : "OPENROUTER_API_KEY");
+      if (!aiConfig().models[provider])
         throw new Error(
-          "Configure GEMINI_MODEL_ID or its GEMINI_MODEL_DEFAULT alias.",
+          "Configure the selected provider's canonical model or matching legacy alias.",
         );
       const result = await generatePlan(
         {
@@ -155,8 +156,14 @@ describe("LIVE provider release gate — requires explicit isolated staging cred
           createdAt: "",
         },
         "Simple, welcoming, accessible; no personal details.",
+        { provider, noFallback: true },
       );
       expect(result.payload.eventType).toBe(type);
-      expect(result.requestedModel).toBe(aiConfig().models.gemini);
+      expect(result.provider).toBe(provider);
+      expect(result.requestedModel).toBe(aiConfig().models[provider]);
+      expect(result.payload.tasks.length).toBeGreaterThan(0);
+      expect(result.payload.vendorRequirements.length).toBeGreaterThan(0);
+      expect(result.payload.budgetSuggestions.length).toBeGreaterThan(0);
+      expect(result.payload.ideas.length).toBeGreaterThan(0);
     });
 });

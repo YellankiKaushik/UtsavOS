@@ -24,6 +24,11 @@ import {
 import { aiConfig } from "@/infrastructure/config";
 import { functionMutation, functionLink } from "@/domain/event-functions";
 import type { Json } from "@/generated/database.types";
+import { guestRoute } from "@/application/guest-http";
+import { teamRoute } from "@/application/team-http";
+import { financeRoute } from "@/application/finance-http";
+import { documentRoute } from "@/application/document-http";
+import { eventDataRoute } from "@/application/workspace-tools-http";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 type Context = { params: Promise<{ segments: string[] }> };
@@ -39,6 +44,7 @@ async function route(request: Request, ctx: Context) {
       const { db, user } = await session();
       const path = s.join("/");
       if (path === "me" && method === "GET") {
+        const providerSettings = aiConfig();
         const { data: workspaces, error } = await db
           .from("workspaces")
           .select("id,name,kind");
@@ -49,6 +55,26 @@ async function route(request: Request, ctx: Context) {
           .order("created_at", { ascending: false })
           .limit(20);
         if (usageError) databaseError(usageError);
+        let workspaceItems = workspaces ?? [];
+        if (
+          process.env.FEATURE_TEAMS === "true" ||
+          process.env.FEATURE_WORKSPACE_DASHBOARD === "true"
+        ) {
+          const memberships = await db
+            .from("workspace_members")
+            .select("workspace_id,role,state")
+            .eq("user_id", user.id)
+            .eq("state", "active");
+          if (memberships.error) databaseError(memberships.error);
+          workspaceItems = workspaceItems.map((w) => ({
+            ...w,
+            canCreate: memberships.data.some(
+              (m) =>
+                m.workspace_id === w.id &&
+                ["owner", "planner_manager"].includes(m.role),
+            ),
+          }));
+        }
         return {
           user: {
             id: user.id,
@@ -58,18 +84,63 @@ async function route(request: Request, ctx: Context) {
                 ? user.user_metadata.display_name
                 : null,
           },
-          workspaces,
+          workspaces: workspaceItems,
           usage,
-          aiConfigured: !!(
-            aiConfig().keys[aiConfig().primary] &&
-            aiConfig().models[aiConfig().primary]
-          ),
-          aiProviderPrimary: aiConfig().primary,
-          aiProviderFallback: aiConfig().fallback,
+          aiConfigured:
+            providerSettings.enabled &&
+            !!(
+              providerSettings.keys[providerSettings.primary] &&
+              providerSettings.models[providerSettings.primary]
+            ),
+          aiProviderPrimary: providerSettings.primary,
+          aiProviderFallback: providerSettings.fallback,
           features: {
+            workspaceDashboard:
+              process.env.FEATURE_WORKSPACE_DASHBOARD === "true",
+            dataLifecycle: process.env.FEATURE_DATA_LIFECYCLE === "true",
+            documents: process.env.FEATURE_DOCUMENTS === "true",
+            vendorFinance: process.env.FEATURE_VENDOR_FINANCE === "true",
+            teams: process.env.FEATURE_TEAMS === "true",
+            guests: process.env.FEATURE_GUESTS === "true",
             eventFunctions: process.env.FEATURE_EVENT_FUNCTIONS === "true",
           },
         };
+      }
+      if (path === "team") return teamRoute(request, db, requestId);
+      if (path === "account/data-request" && ["GET", "POST"].includes(method)) {
+        if (process.env.FEATURE_DATA_LIFECYCLE !== "true")
+          throw new DomainError("NOT_FOUND", "Module not enabled", 404);
+        let action = "status";
+        if (method === "POST") {
+          const input = z
+            .object({
+              action: z.enum(["request", "cancel"]),
+              confirmed: z.literal(true),
+            })
+            .strict()
+            .parse(await readBody(request));
+          key(request);
+          action = input.action;
+        }
+        const result = await db.rpc("account_data_request", {
+          p_action: action,
+        });
+        if (result.error) databaseError(result.error);
+        return result.data;
+      }
+      if (
+        s[0] === "workspaces" &&
+        s[2] === "dashboard" &&
+        s.length === 3 &&
+        method === "GET"
+      ) {
+        if (process.env.FEATURE_WORKSPACE_DASHBOARD !== "true")
+          throw new DomainError("NOT_FOUND", "Module not enabled", 404);
+        const result = await db.rpc("workspace_dashboard", {
+          p_workspace_id: uuid.parse(s[1]),
+        });
+        if (result.error) databaseError(result.error);
+        return result.data;
       }
       if (path === "workspaces/personal" && method === "POST") {
         key(request);
@@ -172,7 +243,19 @@ async function route(request: Request, ctx: Context) {
         }
       }
       const eventId = uuid.parse(s[1]);
-      if (s.length === 2 && method === "GET") return snapshot(db, eventId);
+      if (s.length === 2 && method === "GET") {
+        const state = await snapshot(db, eventId);
+        if (
+          process.env.FEATURE_TEAMS !== "true" &&
+          process.env.FEATURE_DATA_LIFECYCLE !== "true"
+        )
+          return state;
+        const permissions = await db.rpc("event_permissions", {
+          p_event_id: eventId,
+        });
+        if (permissions.error) databaseError(permissions.error);
+        return { ...state, permissions: permissions.data };
+      }
       if (s.length === 2 && method === "PATCH") {
         const body = await readBody(request);
         const raw = z.record(z.string(), z.unknown()).parse(body);
@@ -209,6 +292,15 @@ async function route(request: Request, ctx: Context) {
       const resourceName = s[2],
         recordId = s[3];
       const state = await snapshot(db, eventId); // RLS/auth check before every child path.
+      if (["export", "data-lifecycle"].includes(resourceName) && s.length === 3)
+        return eventDataRoute(request, db, eventId, resourceName, requestId);
+      if (resourceName === "documents")
+        return documentRoute(request, db, eventId, s.slice(3), requestId);
+      if (resourceName === "finance" && s.length === 3)
+        return financeRoute(request, db, eventId, requestId);
+      if (resourceName === "guests" && s.length === 3) {
+        return guestRoute(request, db, eventId, requestId);
+      }
       if (resourceName === "functions") {
         if (process.env.FEATURE_EVENT_FUNCTIONS !== "true")
           throw new DomainError("NOT_FOUND", "Module not enabled", 404);
@@ -438,6 +530,12 @@ async function route(request: Request, ctx: Context) {
             409,
           );
         const idem = key(request);
+        if (!aiConfig().enabled)
+          throw new DomainError(
+            "AI_UNAVAILABLE",
+            "AI generation is disabled. Manual planning remains available.",
+            503,
+          );
         const reservation = await command(db, {
           eventId,
           action: "reserve_ai",

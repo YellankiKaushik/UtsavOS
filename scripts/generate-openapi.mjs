@@ -1,6 +1,11 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { z } from "zod";
 import { functionFields } from "../src/domain/event-functions.ts";
+import { guestMutation, rsvpRequest } from "../src/domain/guests.ts";
+import { teamMutation } from "../src/domain/teams.ts";
+import { financeMutation } from "../src/domain/vendor-finance.ts";
+import { prepareDocument, documentAction } from "../src/domain/documents.ts";
+import { lifecycleAction } from "../src/domain/workspace-tools.ts";
 import { format } from "prettier";
 import {
   eventFields,
@@ -87,6 +92,100 @@ function flat(name, metadata, partial = false) {
   };
 }
 add("/me", "get", "Current verified identity, workspaces and AI usage");
+add(
+  "/events/{eventId}/documents",
+  "get",
+  "Contact-authorized private document metadata (FEATURE_DOCUMENTS required)",
+);
+add(
+  "/events/{eventId}/documents",
+  "post",
+  "Reserve an immutable private document path",
+  z.toJSONSchema(prepareDocument, { io: "input" }),
+);
+add(
+  "/events/{eventId}/documents/{documentId}",
+  "get",
+  "Private source text and review suggestions",
+);
+add(
+  "/events/{eventId}/documents/{documentId}",
+  "post",
+  "Local text parsing, consent-gated suggestions and explicit quote review",
+  z.toJSONSchema(documentAction, { io: "input" }),
+);
+add(
+  "/events/{eventId}/documents/{documentId}/upload",
+  "post",
+  "Upload raw file bytes up to 2 MB; exact Content-Type and X-Event-Version required",
+);
+paths["/events/{eventId}/documents/{documentId}/upload"].post.requestBody = {
+  required: true,
+  content: Object.fromEntries(
+    ["application/pdf", "image/png", "image/jpeg", "text/plain"].map((type) => [
+      type,
+      { schema: { type: "string", format: "binary" } },
+    ]),
+  ),
+};
+paths["/events/{eventId}/documents/{documentId}/upload"].post.parameters.push({
+  name: "X-Event-Version",
+  in: "header",
+  required: true,
+  schema: version,
+});
+add(
+  "/events/{eventId}/documents/{documentId}/download",
+  "get",
+  "Private attachment download; no public or reusable capability URL",
+);
+paths[
+  "/events/{eventId}/documents/{documentId}/download"
+].get.responses[200].content = {
+  "application/octet-stream": { schema: { type: "string", format: "binary" } },
+};
+add(
+  "/events/{eventId}/finance",
+  "get",
+  "Distinct quotation, commitment, invoice and payment records (FEATURE_VENDOR_FINANCE required)",
+);
+add(
+  "/events/{eventId}/finance",
+  "post",
+  "Versioned financial bookkeeping; no payment processing",
+  z.toJSONSchema(financeMutation, { io: "input" }),
+);
+add(
+  "/team",
+  "get",
+  "Role-scoped workspaces and restricted client summaries (FEATURE_TEAMS required)",
+);
+add(
+  "/team",
+  "post",
+  "Owner membership, scoped assignments and authenticated invite consent",
+  z.toJSONSchema(teamMutation, { io: "input" }),
+);
+add(
+  "/events/{eventId}/guests",
+  "get",
+  "Private guest directory (FEATURE_GUESTS required)",
+);
+add(
+  "/events/{eventId}/guests",
+  "post",
+  "Versioned household, guest, attendance and invitation commands",
+  z.toJSONSchema(guestMutation, { io: "input" }),
+);
+add(
+  "/api/rsvp",
+  "post",
+  "Read or reply to an expiring scoped invitation; Idempotency-Key required only for respond",
+  z.toJSONSchema(rsvpRequest, { io: "input" }),
+);
+paths["/api/rsvp"].servers = [{ url: "/" }];
+paths["/api/rsvp"].post.security = [];
+paths["/api/rsvp"].post.parameters[0].required = false;
 add(
   "/events/{eventId}/functions",
   "get",
@@ -280,6 +379,57 @@ paths["/api/health/live"] = {
     responses: { 200: { description: "Process is serving requests" } },
   },
 };
+add(
+  "/workspaces/{workspaceId}/dashboard",
+  "get",
+  "Managed workspace progress and authoritative entitlement usage",
+);
+add(
+  "/events/{eventId}/export",
+  "get",
+  "Owner event JSON export or formula-safe guest CSV; private originals downloaded separately",
+);
+paths["/events/{eventId}/export"].get.parameters.push({
+  name: "format",
+  in: "query",
+  schema: { type: "string", enum: ["json", "guests_csv"], default: "json" },
+});
+paths["/events/{eventId}/export"].get.responses[200] = {
+  description: "Private attachment; exports above 3 MB require assisted export",
+  content: {
+    "application/json": { schema: { type: "object" } },
+    "text/csv": { schema: { type: "string" } },
+  },
+};
+add(
+  "/events/{eventId}/data-lifecycle",
+  "get",
+  "Owner lifecycle and retention state",
+);
+add(
+  "/events/{eventId}/data-lifecycle",
+  "post",
+  "Freeze deletion request or erase eligible event data after original cleanup",
+  z.toJSONSchema(lifecycleAction),
+);
+add(
+  "/account/data-request",
+  "get",
+  "Self account deletion review status; no completion claim",
+);
+add(
+  "/account/data-request",
+  "post",
+  "Request or cancel a durable operator review; no automatic Auth or backup erasure",
+  z.toJSONSchema(
+    z
+      .object({
+        action: z.enum(["request", "cancel"]),
+        confirmed: z.literal(true),
+      })
+      .strict(),
+  ),
+);
 const schemas = Object.fromEntries(
   Object.entries({
     EventFields: eventFields,

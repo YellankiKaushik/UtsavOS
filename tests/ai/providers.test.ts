@@ -58,6 +58,8 @@ beforeEach(() => {
   vi.stubEnv("GEMINI_MODEL_ID", "synthetic-gemini");
   vi.stubEnv("OPENROUTER_API_KEY", "SYNTHETIC_OPENROUTER_KEY");
   vi.stubEnv("OPENROUTER_MODEL_DEFAULT", "openrouter/free");
+  vi.stubEnv("OPENROUTER_DISABLE_REASONING", "false");
+  vi.stubEnv("OPENROUTER_REQUIRE_FREE", "false");
 });
 afterEach(() => vi.unstubAllEnvs());
 function mockHttp(
@@ -103,6 +105,90 @@ function mockHttp(
   );
 }
 describe("OpenRouter HTTP adapter", () => {
+  it("disables optional reasoning only on a verified capable fixed free route", async () => {
+    vi.stubEnv("OPENROUTER_DISABLE_REASONING", "true");
+    vi.stubEnv("OPENROUTER_REQUIRE_FREE", "true");
+    const catalog = {
+      data: [
+        {
+          id: "synthetic/free",
+          reasoning: { mandatory: false },
+          supported_parameters: ["structured_outputs", "reasoning"],
+          pricing: { prompt: "0", completion: "0" },
+        },
+      ],
+    };
+    const http = mockHttp({ catalog });
+    await createOpenRouterTransport(http)({
+      ...request,
+      model: "synthetic/free",
+    });
+    const call = http.mock.calls.find(([url]) =>
+      String(url).includes("/chat/completions"),
+    )!;
+    expect(JSON.parse(String(call[1]?.body)).reasoning).toEqual({
+      enabled: false,
+      exclude: true,
+    });
+    expect(JSON.parse(String(call[1]?.body)).provider).toEqual({
+      require_parameters: true,
+      allow_fallbacks: false,
+      data_collection: "deny",
+      max_price: { prompt: 0, completion: 0 },
+    });
+    expect(JSON.parse(String(call[1]?.body)).max_tokens).toBe(4096);
+    for (const model of [
+      { ...catalog.data[0], reasoning: { mandatory: true } },
+      { ...catalog.data[0], pricing: { prompt: "1", completion: "0" } },
+    ]) {
+      const denied = mockHttp({ catalog: { data: [model] } });
+      await expect(
+        createOpenRouterTransport(denied)({
+          ...request,
+          model: "synthetic/free",
+        }),
+      ).rejects.toBeInstanceOf(ProviderError);
+      expect(denied).toHaveBeenCalledTimes(1);
+    }
+  });
+  it("retains usage for rejected completions without retaining private content", async () => {
+    const http = mockHttp({
+      completion: {
+        id: "synthetic-truncated",
+        model: "synthetic/actual",
+        provider: "synthetic",
+        choices: [
+          {
+            index: 0,
+            finish_reason: "length",
+            message: {
+              role: "assistant",
+              content: "PRIVATE_TRUNCATED_RESPONSE",
+            },
+          },
+        ],
+        usage: { prompt_tokens: 9, completion_tokens: 8192, cost: "0" },
+      },
+    });
+    const error = await generatePlan(event, "PRIVATE_CONTEXT", {
+      provider: "openrouter",
+      noFallback: true,
+      transports: { openrouter: createOpenRouterTransport(http) },
+    }).catch((e) => e);
+    expect(error).toBeInstanceOf(ProviderError);
+    expect(error.retryable).toBe(false);
+    expect(failureMetadata(error)).toMatchObject({
+      actualModel: "synthetic/actual",
+      finishReason: "length",
+      validationStage: "response",
+      reportedCost: "0",
+      attemptCount: 1,
+      fallbackOccurred: false,
+    });
+    expect(failureUsage(error)).toEqual({ inputTokens: 9, outputTokens: 8192 });
+    expect(JSON.stringify(error)).not.toContain("PRIVATE_");
+    expect(http).toHaveBeenCalledTimes(2);
+  });
   it("permits the documented free router only when compatible free candidates exist", async () => {
     const http = mockHttp({
       catalog: {
@@ -208,6 +294,32 @@ describe("shared validated generation and bounded fallback", () => {
   const ok: ModelTransport = async () => ({
     text: JSON.stringify(plan),
     actualModel: "synthetic-actual",
+  });
+  it("retries an early temporary failure on the same approved model within the shared deadline", async () => {
+    const gemini = vi
+      .fn<ModelTransport>()
+      .mockRejectedValueOnce(new ProviderError("gemini", "unavailable"))
+      .mockImplementation(ok);
+    const result = await generatePlan(event, "", { transports: { gemini } });
+    expect(result.attemptCount).toBe(2);
+    expect(result.fallbackOccurred).toBe(false);
+    expect(gemini.mock.calls.map(([r]) => r.model)).toEqual([
+      "synthetic-gemini",
+      "synthetic-gemini",
+    ]);
+    expect(gemini.mock.calls[1][0].timeout).toBeLessThan(
+      gemini.mock.calls[0][0].timeout,
+    );
+  });
+  it("does not retry a rate limit whose wait exceeds the remaining deadline", async () => {
+    vi.stubEnv("AI_REQUEST_TIMEOUT_MS", "1000");
+    const gemini = vi
+      .fn<ModelTransport>()
+      .mockRejectedValue(new ProviderError("gemini", "rate_limit", 60000));
+    await expect(
+      generatePlan(event, "", { transports: { gemini } }),
+    ).rejects.toMatchObject({ category: "rate_limit", attemptCount: 1 });
+    expect(gemini).toHaveBeenCalledTimes(1);
   });
   it("switches to approved fallback once on temporary failure", async () => {
     vi.stubEnv("AI_PROVIDER_FALLBACK", "openrouter");

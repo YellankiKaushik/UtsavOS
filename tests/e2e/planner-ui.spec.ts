@@ -64,7 +64,7 @@ async function syntheticApi(page: Page) {
         user: { email: "synthetic@example.test", id: ID },
         workspaces: [{ id: ID, name: "Synthetic workspace" }],
         usage: [],
-        aiConfigured: false,
+        aiConfigured: true,
       };
     else if (path === "events" && method === "GET")
       data = { items: [state.event], nextCursor: null };

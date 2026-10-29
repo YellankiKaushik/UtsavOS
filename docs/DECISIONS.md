@@ -1,5 +1,23 @@
 # Architecture decisions
 
+## ADR-025 — Private source review, fail-closed billing and verified operational erasure (2026-10-28)
+
+Private originals use ordinary server-held user sessions for bounded proxy upload and attachment download, never public URLs or persistent browser JWTs. PDF parsing executes in a separate bounded Node process without application credentials. Source spans and canonical money are validated; the user explicitly reviews fields before saving one quotation. No automatic OCR, booking, commitment or payment is claimed. Storage INSERT authorization takes the workspace lock and re-reads lifecycle state, closing both orders of the upload/deletion race.
+
+Private expiring administrative entitlements enforce active-event, AI attempt, seat and reserved storage quotas under existing locks. Default pilot limits are safety bounds, not prices. Marketplace Stripe provisioning requires owner terms acceptance; do not install an SDK or build a pretend checkout before provider provisioning. The webhook returns503 and cannot grant entitlements. FR-020 remains partial.
+
+Owner event exports omit invitation capabilities and neutralize CSV formulas. Deletion freezes writes/revokes invitations; any financial commitment or recent in-flight AI forces retention review. Eligible operational erasure runs only after actual Storage object absence, deletes old snapshot receipts and source records, and retains opaque event/audit/usage identifiers. Account requests are durable self-scoped reviews, not false claims of Auth or backup erasure. Financial/backup/operator process and larger assisted export require commercial readiness work.
+
+Exact tested Preview callback URLs are allowed; production URLs and email confirmation remain intact. Reported email_address_invalid for reserved synthetic addresses is not proof of an SMTP outage or successful email delivery. All P1 UI flags remain off by default and are enabled only for the separately verified review branch.
+
+## ADR-024 — Verified staging isolation and granular capabilities (2026-10-28)
+
+Use the positively identified isolated Supabase project and the existing repository-linked Vercel Preview. Preserve main and production. Verify each new migration locally, with real PostgreSQL concurrency where relevant, then dry-run before hosted apply. Preview AI remains disabled until genuine validated generation succeeds; service-role access is limited to synthetic account provisioning and never deployed for ordinary user operations.
+
+FR-016 uses hashed expiring revocable invitation capabilities with frozen guest/function scopes. Anonymous responses share the event lock, revalidate after waiting, use receipts and never change planned guest count or money. Contacts and invitation hashes are excluded from anonymous responses and audit diffs.
+
+FR-017 adds active database membership and event assignments. Managers operate workspace events; members require assignments and separate edit/approval/contact grants. Client viewers receive only assigned, restricted summaries. Mutating entry points lock the workspace before the event and recheck authorization after waiting, so a completed revocation prevents queued writes. Existing financial commands remain authoritative behind guarded wrappers, with old direct execution revoked and public SQL wrappers explicitly replaced for pooled-session correctness. Owner membership/billing administration cannot be delegated through user metadata or role invitations. Rejoining after revocation requires a fresh invitation and matching-email consent.
+
 ## ADR-023 — Diagnostic evidence and process environment precedence (2026-10-27)
 
 Use read-only configured Gemini model metadata and OpenRouter key/model metadata before further generation. Retain only status, latency, whitelisted reason/category and capability booleans/model IDs. Never persist raw errors, messages, headers, URL query keys or account labels. Distinguish HTTP401 authentication from403 authorization, unavailable model from no compatible route, and nested DNS/TLS/network failures. TLS/authorization/routing errors cannot trigger automatic fallback; JSON/schema/semantic rejection stages remain distinct diagnostics and cannot reroute. Live verification is still required; catalogue metadata cannot prove generated output.
@@ -95,3 +113,19 @@ Default fixture browser tests blank Supabase/provider credentials and own ports 
 The baseline SQL preview capped a guest-adjusted subtotal before applying simultaneous catering price reductions, which could reject a valid final proposal. Keep applied baseline migration immutable and replace only the private core in forward migration 20261026180040. Compute the temporary subtotal with exact PostgreSQL numeric, apply all bounded price changes, then enforce the 9e12 final cap. Authoritative stored amounts remain bigint; HTTP/domain money stays exact strings/bigint. Preserve every authorization/version/audit/lock/receipt check and revoke direct core execution. Regression: 1 guest × 9e12 paise becomes 2 guests × 1 paise; preview and atomic approval yield exactly 2 paise without mutating before approval. Existing over-budget/overflow/conflict tests continue to pass.
 
 Provider references: [OpenRouter structured output](https://openrouter.ai/docs/guides/features/structured-outputs), [model catalogue API](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties), [free router](https://openrouter.ai/openrouter/free), [Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output). These establish adapter contracts; live success remains unverified.
+
+## ADR-023 — Verified provider-neutral hackathon planning (2026-10-29)
+
+The latest owner directive requires at least one genuine approved LLM rather than Gemini exclusively. Preserve both direct adapters and the authoritative architecture; select the verified OpenRouter fixed free route dots-studio/dots-3-note-preview:free with no fallback/retry or paid use. Prompt event-plan.v2 explicitly states existing identifier/dependency/quantity/paise rules; validation is not weakened. Store prompt provenance in additive migration20261029104615. Actual hosted wedding/birthday/community selective acceptance passed. Gemini401 remains separately documented. This correction supersedes historical statements that live AI is wholly blocked.
+
+## ADR-024 — Disabled billing reconciliation and recovery evidence (2026-10-29)
+
+Implement the independently executable billing core before owner account provisioning: worker-only private receipts/bindings, current-snapshot retrieval after a leased claim, durable deduplication, bounded retries, stale-worker epochs and expiring test-mode entitlements. No live route, price or customer binding is activated. Official SDK signature verification and real Stripe events require the owner account; injected test verifiers are not provider acceptance. Add an isolated synthetic physical database restore drill, clearly distinguished from managed Supabase/Storage/Auth recovery. See modules/BILLING.md and OPERATIONS_RUNBOOK.md.
+
+## ADR-025 — Quotation evidence anchors and schema consistency (2026-10-29)
+
+A genuine quotation probe failed strict source validation. Add bounded Unicode code-point anchors from exact source lines/label tails so the model can copy evidence, and encode missing-value/null-source/zero-confidence combinations directly in the schema. The observed second failure was a missing value paired with source evidence; do not infer that offsets caused every failure. Validation and explicit financial review stay intact. The changed quotation.v2 probe passed exact source/money validation with462 input/268 output tokens,13027ms and reported cost0. This is component evidence, not complete hosted extraction acceptance; keep FEATURE_DOCUMENT_EXTRACTION disabled until the full authorized source-review workflow passes.
+
+## ADR-026 — Persist safe failure diagnostics (2026-10-29)
+
+A repeated hosted birthday generation returned503 with no model/tokens and15547ms latency. The earlier database provenance wrapper retained only routing/cost,discarding failure categories and semantic diagnostics. Add migration20261029120336 to persist only fixed category/status/stage/rule/finish-reason values. Unknown metadata,raw prompts/errors/headers remain excluded. Integration tests exercise valid and malicious metadata through actual command RPCs. This improves future diagnosis;the original upstream cause remains unknown and is not retroactively attributed.

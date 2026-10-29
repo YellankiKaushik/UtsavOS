@@ -2,6 +2,21 @@ import { describe, it, expect, vi } from "vitest";
 import { checkOrigin, key, readBody, handle } from "@/application/http";
 import { DomainError } from "@/domain/errors";
 describe("HTTP security and safe errors", () => {
+  it("returns private attachments without JSON encoding or cache exposure", async () => {
+    const result = await handle(
+      async () =>
+        new Response("synthetic attachment", {
+          headers: {
+            "Content-Type": "application/octet-stream",
+            "Content-Disposition": "attachment; filename=synthetic.txt",
+          },
+        }),
+    );
+    expect(await result.text()).toBe("synthetic attachment");
+    expect(result.headers.get("cache-control")).toBe("private, no-store");
+    expect(result.headers.get("x-request-id")).toBeTruthy();
+    expect(result.headers.get("content-disposition")).toContain("attachment");
+  });
   it("rejects missing or forged origins and accepts exact origin", () => {
     vi.stubEnv("APP_BASE_URL", "https://planner.example");
     expect(() =>

@@ -5,7 +5,9 @@ const mode = process.argv[2],
   missing = [];
 const provider =
   mode === "corpus"
-    ? process.env.LIVE_AI_PROVIDER || "gemini"
+    ? process.env.LIVE_AI_PROVIDER ||
+      process.env.AI_PROVIDER_PRIMARY ||
+      "gemini"
     : process.env.AI_PROVIDER_PRIMARY || "gemini";
 if (mode !== "corpus") {
   if (process.env.LIVE_STAGING_CONFIRMED !== "true")

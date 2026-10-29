@@ -1,0 +1,996 @@
+{
+  "generatedAt": "2026-10-29T12:29:39.584Z",
+  "scope": "Final autonomous engineering and owner handoff; historical reports preserved",
+  "executive": {
+    "completed": "Genuine provider-neutral planning/review/selective acceptance,exact replan,submission package,disabled billing core,synthetic restore,quotation component and safer diagnostics",
+    "incomplete": "Public release/judge access,mail delivery,eligibility/publication,real billing,full account/managed backup operations,P2",
+    "hackathon": "BLOCKED",
+    "p0": "PARTIALLY VERIFIED",
+    "commercial": "INCOMPLETE",
+    "production": "CANDIDATE ONLY"
+  },
+  "git": {
+    "repository": "https://github.com/YellankiKaushik/UtsavOS",
+    "branch": "codex/live-release-completion",
+    "initialCommit": "632c4b68c64c94b6b301703050583503987f2c48",
+    "implementationCommit": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+    "reportCommit": "This report cannot embed its own commit hash; resolve the current branch HEAD. Subsequent report-only commit is identified in the final handoff.",
+    "mainUnchanged": "0798627de160425a9a5925a1291bfe37fce825be",
+    "pr": "https://github.com/YellankiKaushik/UtsavOS/pull/1",
+    "prState": "OPEN DRAFT",
+    "ci": {
+      "sha": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+      "runs": [
+        {
+          "id": 40871837274,
+          "name": "UtsavOS verification",
+          "status": "completed",
+          "conclusion": "success",
+          "event": "pull_request",
+          "headSha": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40871837274",
+          "runAttempt": 1
+        },
+        {
+          "id": 40871829514,
+          "name": "UtsavOS verification",
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "headSha": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40871829514",
+          "runAttempt": 1
+        }
+      ],
+      "checks": [
+        {
+          "id": 123441020945,
+          "name": "Vercel Preview Comments",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://vercel.com/github"
+        },
+        {
+          "id": 123440568116,
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40871837274/job/123440568116"
+        },
+        {
+          "id": 123440567832,
+          "name": "supabase-platform",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40871837274/job/123440567832"
+        },
+        {
+          "id": 123440541155,
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40871829514/job/123440541155"
+        },
+        {
+          "id": 123440540732,
+          "name": "supabase-platform",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40871829514/job/123440540732"
+        }
+      ]
+    },
+    "uncommitted": "Report/status files may be staged in a subsequent documentation-only commit; owner image preserved untracked"
+  },
+  "challenge": {
+    "deadline": "2026-11-01T23:59:00+05:30",
+    "attempts": {
+      "used": 0,
+      "maximum": 3
+    },
+    "source": "Owner-provided authenticated dashboard transcription; independent login not obtained",
+    "matrix": "# Challenge 5 compliance — 29 October 2026\n\nSources: **D** = owner-provided authenticated dashboard transcription in [organizer requirements](ORGANIZER_REQUIREMENTS.md); **P** = [official public organizer page](https://promptwars.in/promptwarsVirtual.html); **G** = provisional [published challenge guide](https://saurabh1201.medium.com/promptwars-challenge-5-celebration-event-planner-problem-statement-rules-submission-6bd25d88fa63). D confirms submission requirements; the owner directive/G describe the functional brief. Independent authenticated dashboard access is not claimed.\n\n| Requirement                                                 | Source                  | Implementation/evidence                                                             | Demo                         | Tests                                                     | Status      | Remaining action                                              |\n| ----------------------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------- | ----------- | ------------------------------------------------------------- |\n| Challenge5, Celebration & Event Planner                     | D number; owner/G title | PROJECT_DESCRIPTION.md                                                              | Opening                      | Three event types                                         | IMPLEMENTED | Confirm matching dropdown text                                |\n| Weddings, birthdays, community events                       | Owner/G                 | src/domain/contracts.ts; src/components/planner.tsx                                 | Creation                     | tests/staging-e2e/ai-journey.spec.ts:3 real types passed  | VERIFIED    | Public release                                                |\n| Budget planning, editing, accurate totals and impact        | Owner/G                 | src/domain/money.ts; src/components/resources.tsx; planning.tsx; core SQL           | Golden replan                | Hosted150/180 vector; unit/native tests                   | VERIFIED    | AI prices still need review/correction                        |\n| Tasks, deadlines, status, dependencies and time zones       | Owner/G                 | src/domain/tasks.ts; dates.ts; resources.tsx                                        | Timeline                     | Local/native dependency/date rules; hosted accepted tasks | VERIFIED    | No delivered-reminder claim                                   |\n| Actionable vendor checklist                                 | Owner/G                 | src/components/resources.tsx; src/domain/contracts.ts                               | Vendor view                  | Hosted selective acceptance/manual editing                | VERIFIED    | No availability, booking or verified quotation claim          |\n| Personalized genuine GenAI ideas                            | Owner/G                 | src/infrastructure/ai/service.ts; openrouter-provider.ts; src/domain/ai-contract.ts | Generation/review/ideas      | Real smoke +3 direct type cases +3 hosted acceptances     | VERIFIED    | Free route availability may change; estimates require review  |\n| Public GitHub; restricted links not evaluated               | D                       | Public repository; PR#1; README.md                                                  | Closing                      | Remote identity/visibility inspected                      | IMPLEMENTED | Reviewed default-branch release pending                       |\n| Repository strictly below10MB                               | D                       | scripts/measure-repository.mjs                                                      | None                         | HEAD blobs/ZIP/local Git metadata bytes in master report  | VERIFIED    | Re-measure submitted HEAD; organizer's method unspecified     |\n| Evaluable public deployed link                              | D                       | Vercel utsavos; origin/auth controls                                                | Whole flow                   | Protected Preview6 journeys passed; production older main | BLOCKED     | Approved public release and judge access                      |\n| Unlisted YouTube/access-granted Drive video                 | D                       | DEMO_VIDEO_SCRIPT.md; local MP4 outside Git                                         | 82-second film               | Media probe and direct frame review                       | IMPLEMENTED | Owner uploads/checks link signed out; no URL yet              |\n| LinkedIn post URL, http/https                               | D                       | LINKEDIN_POST.md                                                                    | None                         | Draft only                                                | BLOCKED     | Owner publishes and supplies actual URL                       |\n| Updates/GenAI explanation ≤1024 characters each             | D                       | SUBMISSION_FORM_ANSWERS.json/.md; scripts/validate-submission.mjs                   | None                         | 795/755 characters                                        | VERIFIED    | Paste only after matching public release; required links null |\n| 1 Nov2026,23:59 IST; at most3 attempts                      | D                       | ORGANIZER_REQUIREMENTS.md                                                           | None                         | Owner reports0/3; no attempt consumed here                | VERIFIED    | Manual owner submission before deadline                       |\n| Permitted tools / mandatory Antigravity                     | P conflicting; D silent | ORGANIZER_REQUIREMENTS.md; genuine Codex use disclosed                              | No invented tool attribution | No Antigravity contribution established                   | UNKNOWN     | Organizer clarification                                       |\n| Quality/security/efficiency/testing/accessibility/alignment | D                       | JUDGING_ALIGNMENT.md                                                                | Core proof                   | Real code/test evidence, no invented weights              | VERIFIED    | No score/rank prediction                                      |\n| Specific model/provider mandate                             | D silent; G provisional | Gemini/OpenRouter adapters                                                          | Actual OpenRouter identified | Genuine approved free route works                         | UNKNOWN     | No additional model mandate established                       |\n\nVERIFIED applies to the stated evidence layer. It does not make protected staging public, settle tool eligibility or establish commercial readiness.\n",
+    "toolEligibility": "UNKNOWN; public organizer page contradictory; no Antigravity contribution claimed"
+  },
+  "ai": {
+    "gemini": {
+      "requestedModel": "gemini-3.8-flash",
+      "auth": "models.list401; credential syntax unrecognized; unchanged failures not retried intentionally",
+      "generation": "Not verified; inactive"
+    },
+    "openrouter": {
+      "requestedModel": "dots-studio/dots-3-note-preview:free",
+      "actualModel": "dots-studio/dots-3-note-preview:free",
+      "routingProvider": "AtlasCloud in successful smoke",
+      "auth": "Key/catalogue200",
+      "promptVersion": "event-plan.v2",
+      "shapeSmoke": {
+        "inputTokens": 313,
+        "outputTokens": 871,
+        "latencyMs": 19148,
+        "reportedCost": "0",
+        "attemptCount": 1,
+        "fallback": false
+      },
+      "initialHostedEvents": [
+        {
+          "type": "wedding",
+          "provider": "openrouter",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "actualModel": "dots-studio/dots-3-note-preview:free",
+          "promptVersion": "event-plan.v2",
+          "latencyMs": 19960,
+          "inputTokens": 324,
+          "outputTokens": 658,
+          "usageStatus": "success",
+          "selectedTasks": 3,
+          "selectedVendors": 2,
+          "budgetSuggestionsIntentionallyNotAccepted": true
+        },
+        {
+          "type": "birthday",
+          "provider": "openrouter",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "actualModel": "dots-studio/dots-3-note-preview:free",
+          "promptVersion": "event-plan.v2",
+          "latencyMs": 18087,
+          "inputTokens": 321,
+          "outputTokens": 549,
+          "usageStatus": "success",
+          "selectedTasks": 3,
+          "selectedVendors": 2,
+          "budgetSuggestionsIntentionallyNotAccepted": true
+        },
+        {
+          "type": "community",
+          "provider": "openrouter",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "actualModel": "dots-studio/dots-3-note-preview:free",
+          "promptVersion": "event-plan.v2",
+          "latencyMs": 19233,
+          "inputTokens": 321,
+          "outputTokens": 1010,
+          "usageStatus": "success",
+          "selectedTasks": 3,
+          "selectedVendors": 2,
+          "budgetSuggestionsIntentionallyNotAccepted": true
+        }
+      ],
+      "limits": "Prices can be unrealistic; generated budget lines excluded from deterministic vector. One later birthday503 at15547ms with no tokens/model metadata; old category not retained, so exact upstream cause unknown. New diagnostics do not retroactively identify it.",
+      "quotation": {
+        "status": "PASSED",
+        "syntheticOnly": true,
+        "sourceSpansValidated": true,
+        "promptVersion": "quotation.v2",
+        "provider": "openrouter",
+        "requestedModel": "dots-studio/dots-3-note-preview:free",
+        "actualModel": "dots-studio/dots-3-note-preview:free",
+        "providerRequestId": "gen-1793275137-mzBPgQOlhui8XSdmv3HR",
+        "routingProvider": "AtlasCloud",
+        "reportedCost": "0",
+        "latencyMs": 13027,
+        "fallbackOccurred": false,
+        "attemptCount": 1,
+        "inputTokens": 462,
+        "outputTokens": 268
+      },
+      "latestBirthdayCheck": {
+        "stats": {
+          "startTime": "2026-10-29T12:15:19.627Z",
+          "duration": 84475.227,
+          "expected": 0,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "failures": [
+          {
+            "createdAt": "2026-10-29T12:15:58.393034+00:00",
+            "status": "failed",
+            "provider": "openrouter",
+            "model": "dots-studio/dots-3-note-preview:free",
+            "errorCode": "AI_UNAVAILABLE",
+            "metadataKeys": [
+              "id",
+              "workspace_id",
+              "actor_id",
+              "event_id",
+              "model_id",
+              "operation",
+              "input_tokens",
+              "output_tokens",
+              "status",
+              "estimated_cost_minor",
+              "created_at",
+              "provider_id",
+              "requested_model_id",
+              "actual_model_id",
+              "provider_request_id",
+              "fallback_occurred",
+              "latency_ms",
+              "attempt_count",
+              "error_code",
+              "usage_metadata"
+            ],
+            "latencyMs": 45002,
+            "inputTokens": null,
+            "outputTokens": null,
+            "usageMetadata": {
+              "failureCategory": "timeout"
+            }
+          },
+          {
+            "createdAt": "2026-10-29T11:56:44.863994+00:00",
+            "status": "failed",
+            "provider": "openrouter",
+            "model": "dots-studio/dots-3-note-preview:free",
+            "errorCode": "AI_UNAVAILABLE",
+            "metadataKeys": [
+              "id",
+              "workspace_id",
+              "actor_id",
+              "event_id",
+              "model_id",
+              "operation",
+              "input_tokens",
+              "output_tokens",
+              "status",
+              "estimated_cost_minor",
+              "created_at",
+              "provider_id",
+              "requested_model_id",
+              "actual_model_id",
+              "provider_request_id",
+              "fallback_occurred",
+              "latency_ms",
+              "attempt_count",
+              "error_code",
+              "usage_metadata"
+            ],
+            "latencyMs": 15547,
+            "inputTokens": null,
+            "outputTokens": null,
+            "usageMetadata": {}
+          }
+        ]
+      },
+      "alternateFreeRoute": {
+        "requestedModel": "nvidia/nemotron-3.5-super-vl:free",
+        "result": {
+          "status": "FAILED",
+          "provider": "openrouter",
+          "requestedModel": "nvidia/nemotron-3.5-super-vl:free",
+          "errorCode": "AI_ROUTE_UNAVAILABLE",
+          "failureCategory": "routing",
+          "fallbackOccurred": false,
+          "attemptCount": 1,
+          "latencyMs": 1319
+        }
+      },
+      "liveCorpus": "Not executed; explicit24-request budget gate remains unmet"
+    },
+    "configuration": "Fixed route;data_collection deny;require_parameters true;no fallback/SDK retries;free prompt/completion pricing checked;45-second shared deadline;keys server-only"
+  },
+  "supabase": {
+    "project": "upbwahlegwcwiladfwwd",
+    "name": "usthav os",
+    "region": "ap-south-1",
+    "engine": "PostgreSQL17.11 hosted;native tests17.10",
+    "migrations": [
+      "20261026142503_p0_core.sql",
+      "20261026165848_ai_provider_provenance.sql",
+      "20261026180040_combined_change_financial_bounds.sql",
+      "20261026183745_p1_event_functions.sql",
+      "20261027192558_p1_guest_rsvp.sql",
+      "20261027195746_p1_team_collaboration.sql",
+      "20261027201649_p1_vendor_finance.sql",
+      "20261027203506_p1_private_documents.sql",
+      "20261028015656_p1_document_quote_provenance.sql",
+      "20261028022000_p1_entitlements_dashboard.sql",
+      "20261028023000_p1_event_data_lifecycle.sql",
+      "20261028090000_storage_upload_lifecycle_serialization.sql",
+      "20261029104615_ai_prompt_version_provenance.sql",
+      "20261029112216_billing_reconciliation_foundation.sql",
+      "20261029120336_ai_failure_diagnostics.sql"
+    ],
+    "applied": "All forward migrations applied additively to identified staging; no reset/seed/customer deletion",
+    "auth": "Password sessions verified; confirmation enabled; real confirmation/recovery delivery unverified",
+    "rls": "Ordinary sessions and native/CI tests enforce tenant/role isolation and deny direct writes",
+    "storage": "Private actual PDF upload/parser/review and cleanup controls verified",
+    "restore": {
+      "status": "PASSED",
+      "environment": "PGlite PostgreSQL physical data-directory snapshot; synthetic Auth/Storage catalogues",
+      "snapshotBytes": 5259088,
+      "restoreAndVerifyMs": 572,
+      "totalMs": 1187,
+      "checks": [
+        "exact canonical money",
+        "event version preserved",
+        "guarded RPCs writable by owner",
+        "cross tenant RPC and RLS denied",
+        "direct writes denied"
+      ],
+      "notVerified": [
+        "Supabase managed backups/PITR",
+        "remote Storage object restoration",
+        "Auth delivery/session invalidation",
+        "provider retention/backup expiry"
+      ],
+      "remoteDataTouched": false
+    }
+  },
+  "vercel": {
+    "projectId": "prj_PqBVW2XZqRNqmkhNVgoBOMEysCbm",
+    "team": "team_UYEpjjRaObtrYF55SYu5rqUl",
+    "deployment": {
+      "id": "dpl_5WsdppG7s8ZbRSaumvJaJuWANUhv",
+      "url": "utsavos-e7p9xjhu6-kaushik-yellanki-project.vercel.app",
+      "readyState": "READY",
+      "target": null,
+      "projectId": "prj_PqBVW2XZqRNqmkhNVgoBOMEysCbm",
+      "alias": [
+        "utsavos-git-codex-live-release-a4180c-kaushik-yellanki-project.vercel.app"
+      ],
+      "gitRef": "codex/live-release-completion",
+      "sha": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+      "nodeVersion": "24.x"
+    },
+    "production": {
+      "id": "dpl_8KWZiS3WCC8xUCKY6uRHWm9xYGyi",
+      "url": "utsavos-9xkpgsgw1-kaushik-yellanki-project.vercel.app",
+      "sha": "0798627de160425a9a5925a1291bfe37fce825be",
+      "branch": "main",
+      "target": "production",
+      "state": "READY"
+    },
+    "anonymous": [
+      {
+        "url": "https://utsavos.vercel.app/",
+        "status": 200,
+        "locationPath": null
+      },
+      {
+        "url": "https://utsavos.vercel.app/api/health/live",
+        "status": 200,
+        "locationPath": null
+      },
+      {
+        "url": "https://utsavos.vercel.app/app/events",
+        "status": 307,
+        "locationPath": "/login"
+      },
+      {
+        "url": "https://utsavos-e7p9xjhu6-kaushik-yellanki-project.vercel.app/",
+        "status": 302,
+        "locationPath": "/sso-api"
+      }
+    ],
+    "publicGenAiUrl": null,
+    "origin": "Exact platform Preview origin is trusted; production requires a fresh production-target build with canonical APP_BASE_URL. Do not simply promote a Preview with the wrong baked origin.",
+    "callbacks": {
+      "project": "upbwahlegwcwiladfwwd",
+      "candidate": "dpl_5WsdppG7s8ZbRSaumvJaJuWANUhv",
+      "sha": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+      "updatedOnly": "auth.additional_redirect_urls",
+      "existingUrlsPreserved": true,
+      "emailConfirmationPreserved": true,
+      "siteUrlPreserved": true,
+      "addedCallbacks": [
+        "https://utsavos-e7p9xjhu6-kaushik-yellanki-project.vercel.app/auth/callback",
+        "https://utsavos-e7p9xjhu6-kaushik-yellanki-project.vercel.app/auth/callback?next=/reset-password"
+      ],
+      "declaredDifferences": 0,
+      "emailDeliveryVerified": false
+    }
+  },
+  "frontend": {
+    "routes": [
+      "/",
+      "/login",
+      "/reset-password",
+      "/onboarding",
+      "/app/events",
+      "/app/events/new",
+      "event overview/budget/tasks/vendors/AI/replan/history/functions/guests/documents/finance/data",
+      "workspace dashboard/teams/settings",
+      "/rsvp"
+    ],
+    "evidence": "Local synthetic browser/axe/keyboard/mobile checks plus genuine hosted desktop/mobile flows",
+    "knownLimits": "Brief real loading states appear in recordings; no critical synthetic axe finding remains. Exhaustive hosted role/device combinations and real email links are not verified."
+  },
+  "requirements": [
+    {
+      "id": "FR-001",
+      "name": "Authentication",
+      "status": "PARTIAL",
+      "files": "app/auth/actions/route.ts; app/auth/callback/route.ts; proxy.ts; src/infrastructure/supabase/server.ts",
+      "tests": "Hosted ordinary password sessions,refresh/logout/re-login and tenant denial",
+      "remaining": "Confirmation/recovery delivery,expiry/replay email callback acceptance need a controlled inbox"
+    },
+    {
+      "id": "FR-002",
+      "name": "Workspaces",
+      "status": "STAGING VERIFIED",
+      "files": "app/onboarding/page.tsx; supabase/migrations/20261026142503_p0_core.sql",
+      "tests": "Ordinary-session hosted workspace isolation",
+      "remaining": "Public judge workflow pending"
+    },
+    {
+      "id": "FR-003",
+      "name": "Event setup",
+      "status": "STAGING VERIFIED",
+      "files": "src/components/planner.tsx; src/domain/contracts.ts",
+      "tests": "Real wedding,birthday,community setup and local browser forms",
+      "remaining": "Public release pending"
+    },
+    {
+      "id": "FR-004",
+      "name": "Event CRUD",
+      "status": "STAGING VERIFIED",
+      "files": "src/application/repository.ts; app/api/v1/[...segments]/route.ts",
+      "tests": "Hosted manual persistence/version/tenant checks",
+      "remaining": "No customer-data deletion exercised"
+    },
+    {
+      "id": "FR-005",
+      "name": "AI planning",
+      "status": "STAGING VERIFIED WITH RELIABILITY LIMIT",
+      "files": "src/infrastructure/ai/service.ts; openrouter-provider.ts; src/domain/ai-contract.ts",
+      "tests": "Three genuine event types passed initially; later birthday503 recorded separately",
+      "remaining": "Later503 and affected45002ms timeout;free route availability/usefulness need review;24-request live corpus unexecuted"
+    },
+    {
+      "id": "FR-006",
+      "name": "Draft review/selective acceptance",
+      "status": "STAGING VERIFIED",
+      "files": "src/components/planning.tsx; core SQL command",
+      "tests": "Hosted edit/select tasks+vendors,persistent acceptance/version update; local budget-edit/acceptance tests",
+      "remaining": "Golden vector intentionally excludes AI budget suggestions"
+    },
+    {
+      "id": "FR-007",
+      "name": "Exact budgets",
+      "status": "STAGING/NATIVE VERIFIED",
+      "files": "src/domain/money.ts; src/components/resources.tsx; core SQL",
+      "tests": "42750000→45300000 paise,4700000 remaining; bounds/locks/races",
+      "remaining": "Model cost suggestions are unverified"
+    },
+    {
+      "id": "FR-008",
+      "name": "Vendors",
+      "status": "STAGING VERIFIED",
+      "files": "src/components/resources.tsx; src/domain/contracts.ts",
+      "tests": "Hosted checklist acceptance/manual edits",
+      "remaining": "No availability,booking or payment execution"
+    },
+    {
+      "id": "FR-009",
+      "name": "Tasks/timeline",
+      "status": "STAGING + LOCAL/NATIVE RULES VERIFIED",
+      "files": "src/domain/tasks.ts; dates.ts; src/components/resources.tsx",
+      "tests": "Hosted accepted tasks/dependencies; local deadline/time-zone tests",
+      "remaining": "TBD event deadlines remain undecided; no delivered reminders"
+    },
+    {
+      "id": "FR-010",
+      "name": "Change preview",
+      "status": "STAGING/NATIVE VERIFIED",
+      "files": "src/domain/replan.ts; src/components/planning.tsx",
+      "tests": "Non-mutating exact guest/catering preview",
+      "remaining": "Unknown venue capacity remains a visible warning"
+    },
+    {
+      "id": "FR-011",
+      "name": "Atomic approval",
+      "status": "STAGING/NATIVE VERIFIED",
+      "files": "core SQL; src/domain/replan.ts",
+      "tests": "Version/locks/idempotency/atomic money and native races",
+      "remaining": "Production release pending"
+    },
+    {
+      "id": "FR-012",
+      "name": "Audit history",
+      "status": "STAGING VERIFIED",
+      "files": "src/components/planner.tsx; public.audit_events",
+      "tests": "Hosted approval history and refresh/re-login",
+      "remaining": "Managed audit retention policy pending"
+    },
+    {
+      "id": "FR-013",
+      "name": "Responsive accessibility",
+      "status": "BROWSER VERIFIED, BOUNDED SCOPE",
+      "files": "app/globals.css; src/components; tests/e2e",
+      "tests": "28 synthetic browser cases with axe/keyboard/breakpoints; hosted mobile birthday/manual",
+      "remaining": "No accessibility certification or exhaustive assistive-device claim"
+    },
+    {
+      "id": "FR-014",
+      "name": "Resilience",
+      "status": "IMPLEMENTED + VERIFIED CONTROLS",
+      "files": "src/infrastructure/ai; src/application/http.ts; core SQL",
+      "tests": "Outage/disabled/timeout/cancel/schema/tenant tests; failed hosted generation safely503",
+      "remaining": "Intermittent free-provider failures remain possible; new safe failure persistence added"
+    },
+    {
+      "id": "FR-015",
+      "name": "Event functions",
+      "status": "LOCAL/STAGING VERIFIED",
+      "files": "src/domain/event-functions.ts; src/components/event-functions.tsx; migration20261026183745",
+      "tests": "Functions browser/native/hosted evidence",
+      "remaining": "Rollout remains flagged"
+    },
+    {
+      "id": "FR-016",
+      "name": "Guests/RSVP",
+      "status": "LOCAL/NATIVE/STAGING VERIFIED",
+      "files": "src/domain/guests.ts; src/application/guest-http.ts; src/components/guests.tsx",
+      "tests": "Hashed frozen scoped capabilities,revocation/RSVP,hosted manual flow",
+      "remaining": "No actual invitation messaging service claimed"
+    },
+    {
+      "id": "FR-017",
+      "name": "Teams",
+      "status": "LOCAL/NATIVE/STAGING RPC VERIFIED",
+      "files": "src/domain/teams.ts; src/application/team-http.ts; src/components/teams.tsx",
+      "tests": "Role/assignment/revocation transactions; local mobile UI; ordinary hosted RPC",
+      "remaining": "No proof of every hosted role UI permutation"
+    },
+    {
+      "id": "FR-018",
+      "name": "Vendor finance",
+      "status": "LOCAL/NATIVE/STAGING RPC VERIFIED",
+      "files": "src/domain/vendor-finance.ts; src/application/finance-http.ts; src/components/vendor-finance.tsx",
+      "tests": "Exact quote/commitment/invoice/payment records and concurrent overpayment bounds",
+      "remaining": "Records only; money is not transferred"
+    },
+    {
+      "id": "FR-019",
+      "name": "Private documents/quotation review",
+      "status": "MANUAL HOSTED VERIFIED; AI COMPONENT VERIFIED",
+      "files": "src/domain/documents.ts; src/application/document-http.ts; src/infrastructure/documents/files.ts; scripts/pdf-extract-worker.mjs",
+      "tests": "Hosted private PDF/isolation/manual source review; genuine quotation.v2 source validation component passed",
+      "remaining": "AI extraction rollout remains off pending full hosted acceptance; unsupported images require manual transcript"
+    },
+    {
+      "id": "FR-020",
+      "name": "Subscriptions/entitlements",
+      "status": "PARTIAL",
+      "files": "src/domain/billing.ts; src/application/billing.ts; src/infrastructure/billing-store.ts; migrations20261028022000/20261029112216",
+      "tests": "Hosted administrative limits;6 billing DB tests;native duplicate/claim race;disabled webhook negative test",
+      "remaining": "Real Stripe account,official SDK verification,worker/scheduler,checkout/provider events unavailable"
+    },
+    {
+      "id": "FR-021",
+      "name": "Export/correction/deletion",
+      "status": "EVENT LIFECYCLE VERIFIED; ACCOUNT OPERATIONS INCOMPLETE",
+      "files": "src/domain/workspace-tools.ts; src/application/workspace-tools-http.ts; src/components/workspace-tools.tsx; migration20261028023000",
+      "tests": "Scoped export/CSV safety,versioned event erasure/financial holds,Storage cleanup serialization",
+      "remaining": "Full account processor,session revocation,legal/backup retention and managed restore remain incomplete"
+    }
+  ],
+  "p2": {
+    "status": "NOT IMPLEMENTED",
+    "features": [
+      "advanced reminders/notifications",
+      "marketplace/WhatsApp integrations",
+      "actual booking/payment execution",
+      "dedicated event-day operations",
+      "native mobile application"
+    ]
+  },
+  "tests": [
+    {
+      "suite": "Regression",
+      "command": "npm test -- --reporter=json --outputFile=.runtime/release-20261029/regression-final.json",
+      "environment": "PGlite/synthetic fixtures; no live model",
+      "passed": 229,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/regression-final.json"
+    },
+    {
+      "suite": "Native transactions",
+      "command": "npm run test:concurrency",
+      "environment": "Disposable PostgreSQL17.10, independent loopback TCP sessions,synthetic Auth roles",
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/concurrency-summary.json"
+    },
+    {
+      "suite": "Synthetic browser",
+      "command": "npm run test:e2e",
+      "environment": "Local Next.js/controlled API doubles;320–1440px and axe",
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/browser-results.json"
+    },
+    {
+      "suite": "Configured anonymous guard",
+      "command": "npm run test:live:public",
+      "environment": "Local built app on3004 with real configuration; NOT the public Vercel URL",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/live-public-results.json"
+    },
+    {
+      "suite": "Local browser→hosted services",
+      "command": "npm run test:e2e:live",
+      "environment": "Local built app3005 + genuine staging Auth/DB/free model",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": "playwright-report/live/index.html"
+    },
+    {
+      "suite": "First hosted browser acceptance",
+      "command": "node .runtime/release-20261028/run-vercel-command.cjs .runtime/release-20261029/hosted-browser.cjs",
+      "environment": "Protected READY Vercel Preview1be298b + isolated Supabase + real model",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/hosted-browser-ai-initial.json"
+    },
+    {
+      "suite": "Later hosted repetition",
+      "command": "same hosted-browser helper at df53791",
+      "environment": "Protected df53791 Preview + same staging/provider",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/hosted-browser-df53791.json",
+      "note": "Birthday generation503; do not erase this failure or sum repeated successes as unique coverage"
+    },
+    {
+      "suite": "Initial full live provider/ordinary session suite",
+      "command": "npm run test:live (initial attempt)",
+      "environment": "Real staging; old Gemini-only test wrapper",
+      "passed": 6,
+      "failed": 3,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/hosted-live-before-wrapper-fix.json",
+      "note": "Three unintended Gemini calls failed; test imports corrected"
+    },
+    {
+      "suite": "Affected direct generation rerun",
+      "command": "Historical filtered run; reproduce with npx vitest run --config vitest.live.config.ts -t \"verifies REAL configured-provider structured generation\"",
+      "environment": "Real provider-neutral service; explicit OpenRouter,no fallback",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 6,
+      "artifact": ".runtime/release-20261029/hosted-ai-types.json",
+      "note": "Exact historic name-selector text was not retained; selected case names are in the artifact. Six filtered cases are pending,not extra passes"
+    },
+    {
+      "suite": "Planning shape smoke",
+      "command": "$env:SHAPE_SMOKE_MODEL='dots-studio/dots-3-note-preview:free'; npx vitest run --config .runtime/release-20261029/shape-smoke.config.ts",
+      "environment": "Genuine fixed free route; synthetic event",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/shape-smoke.json",
+      "note": "Earlier semantic rejection preserved separately; exact old cause was not retained"
+    },
+    {
+      "suite": "Quotation component",
+      "command": "npx vitest run --config .runtime/release-20261029/quote-smoke.config.ts",
+      "environment": "Real free route,synthetic text,strict exact source/value validation",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/quote-smoke-results.json",
+      "note": "Two earlier rejected trials preserved; second error was missing value with claimed evidence. No hosted extraction enablement"
+    },
+    {
+      "suite": "Live24-request corpus",
+      "command": "node scripts/preflight-live.mjs corpus; npm run test:ai:live not started",
+      "environment": "Not run: explicit LIVE_EVAL_REQUEST_BUDGET>=24 gate not supplied",
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notExecuted": 24,
+      "artifact": ".runtime/release-20261029/corpus-preflight.json",
+      "note": "Preflight blocked;zero Vitest tests executed;24 planned cases are not passes or reported Vitest skips"
+    },
+    {
+      "suite": "Affected hosted birthday diagnostic rerun",
+      "command": "node .runtime/release-20261028/run-vercel-command.cjs .runtime/release-20261029/birthday-check.cjs",
+      "environment": "Protected adf4685 Preview;same application code as6e98d77,test-only fixture correction follows",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/birthday-check.json",
+      "note": "Failed503 at45002ms;persisted failureCategory=timeout;no model/tokens returned. No further unchanged retry."
+    },
+    {
+      "suite": "Single alternate free-route smoke",
+      "command": "Set SHAPE_SMOKE_MODEL=nvidia/nemotron-3.5-super-vl:free; npx vitest run --config .runtime/release-20261029/alternate-free-smoke.config.ts",
+      "environment": "Real free catalogue and current strict routing policy;no deployed model change",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "artifact": ".runtime/release-20261029/alternate-free-smoke.json",
+      "note": "HTTP404 AI_ROUTE_UNAVAILABLE,1319ms;an earlier omitted model-selector invocation stopped before any network request"
+    }
+  ],
+  "security": {
+    "controls": [
+      "RLS/tenant/role checks",
+      "server-only keys",
+      "origin/session protections",
+      "private Storage/upload bounds/isolated parser",
+      "hashed scoped invitation capabilities",
+      "exact paise/version/locks/idempotency/atomic approvals",
+      "strict AI schema/domain/source validation",
+      "bounded provider requests and disabled unsafe integrations"
+    ],
+    "secretScan": "Staged values/pattern/client scan passed; reachable local history980objects/386blobs had no findings at df53791 checkpoint; final scan repeated before commit",
+    "dependencyAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "limits": "No legal certification,managed backup erasure,production stress test or production error-rate SLO claimed"
+  },
+  "assets": {
+    "github": "https://github.com/YellankiKaushik/UtsavOS",
+    "deployedUrl": null,
+    "video": {
+      "asset": "C:/Users/YellankiKaushik/.codex/visualizations/2026/10/27/01a17bf0-1534-7b50-99db-ae173615c7ed/utsavos-challenge5-film/delivery/UtsavOS-Challenge5-demo.mp4",
+      "durationSeconds": 82.034,
+      "bytes": 11773092,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "videoCodec": "h264",
+      "audibleAudio": false,
+      "source": "Genuine protected Preview dpl_891BUcd8K6w3MVm2gadMPR9UedEW at implementation1be298b; synthetic wedding only",
+      "edits": [
+        "waiting/navigation shortened",
+        "capture-only identity masking",
+        "editorial framing and silent captions"
+      ],
+      "aiOutput": "Actual OpenRouter response; no synthetic replacement",
+      "attribution": "Owner-authorized UtsavOS UI captures; no external stock, music or voice",
+      "publicUrl": null,
+      "review": {
+        "sourceQuality": "passed",
+        "settledFramesViewed": 9,
+        "transitionSheetsViewed": 8,
+        "overviewSheetsViewed": 1,
+        "annotatedEvidenceFramesViewed": 6,
+        "additionalProductFramesViewed": 6,
+        "materialCorrection": "Removed inactive media nodes and awaited media readiness to fix frozen loading frames; reduced shadow and repositioned text into safe areas",
+        "acceptedCandidates": [
+          "Soft product-shadow bounds overlap caption/header geometry without obscuring actual glyphs; inspected in normal frames",
+          "Brief real navigation/loading within recorded interaction",
+          "Intentional still proof holds and silent audio"
+        ]
+      },
+      "screenshots": [
+        "UtsavOS-personalized-ideas.png",
+        "UtsavOS-exact-budget.png",
+        "UtsavOS-timeline.png"
+      ]
+    },
+    "videoUrl": null,
+    "linkedInDraft": "docs/hackathon/LINKEDIN_POST.md",
+    "linkedInUrl": null,
+    "form": "docs/hackathon/SUBMISSION_FORM_ANSWERS.md",
+    "characters": {
+      "deployedUpdates": 795,
+      "genAiServices": 755,
+      "limit": 1024
+    },
+    "repositorySize": {
+      "generatedAt": "2026-10-29T12:19:14.982Z",
+      "commit": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+      "trackedFiles": 228,
+      "trackedBytes": 2403594,
+      "headZipBytes": 737979,
+      "localGitMetadataBytes": 1817390,
+      "limitBytes": 10000000,
+      "trackedAndZipStrictlyUnderLimit": true,
+      "methods": {
+        "tracked": "Sum git ls-tree -r -l HEAD blob lengths; exact uncompressed tracked content",
+        "zip": "Length of git archive --format=zip HEAD; exact archive bytes",
+        "gitMetadata": "Sum regular file sizes in local common Git directory, excluding symlinks; includes available refs/history/config, not the server's inaccessible objects"
+      },
+      "organizerDefinition": "Owner dashboard says GitHub repo less than10MB without defining working tree/archive/history. Report all measured forms; do not assume ignored node_modules count.",
+      "largest": [
+        {
+          "path": "package-lock.json",
+          "bytes": 335183
+        },
+        {
+          "path": "docs/api/openapi.yaml",
+          "bytes": 270446
+        },
+        {
+          "path": "DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md",
+          "bytes": 139458
+        },
+        {
+          "path": "docs/CODEX_FINAL_COMPLETION_REPORT.json",
+          "bytes": 62523
+        },
+        {
+          "path": "docs/CODEX_FINAL_COMPLETION_REPORT.md",
+          "bytes": 56936
+        },
+        {
+          "path": "docs/CODEX_VERCEL_RELEASE_REPORT.md",
+          "bytes": 53666
+        },
+        {
+          "path": "docs/CODEX_VERCEL_RELEASE_REPORT.json",
+          "bytes": 49984
+        },
+        {
+          "path": "docs/CODEX_COMPLETION_REPORT.json",
+          "bytes": 49279
+        },
+        {
+          "path": "scripts/generate-completion-report.mjs",
+          "bytes": 48274
+        },
+        {
+          "path": "docs/CODEX_COMPLETION_REPORT.md",
+          "bytes": 43167
+        }
+      ]
+    },
+    "uploaded": false,
+    "submitted": false,
+    "githubRepositoryMetadata": {
+      "public": true,
+      "defaultBranch": "main",
+      "observedAt": "2026-10-29T12:24:29.3812262Z",
+      "repository": "YellankiKaushik/UtsavOS",
+      "sizeKbReported": 937,
+      "sizeNote": "GitHub API reported KB units;not an exact byte measurement"
+    }
+  },
+  "commercial": {
+    "billing": "Offline test-mode core verified; real Stripe integration/worker/checkout unavailable;route disabled",
+    "accountLifecycle": "Event-scoped operations verified;full account review processor/financial retention/session/backup erasure incomplete",
+    "restore": "Isolated synthetic snapshot only;managed DB/Storage/Auth/PITR not verified",
+    "supportMonitoring": "Runbook/health/redacted usage foundations exist;alerts,rota,accepted SLOs and support channel not provisioned",
+    "retention": "Owner/legal/operator decisions pending;no customer/backups deleted"
+  },
+  "ownerActions": [
+    {
+      "id": "H-01",
+      "priority": "P0",
+      "action": "Obtain organizer clarification that the actual Codex development is eligible",
+      "website": "https://promptwars.in/promptwarsVirtual.html",
+      "menu": "Official Challenge5 rules/support in Hack2skill",
+      "value": "Written tool-eligibility clarification; no invented Antigravity contribution",
+      "cost": "Free",
+      "attempted": "Public page contradictory; owner supplied form does not resolve tools",
+      "verify": "Review organizer answer and update docs/hackathon/ORGANIZER_REQUIREMENTS.md"
+    },
+    {
+      "id": "H-02",
+      "priority": "P0",
+      "action": "Grant approved access to one controlled inbox and choose permitted reviewer access",
+      "website": "https://supabase.com/dashboard/project/upbwahlegwcwiladfwwd/auth/users",
+      "menu": "Authentication / Users and approved test inbox",
+      "value": "Inbox access/consent through an approved secure channel; keep confirmation enabled",
+      "cost": "Built-in limits may be free; custom SMTP could cost",
+      "attempted": "Synthetic password sessions passed; reserved-domain response was not a delivery test",
+      "verify": "Codex executes confirmation/recovery/expired/replayed links and re-login; never put credentials in Git"
+    },
+    {
+      "id": "H-03",
+      "priority": "P0",
+      "action": "Approve the reviewed candidate release once the outstanding gates are resolved",
+      "website": "https://github.com/YellankiKaushik/UtsavOS/pull/1",
+      "menu": "PR review; Vercel UtsavOS production project",
+      "value": "Owner approval for reviewed merge/production build with canonical origin and judge workflow",
+      "cost": "Existing quotas; no paid upgrade authorized",
+      "attempted": "Protected staging verified; production/main deliberately unchanged",
+      "verify": "Codex builds production target,verifies anonymous public access and full authorized judge journey; node scripts/validate-submission.mjs --ready after links filled"
+    },
+    {
+      "id": "H-04",
+      "priority": "P0",
+      "action": "Upload the completed actual demo",
+      "website": "https://studio.youtube.com",
+      "menu": "Create / Upload videos / Visibility:Unlisted; or Drive viewer access",
+      "value": "Actual accessible video URL",
+      "cost": "Existing free account limits",
+      "attempted": "MP4 and screenshots rendered/inspected locally; no upload authorized/performed",
+      "verify": "Open actual video link signed out; update SUBMISSION_FORM_ANSWERS.json and run validator"
+    },
+    {
+      "id": "H-05",
+      "priority": "P0",
+      "action": "Publish reviewed LinkedIn draft and manually submit complete form",
+      "website": "https://hack2skill.com/login",
+      "menu": "PromptWars Virtual / Challenge5 / Submission",
+      "value": "Matching Challenges option,public GitHub/app/video,updates,GenAI explanation,actual LinkedIn post URL",
+      "cost": "Free",
+      "attempted": "Text795/755 characters;0/3 attempts reported; no submission/social publication",
+      "verify": "Owner confirms platform receipt before1 Nov2026 23:59 IST; do not consume an incomplete attempt"
+    },
+    {
+      "id": "C-01",
+      "priority": "P2-commercial",
+      "action": "Complete Stripe account/terms and approve test products/prices",
+      "website": "https://dashboard.stripe.com",
+      "menu": "Test mode / Account setup; Workbench / Webhooks",
+      "value": "Owner-accepted account and secure test-access grant; approved price mapping",
+      "cost": "Test mode normally no live charge; later fees possible",
+      "attempted": "Marketplace terms required owner; offline core tested; live route503",
+      "verify": "Codex connects official SDK verifier/worker and runs genuine test-mode subscription/replay/reconcile acceptance before enablement"
+    },
+    {
+      "id": "C-02",
+      "priority": "P1-before-beta",
+      "action": "Accept operating/retention/recovery responsibilities and grant isolated restore access",
+      "website": "https://supabase.com/dashboard/project/upbwahlegwcwiladfwwd",
+      "menu": "Database / Backups; owner policy decisions",
+      "value": "Backup plan,RPO/RTO,financial/audit holds,deletion/backup expiry,support and incident owners",
+      "cost": "Managed backup/PITR or support services may be billable; choose explicitly",
+      "attempted": "Synthetic physical restore passed; no customer backups deleted; operating runbook prepared",
+      "verify": "Codex performs an approved isolated managed DB+Storage+Auth restore and lifecycle drill; no legal certification inferred"
+    }
+  ],
+  "classification": {
+    "HACKATHON": "BLOCKED",
+    "P0": "PARTIALLY VERIFIED",
+    "COMMERCIAL": "INCOMPLETE",
+    "PRODUCTION": "CANDIDATE ONLY"
+  },
+  "continuation": {
+    "lastVerifiedImplementationCommit": "6e98d776263135a75d8564eadfdd3b371c8b791d",
+    "files": [
+      "docs/OWNER_FINAL_ACTIONS.md",
+      "docs/hackathon/SUBMISSION_CHECKLIST.md",
+      "docs/OPERATIONS_RUNBOOK.md",
+      "docs/modules/BILLING.md"
+    ],
+    "next": [
+      "Resolve organizer/inbox/release access without repeating failed unchanged credentials",
+      "Final code CI/Preview verified;birthday diagnostic rerun established a45002ms timeout. Retry only after a material provider-route availability/configuration change;retain both503 artifacts",
+      "Complete authorized public production-target release and judge flow",
+      "Owner uploads video/publishes LinkedIn/manually submits actual verified links",
+      "Before commercial enablement:real Stripe signature/test events and worker;full hosted quotation review;approved managed restore/account lifecycle operations"
+    ],
+    "commands": [
+      "node scripts/validate-submission.mjs",
+      "node scripts/measure-repository.mjs",
+      "npm run format:check",
+      "npm run lint",
+      "npm run typecheck",
+      "npm test",
+      "npm run test:concurrency",
+      "npm run build",
+      "npm run security:client"
+    ],
+    "approvals": "No form/social/paid/legal action authorized automatically;public release remains gated",
+    "doNotRepeat": "Do not redo repository discovery,rewrite main/history,expose ignored credentials,remove owner image,or represent protected Preview as public"
+  },
+  "hackathonReleaseCheckpoint": {
+    "observedAt": "2026-10-29T13:30:00Z",
+    "implementationCommit": "fa1510477dd11068cd63fc412607b45790d3a9c4",
+    "handoff": "docs/HACKATHON_RELEASE_HANDOFF.md",
+    "record": "docs/hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md",
+    "ci": "push and PR success",
+    "genuineHosted": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "reviewer": "isolated synthetic password session, refresh, persistence and tenant denial verified",
+    "emailDelivery": "blocked: no connected controlled inbox",
+    "production": "unchanged; explicit release approval pending",
+    "priorFailuresPreserved": true
+  }
+}

@@ -33,6 +33,15 @@ import {
 import { BudgetPage, TasksPage, VendorsPage } from "./resources";
 import { AiPage, ReplanPage } from "./planning";
 import { EventFunctionsPage } from "./event-functions";
+import { GuestsPage } from "./guests";
+import { TeamsPage } from "./teams";
+import { VendorFinancePage } from "./vendor-finance";
+import { DocumentsPage } from "./documents";
+import {
+  ProfessionalDashboard,
+  EventDataPage,
+  AccountDataRequest,
+} from "./workspace-tools";
 import {
   dateLabel,
   localDateValue,
@@ -46,7 +55,7 @@ import {
 const typeIcons = { wedding: Flower2, birthday: Cake, community: Users };
 type Me = {
   user: { email: string; id: string; displayName?: string | null };
-  workspaces: { id: string; name: string }[];
+  workspaces: { id: string; name: string; canCreate?: boolean }[];
   usage: {
     id: string;
     operation: string;
@@ -58,8 +67,11 @@ type Me = {
   aiConfigured: boolean;
   aiProviderPrimary?: string;
   aiProviderFallback?: string;
+  features?: { dataLifecycle?: boolean };
 };
 export function Planner({ path }: { path: string[] }) {
+  if (path[0] === "dashboard") return <ProfessionalDashboard />;
+  if (path[0] === "team") return <TeamsPage />;
   if (path[0] === "settings") return <SettingsPage />;
   if (path.length === 0 || (path[0] === "events" && path.length === 1))
     return <EventList />;
@@ -276,6 +288,9 @@ export function EventWizard() {
     [zone, setZone] = useState("Asia/Kolkata"),
     [budget, setBudget] = useState("500000"),
     [preferences, setPreferences] = useState("");
+  const [workspaceId, setWorkspaceId] = useState("");
+  const editableWorkspaces =
+    me?.workspaces.filter((w) => w.canCreate !== false) ?? [];
   function next() {
     try {
       if (step === 0 && !title.trim())
@@ -313,7 +328,9 @@ export function EventWizard() {
         preferences,
         status: "planning",
       });
-      const workspace = me?.workspaces[0];
+      const workspace =
+        editableWorkspaces.find((w) => w.id === workspaceId) ??
+        editableWorkspaces[0];
       if (!workspace)
         throw new Error(
           "Your workspace is not provisioned. Sign in again to finish setup.",
@@ -351,6 +368,21 @@ export function EventWizard() {
         {step === 0 ? (
           <>
             <h2>What are we celebrating?</h2>
+            {editableWorkspaces.length > 1 ? (
+              <Field label="Planning workspace" id="planning-workspace">
+                <select
+                  id="planning-workspace"
+                  value={workspaceId || editableWorkspaces[0]?.id}
+                  onChange={(e) => setWorkspaceId(e.target.value)}
+                >
+                  {editableWorkspaces.map((w) => (
+                    <option key={w.id} value={w.id}>
+                      {w.name}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            ) : null}
             <div className="grid three" role="group" aria-label="Event type">
               {(["wedding", "birthday", "community"] as const).map((t) => {
                 const Icon = typeIcons[t];
@@ -518,9 +550,15 @@ export function EventWizard() {
   );
 }
 function EventWorkspace({ id, tab }: { id: string; tab: string }) {
-  const capabilities = useResource<{ features?: { eventFunctions?: boolean } }>(
-    "me",
-  );
+  const capabilities = useResource<{
+    features?: {
+      eventFunctions?: boolean;
+      guests?: boolean;
+      vendorFinance?: boolean;
+      documents?: boolean;
+      dataLifecycle?: boolean;
+    };
+  }>("me");
   const resource = useResource<EventSnapshot>(`events/${id}`),
     [editing, setEditing] = useState(false);
   if (resource.loading && !resource.data) return <Loading />;
@@ -534,9 +572,24 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
     ["budget", "Budget"],
     ["timeline", "Tasks & timeline"],
     ["vendors", "Vendors"],
+    ...(capabilities.data?.features?.documents &&
+    state.permissions?.canViewContacts !== false
+      ? [["documents", "Private documents"]]
+      : []),
+    ...(capabilities.data?.features?.vendorFinance
+      ? [["finance", "Vendor finance"]]
+      : []),
     ["ai-plan", "AI planning"],
     ["replan", "Replan"],
     ["history", "History"],
+    ...(capabilities.data?.features?.dataLifecycle &&
+    state.permissions?.canManageData === true
+      ? [["data", "Export & data"]]
+      : []),
+    ...(capabilities.data?.features?.guests &&
+    state.permissions?.canViewContacts !== false
+      ? [["guests", "Guests & RSVP"]]
+      : []),
     ...(capabilities.data?.features?.eventFunctions
       ? [["functions", "Functions · preview"]]
       : []),
@@ -562,7 +615,11 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
           </p>
         </div>
         <div className="actions">
-          <button className="button" onClick={() => setEditing(true)}>
+          <button
+            className="button"
+            disabled={state.permissions?.canEdit === false}
+            onClick={() => setEditing(true)}
+          >
             <Settings size={15} />
             Event details
           </button>
@@ -584,40 +641,62 @@ function EventWorkspace({ id, tab }: { id: string; tab: string }) {
         ))}
       </nav>
       <ErrorNotice error={resource.error} retry={resource.reload} />
-      {tab === "overview" ? (
-        <Overview state={state} />
-      ) : tab === "budget" ? (
-        <BudgetPage state={state} reload={resource.reload} />
-      ) : tab === "timeline" ? (
-        <TasksPage state={state} reload={resource.reload} />
-      ) : tab === "vendors" ? (
-        <VendorsPage state={state} reload={resource.reload} />
-      ) : tab === "ai-plan" ? (
-        <AiPage state={state} reload={resource.reload} />
-      ) : tab === "replan" ? (
-        <ReplanPage state={state} reload={resource.reload} />
-      ) : tab === "history" ? (
-        <History id={id} zone={e.timeZone} />
-      ) : tab === "functions" && capabilities.data?.features?.eventFunctions ? (
-        <EventFunctionsPage state={state} reload={resource.reload} />
-      ) : (
-        <div className="notice error">Unknown event module.</div>
-      )}
-      <Modal
-        title="Your celebration details"
-        description="Changes are saved with version protection. Guest changes use the Replan workflow."
-        open={editing}
-        onOpenChange={setEditing}
+      {state.permissions?.canEdit === false ? (
+        <p className="notice">
+          You have read-only access to this event. Ask the workspace owner to
+          change your assignment.
+        </p>
+      ) : null}
+      <fieldset
+        disabled={state.permissions?.canEdit === false}
+        style={{ border: 0, padding: 0, minWidth: 0 }}
       >
-        <EventEditor
-          key={`${e.id}-${e.version}`}
-          event={e}
-          onSaved={async () => {
-            setEditing(false);
-            await resource.reload();
-          }}
-        />
-      </Modal>
+        {tab === "overview" ? (
+          <Overview state={state} />
+        ) : tab === "data" && capabilities.data?.features?.dataLifecycle ? (
+          <EventDataPage id={id} />
+        ) : tab === "budget" ? (
+          <BudgetPage state={state} reload={resource.reload} />
+        ) : tab === "timeline" ? (
+          <TasksPage state={state} reload={resource.reload} />
+        ) : tab === "vendors" ? (
+          <VendorsPage state={state} reload={resource.reload} />
+        ) : tab === "documents" &&
+          capabilities.data?.features?.documents &&
+          state.permissions?.canViewContacts !== false ? (
+          <DocumentsPage state={state} reload={resource.reload} />
+        ) : tab === "finance" && capabilities.data?.features?.vendorFinance ? (
+          <VendorFinancePage state={state} reload={resource.reload} />
+        ) : tab === "ai-plan" ? (
+          <AiPage state={state} reload={resource.reload} />
+        ) : tab === "replan" ? (
+          <ReplanPage state={state} reload={resource.reload} />
+        ) : tab === "history" ? (
+          <History id={id} zone={e.timeZone} />
+        ) : tab === "guests" && capabilities.data?.features?.guests ? (
+          <GuestsPage state={state} reload={resource.reload} />
+        ) : tab === "functions" &&
+          capabilities.data?.features?.eventFunctions ? (
+          <EventFunctionsPage state={state} reload={resource.reload} />
+        ) : (
+          <div className="notice error">Unknown event module.</div>
+        )}
+        <Modal
+          title="Your celebration details"
+          description="Changes are saved with version protection. Guest changes use the Replan workflow."
+          open={editing}
+          onOpenChange={setEditing}
+        >
+          <EventEditor
+            key={`${e.id}-${e.version}`}
+            event={e}
+            onSaved={async () => {
+              setEditing(false);
+              await resource.reload();
+            }}
+          />
+        </Modal>
+      </fieldset>
     </>
   );
 }
@@ -897,7 +976,7 @@ function History({ id, zone }: { id: string; zone: string }) {
   type Row = {
     id: string;
     action: string;
-    actor_id: string;
+    actor_id: string | null;
     occurred_at: string;
     safe_diff: Record<string, unknown>;
     request_id: string;
@@ -921,7 +1000,7 @@ function History({ id, zone }: { id: string; zone: string }) {
             <h3>{row.action.replaceAll("_", " ")}</h3>
             <small>
               {dateLabel(row.occurred_at, zone)} · Actor{" "}
-              {row.actor_id.slice(0, 8)}
+              {row.actor_id ? row.actor_id.slice(0, 8) : "Guest invitation"}
             </small>
             <details style={{ marginTop: 10 }}>
               <summary>View recorded changes</summary>
@@ -1035,6 +1114,7 @@ function SettingsPage() {
         <h1>Settings & account.</h1>
         <p>A few details that make this space yours.</p>
       </div>
+      {data?.features?.dataLifecycle && <AccountDataRequest />}
       <ErrorNotice error={error ?? m.error} retry={reload} />
       {m.message && (
         <div className="notice" role="status">

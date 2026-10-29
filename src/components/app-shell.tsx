@@ -12,9 +12,13 @@ import { Brand } from "./brand";
 export function AppShell({
   children,
   email,
+  teamsEnabled = false,
+  dashboardEnabled = false,
 }: {
   children: React.ReactNode;
   email: string;
+  teamsEnabled?: boolean;
+  dashboardEnabled?: boolean;
 }) {
   const path = usePathname(),
     router = useRouter();
@@ -35,6 +39,22 @@ export function AppShell({
         <Brand />
         <div className="eyebrow">Your workspace</div>
         <nav aria-label="Workspace">
+          {dashboardEnabled && (
+            <Link
+              className={`side-link ${path === "/app/dashboard" ? "active" : ""}`}
+              href="/app/dashboard"
+            >
+              Workspace dashboard
+            </Link>
+          )}
+          {teamsEnabled ? (
+            <Link
+              className={`side-link ${path === "/app/team" ? "active" : ""}`}
+              href="/app/team"
+            >
+              Teams & access
+            </Link>
+          ) : null}
           <Link
             aria-label="My celebrations"
             href="/app/events"
@@ -49,7 +69,7 @@ export function AppShell({
             className={`side-link ${path === "/app/settings" ? "active" : ""}`}
           >
             <Settings size={18} />
-            <span className="side-label">Settings & account</span>
+            <span className="side-label">Settings and account</span>
           </Link>
         </nav>
         <div className="side-note">
@@ -80,10 +100,12 @@ export function AppShell({
               aria-label={
                 path === "/app/settings"
                   ? "My celebrations"
-                  : "Account settings"
+                  : `${email.slice(0, 2).toUpperCase()} account settings`
               }
             >
-              <span className="avatar">{email.slice(0, 2).toUpperCase()}</span>
+              <span className="avatar" aria-hidden="true">
+                {email.slice(0, 2).toUpperCase()}
+              </span>
             </Link>
             <span className="topbar-email muted" style={{ fontSize: 11 }}>
               {email}

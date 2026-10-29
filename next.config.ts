@@ -1,5 +1,12 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
+  serverExternalPackages: ["unpdf"],
+  outputFileTracingIncludes: {
+    "/api/v1/**": [
+      "./scripts/pdf-extract-worker.mjs",
+      "./node_modules/unpdf/**/*",
+    ],
+  },
   poweredByHeader: false,
   async headers() {
     return [

@@ -9,6 +9,7 @@ const catalog = z.object({
     z.object({
       id: z.string(),
       supported_parameters: z.array(z.string()).optional(),
+      reasoning: z.object({ mandatory: z.boolean().optional() }).optional(),
       pricing: z
         .object({ prompt: z.string(), completion: z.string() })
         .optional(),
@@ -19,7 +20,8 @@ export function createOpenRouterTransport(
   http: typeof fetch = fetch,
 ): ModelTransport {
   return async (request) => {
-    const key = aiConfig().keys.openrouter;
+    const config = aiConfig();
+    const key = config.keys.openrouter;
     if (!key) throw new ProviderError("openrouter", "authentication");
     try {
       const lookup = await http(`${endpoint}/models`, {
@@ -50,6 +52,20 @@ export function createOpenRouterTransport(
         );
       if (!model && !routedFree) throw new ProviderError("openrouter", "model");
       if (
+        config.openrouterRequireFree &&
+        !routedFree &&
+        (!model?.pricing ||
+          Number(model.pricing.prompt) !== 0 ||
+          Number(model.pricing.completion) !== 0)
+      )
+        throw new ProviderError("openrouter", "credits");
+      if (
+        config.openrouterDisableReasoning &&
+        (model?.reasoning?.mandatory !== false ||
+          !model.supported_parameters?.includes("reasoning"))
+      )
+        throw new ProviderError("openrouter", "capability");
+      if (
         !routedFree &&
         !model?.supported_parameters?.includes("structured_outputs")
       )
@@ -62,10 +78,12 @@ export function createOpenRouterTransport(
         fetch: http,
       });
       const body: OpenAI.ChatCompletionCreateParamsNonStreaming & {
+        reasoning?: { enabled: false; exclude: true };
         provider: {
           require_parameters: boolean;
           allow_fallbacks: boolean;
           data_collection: string;
+          max_price?: { prompt: number; completion: number };
         };
       } = {
         model: request.model,
@@ -81,35 +99,33 @@ export function createOpenRouterTransport(
             schema: request.schema as Record<string, unknown>,
           },
         },
-        max_tokens: 8192,
+        // Keep drafts bounded. A length-limited response is rejected below,
+        // never repaired or partially accepted. This also avoids asking the
+        // router to reserve an unnecessarily large completion allocation.
+        max_tokens: 4096,
+        ...(config.openrouterDisableReasoning
+          ? { reasoning: { enabled: false as const, exclude: true as const } }
+          : {}),
         provider: {
           require_parameters: true,
           allow_fallbacks: false,
           data_collection: "deny",
+          // Enforce the price policy on the request as well as the catalogue:
+          // catalogue discovery alone is not an atomic spending guard.
+          ...(config.openrouterRequireFree
+            ? { max_price: { prompt: 0, completion: 0 } }
+            : {}),
         },
       };
       const completion = await client.chat.completions.create(body, {
         signal: request.signal,
       });
       const choice = completion.choices?.[0];
-      if (
-        choice?.message?.refusal ||
-        choice?.finish_reason === "content_filter"
-      )
-        throw new ProviderError("openrouter", "refusal");
-      if (
-        !choice ||
-        choice.finish_reason !== "stop" ||
-        !choice.message.content ||
-        choice.message.tool_calls?.length
-      )
-        throw new ProviderError("openrouter", "invalid_output");
       const meta = completion as typeof completion & {
         provider?: string;
         usage?: typeof completion.usage & { cost?: number | string };
       };
-      return {
-        text: choice.message.content,
+      const observation = {
         actualModel: completion.model,
         providerRequestId: completion.id,
         routingProvider: meta.provider,
@@ -117,6 +133,50 @@ export function createOpenRouterTransport(
         outputTokens: completion.usage?.completion_tokens,
         reportedCost:
           meta.usage?.cost === undefined ? undefined : String(meta.usage.cost),
+      };
+      function rejected(category: "refusal" | "invalid_output"): never {
+        const error = new ProviderError("openrouter", category);
+        error.validationStage = "response";
+        error.observation = observation;
+        const finish = choice?.finish_reason;
+        error.finishReason = [
+          "stop",
+          "length",
+          "tool_calls",
+          "content_filter",
+          "error",
+        ].includes(finish ?? "")
+          ? (finish as NonNullable<ProviderError["finishReason"]>)
+          : "unknown";
+        throw error;
+      }
+      const embedded = completion as unknown as {
+        error?: { code?: number; message?: string };
+      };
+      if (embedded.error) {
+        const error = classifyFailure(
+          { status: Number(embedded.error.code) || 502, error: embedded.error },
+          "openrouter",
+        );
+        error.validationStage = "response";
+        error.observation = observation;
+        throw error;
+      }
+      if (
+        choice?.message?.refusal ||
+        choice?.finish_reason === "content_filter"
+      )
+        rejected("refusal");
+      if (
+        !choice ||
+        choice.finish_reason !== "stop" ||
+        !choice.message.content ||
+        choice.message.tool_calls?.length
+      )
+        rejected("invalid_output");
+      return {
+        text: choice.message.content,
+        ...observation,
       };
     } catch (error) {
       if (error instanceof SyntaxError)

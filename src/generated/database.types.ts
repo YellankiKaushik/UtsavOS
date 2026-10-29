@@ -240,6 +240,78 @@ export type Database = {
         };
         Relationships: [];
       };
+      event_assignments: {
+        Row: {
+          workspace_id: string;
+          event_id: string;
+          user_id: string;
+          can_edit: boolean;
+          can_approve: boolean;
+          can_view_contacts: boolean;
+        };
+        Insert: {
+          workspace_id: string;
+          event_id: string;
+          user_id: string;
+          can_edit?: boolean;
+          can_approve?: boolean;
+          can_view_contacts?: boolean;
+        };
+        Update: {
+          workspace_id?: string;
+          event_id?: string;
+          user_id?: string;
+          can_edit?: boolean;
+          can_approve?: boolean;
+          can_view_contacts?: boolean;
+        };
+        Relationships: [];
+      };
+      event_documents: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          created_by: string;
+          filename: string;
+          media_type: string;
+          byte_size: number;
+          object_path: string;
+          state: string;
+          original_cleanup: string;
+          created_at: string;
+          verified_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          created_by: string;
+          filename: string;
+          media_type: string;
+          byte_size: number;
+          object_path: string;
+          state?: string;
+          original_cleanup?: string;
+          created_at?: string;
+          verified_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          created_by?: string;
+          filename?: string;
+          media_type?: string;
+          byte_size?: number;
+          object_path?: string;
+          state?: string;
+          original_cleanup?: string;
+          created_at?: string;
+          verified_at?: string | null;
+        };
+        Relationships: [];
+      };
       event_functions: {
         Row: {
           id: string;
@@ -339,6 +411,99 @@ export type Database = {
         };
         Relationships: [];
       };
+      guest_attendance: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          guest_id: string;
+          event_function_id: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          guest_id: string;
+          event_function_id?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          guest_id?: string;
+          event_function_id?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      guest_households: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          name: string;
+          notes: string;
+          state: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          name: string;
+          notes?: string;
+          state?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          name?: string;
+          notes?: string;
+          state?: string;
+        };
+        Relationships: [];
+      };
+      guests: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          household_id: string;
+          display_name: string;
+          email: string | null;
+          phone: string | null;
+          notes: string;
+          state: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          household_id: string;
+          display_name: string;
+          email?: string | null;
+          phone?: string | null;
+          notes?: string;
+          state?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          household_id?: string;
+          display_name?: string;
+          email?: string | null;
+          phone?: string | null;
+          notes?: string;
+          state?: string;
+        };
+        Relationships: [];
+      };
       idempotency_receipts: {
         Row: {
           id: string;
@@ -371,6 +536,45 @@ export type Database = {
           request_hash?: string;
           response_ref?: Json;
           expires_at?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      quotation_extractions: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          document_id: string;
+          payload: Json;
+          provenance: Json;
+          state: string;
+          quote_id: string | null;
+          created_by: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          document_id: string;
+          payload: Json;
+          provenance: Json;
+          state?: string;
+          quote_id?: string | null;
+          created_by: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          document_id?: string;
+          payload?: Json;
+          provenance?: Json;
+          state?: string;
+          quote_id?: string | null;
+          created_by?: string;
           created_at?: string;
         };
         Relationships: [];
@@ -495,6 +699,183 @@ export type Database = {
         };
         Relationships: [];
       };
+      vendor_commitments: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          quote_id: string;
+          total_minor: number;
+          deposit_due_minor: number;
+          state: string;
+          created_at: string;
+          cancelled_at: string | null;
+          cancellation_reason: string | null;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          quote_id: string;
+          total_minor: number;
+          deposit_due_minor?: number;
+          state?: string;
+          created_at?: string;
+          cancelled_at?: string | null;
+          cancellation_reason?: string | null;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          quote_id?: string;
+          total_minor?: number;
+          deposit_due_minor?: number;
+          state?: string;
+          created_at?: string;
+          cancelled_at?: string | null;
+          cancellation_reason?: string | null;
+        };
+        Relationships: [];
+      };
+      vendor_invoices: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          commitment_id: string;
+          reference: string;
+          amount_minor: number;
+          issued_on: unknown;
+          due_on: unknown | null;
+          state: string;
+          void_reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          commitment_id: string;
+          reference: string;
+          amount_minor: number;
+          issued_on: unknown;
+          due_on?: unknown | null;
+          state?: string;
+          void_reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          commitment_id?: string;
+          reference?: string;
+          amount_minor?: number;
+          issued_on?: unknown;
+          due_on?: unknown | null;
+          state?: string;
+          void_reason?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      vendor_payment_records: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          invoice_id: string;
+          reference: string;
+          amount_minor: number;
+          paid_on: unknown;
+          method: string;
+          state: string;
+          reversal_reason: string | null;
+          reversed_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          invoice_id: string;
+          reference: string;
+          amount_minor: number;
+          paid_on: unknown;
+          method: string;
+          state?: string;
+          reversal_reason?: string | null;
+          reversed_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          invoice_id?: string;
+          reference?: string;
+          amount_minor?: number;
+          paid_on?: unknown;
+          method?: string;
+          state?: string;
+          reversal_reason?: string | null;
+          reversed_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      vendor_quotes: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          event_id: string;
+          vendor_requirement_id: string;
+          supplier_name: string;
+          reference: string;
+          total_minor: number;
+          currency: string;
+          expires_on: unknown | null;
+          notes: string;
+          state: string;
+          created_at: string;
+          updated_at: string;
+          source_document_id: string | null;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          event_id: string;
+          vendor_requirement_id: string;
+          supplier_name: string;
+          reference: string;
+          total_minor: number;
+          currency?: string;
+          expires_on?: unknown | null;
+          notes?: string;
+          state?: string;
+          created_at?: string;
+          updated_at?: string;
+          source_document_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          event_id?: string;
+          vendor_requirement_id?: string;
+          supplier_name?: string;
+          reference?: string;
+          total_minor?: number;
+          currency?: string;
+          expires_on?: unknown | null;
+          notes?: string;
+          state?: string;
+          created_at?: string;
+          updated_at?: string;
+          source_document_id?: string | null;
+        };
+        Relationships: [];
+      };
       vendor_requirements: {
         Row: {
           id: string;
@@ -581,6 +962,7 @@ export type Database = {
           personal_owner_user_id: string | null;
           created_at: string;
           updated_at: string;
+          team_version: number;
         };
         Insert: {
           id?: string;
@@ -589,6 +971,7 @@ export type Database = {
           personal_owner_user_id?: string | null;
           created_at?: string;
           updated_at?: string;
+          team_version?: number;
         };
         Update: {
           id?: string;
@@ -597,6 +980,7 @@ export type Database = {
           personal_owner_user_id?: string | null;
           created_at?: string;
           updated_at?: string;
+          team_version?: number;
         };
         Relationships: [];
       };
@@ -605,9 +989,25 @@ export type Database = {
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
     Functions: {
+      account_data_request: { Args: { p_action: string }; Returns: Json };
       create_personal_workspace: {
         Args: Record<string, never>;
         Returns: string;
+      };
+      document_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      document_detail: {
+        Args: { p_event_id: string | null; p_document_id: string };
+        Returns: Json;
       };
       event_command: {
         Args: {
@@ -621,6 +1021,7 @@ export type Database = {
         };
         Returns: Json;
       };
+      event_export: { Args: { p_event_id: string | null }; Returns: Json };
       event_function_command: {
         Args: {
           p_event_id: string | null;
@@ -636,7 +1037,67 @@ export type Database = {
         Args: { p_event_id: string | null };
         Returns: Json;
       };
+      event_lifecycle_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      event_lifecycle_status: {
+        Args: { p_event_id: string | null };
+        Returns: Json;
+      };
+      event_permissions: { Args: { p_event_id: string | null }; Returns: Json };
       event_snapshot: { Args: { p_event_id: string | null }; Returns: Json };
+      guest_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      guest_directory: { Args: { p_event_id: string | null }; Returns: Json };
+      rsvp_respond: {
+        Args: { p_token: string; p_answers: Json; p_idempotency_key: string };
+        Returns: Json;
+      };
+      rsvp_view: { Args: { p_token: string }; Returns: Json };
+      team_command: {
+        Args: {
+          p_workspace_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      team_overview: { Args: Record<string, never>; Returns: Json };
+      vendor_finance: { Args: { p_event_id: string | null }; Returns: Json };
+      vendor_finance_command: {
+        Args: {
+          p_event_id: string | null;
+          p_action: string;
+          p_payload: Json;
+          p_expected_version: number | null;
+          p_idempotency_key: string;
+          p_request_id: string;
+        };
+        Returns: Json;
+      };
+      workspace_dashboard: {
+        Args: { p_workspace_id: string | null };
+        Returns: Json;
+      };
     };
   };
 };
