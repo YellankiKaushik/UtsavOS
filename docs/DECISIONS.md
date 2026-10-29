@@ -1,5 +1,11 @@
 # Architecture decisions
 
+## ADR-026 — Owner-approved public release and documentation governance (2026-10-29)
+
+PR #1 was merged after the owner approved the verified candidate and final CI passed. Production uses the canonical origin, fixed free OpenRouter route, strict validation, privacy deny and no fallback. Three event types have successful public production acceptance/persistence evidence; initial rate-limit failures and bounded successful affected reruns remain distinct. The synthetic reviewer workflow was chosen with the controlled-inbox mail blocker documented. P1 flags are enabled with scoped verification; quotation extraction and commercial billing remain inactive.
+
+Main is the submission/production branch. The presentation follow-up changes documentation, small genuine screenshots and GitHub metadata/rules only. The main-only ruleset requires PRs, Actions validate/supabase-platform, up-to-date status and resolved conversations, with no bypass or external-approver lockout. Dated ADRs below retain the rationale at their original checkpoint. See the current release handoff and repository presentation report.
+
 ## ADR-025 — Private source review, fail-closed billing and verified operational erasure (2026-10-28)
 
 Private originals use ordinary server-held user sessions for bounded proxy upload and attachment download, never public URLs or persistent browser JWTs. PDF parsing executes in a separate bounded Node process without application credentials. Source spans and canonical money are validated; the user explicitly reviews fields before saving one quotation. No automatic OCR, booking, commitment or payment is claimed. Storage INSERT authorization takes the workspace lock and re-reads lifecycle state, closing both orders of the upload/deletion race.

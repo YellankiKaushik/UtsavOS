@@ -8,11 +8,11 @@ Deadline: **1 November 2026, 23:59 IST**. Owner-reported attempts: **0/3**; none
 - [x] Exact budgets, approved replanning/history, authentication, secure cookies and tenant denial verified. All 15 migrations match remote.
 - [x] Isolated synthetic reviewer prepared; credentials remain private. Owner selected this workflow with controlled-inbox delivery/expiry/replay tests documented as unverified; RLS and global confirmation remain enabled.
 - [x] Public repository https://github.com/YellankiKaushik/UtsavOS contains the approved implementation on default main; exact tracked/archive/local Git measurements are each below 10,000,000 bytes at the release checkpoint.
-- [x] Official fields drafted: Challenges; GitHub URL; verified production URL; video URL pending; deployed changes 795/1024; GenAI explanation 755/1024; LinkedIn URL pending. Draft validation does not submit the form.
-- [x] Existing 82.034-second genuine film and screenshots verified locally outside Git; see DEMO_VIDEO_SCRIPT.md. Film capture predates production and is identified as Preview footage.
+- [x] Official fields drafted: Challenges; GitHub URL; verified production URL; verified YouTube walkthrough URL; deployed changes 795/1024; GenAI explanation 755/1024; LinkedIn URL pending. Draft validation does not submit the form.
+- [x] Owner-supplied YouTube walkthrough verified anonymously: https://www.youtube.com/watch?v=Z5bo9ydn7JE . Earlier local82-second film remains outside Git and is distinct from this uploaded walkthrough.
 - [ ] Organizer clarification of conflicting development-tool/Antigravity rules and permitted private judge-credential delivery.
-- [ ] Owner uploads the actual film to unlisted YouTube or access-granted Drive; verifies the actual URL signed out.
+- [x] Owner supplied the actual UtsavOS YouTube URL; anonymous metadata/watch/playability verification passed.
 - [ ] Owner publishes the reviewed LinkedIn draft using real verified links and supplies the actual post URL.
 - [ ] Owner selects the exact matching official challenge option and manually submits every required field before the deadline.
 
-No specific model-provider mandate or judging weights were present in the supplied authenticated dashboard transcription. No social post, upload URL, organizer confirmation or submission result has been fabricated. Required video/LinkedIn fields remain null and readyToSubmit remains false.
+No specific model-provider mandate or judging weights were present in the supplied authenticated dashboard transcription. No social post, upload URL, organizer confirmation or submission result has been fabricated. Required LinkedIn field remains null and readyToSubmit remains false.

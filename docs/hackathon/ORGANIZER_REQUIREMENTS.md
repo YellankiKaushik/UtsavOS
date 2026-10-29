@@ -17,3 +17,5 @@ The title “Celebration & Event Planner” and the weddings/birthdays/community
 The [public organizer Virtual page](https://promptwars.in/promptwarsVirtual.html) describes code/live-preview and narrative submissions. Its building sections conflict with its FAQ about whether other development tools are permitted. **Codex-only eligibility is unresolved**; no Antigravity contribution is claimed. The installed application is not evidence of its use. Obtain an organizer clarification for this mixed-tool/mostly-Codex implementation before submitting. The distinct Hyderabad/offline competitions are not sources for these rules.
 
 Relevant official entry point: [Hack2skill registration/dashboard](https://vision.hack2skill.com/event/pwvirtual1/registration), which redirected this browser to login. Do not publish account credentials or use another participant's account.
+
+Presentation checkpoint: the owner supplied the corrected UtsavOS YouTube URL, anonymously verified at https://www.youtube.com/watch?v=Z5bo9ydn7JE . This verifies the video link, not tool eligibility, a LinkedIn publication or a submission receipt.

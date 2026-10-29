@@ -1,0 +1,848 @@
+{
+  "generatedAt": "2026-10-29T17:06:53.159Z",
+  "checkpoint": "Ready-to-merge presentation branch; main publication held for explicit PR2 approval requested by automatic approval review",
+  "executive": {
+    "completed": [
+      "Released-state README rewrite and verified YouTube thumbnail",
+      "Current setup/architecture/testing/module guides and historical index",
+      "Genuine synthetic-data production gallery and privacy review",
+      "About description/site/topics and private vulnerability reporting",
+      "Main-only active ruleset with exact Actions contexts; no bypass"
+    ],
+    "incomplete": [
+      "Explicit PR2 merge approval required by automatic review; current main has not received this presentation PR",
+      "Presentation PR merge/final main verification pending",
+      "Actual published LinkedIn URL",
+      "Organizer tool eligibility/private judge credential channel",
+      "Manual Challenge 5 submission"
+    ],
+    "hackathonInspection": "Source/app/video available; eligibility and external post/submission remain incomplete"
+  },
+  "git": {
+    "repository": "https://github.com/YellankiKaushik/UtsavOS",
+    "defaultBranch": "main",
+    "initialCommit": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+    "verifiedContentCommit": "390199bef44fad3f06029ad857968bfdcce05da1",
+    "finalPresentationCommit": null,
+    "pr": {
+      "number": 2,
+      "url": "https://github.com/YellankiKaushik/UtsavOS/pull/2",
+      "state": "open",
+      "draft": true,
+      "head": "f8a80f07a510a2857e5ce77c3e96c7fcd8e13808",
+      "base": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8"
+    },
+    "prStateAtCheckpoint": "open",
+    "branches": [
+      {
+        "name": "archive/utsavos-original-history",
+        "commit": "144c6a989a9047052ee2e7a35c8b90803ed31677",
+        "worktreeOccupied": false,
+        "behindMain": 108,
+        "uniqueCommits": 4
+      },
+      {
+        "name": "codex/github-presentation",
+        "commit": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+        "worktreeOccupied": true,
+        "behindMain": 0,
+        "uniqueCommits": 0
+      },
+      {
+        "name": "codex/hackathon-release-handoff",
+        "commit": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+        "worktreeOccupied": false,
+        "behindMain": 0,
+        "uniqueCommits": 0
+      },
+      {
+        "name": "codex/live-release-completion",
+        "commit": "ba5df4fb3d43117b7669c06219d2b058f60e7990",
+        "worktreeOccupied": false,
+        "behindMain": 2,
+        "uniqueCommits": 0
+      },
+      {
+        "name": "master",
+        "commit": "144c6a989a9047052ee2e7a35c8b90803ed31677",
+        "worktreeOccupied": false,
+        "behindMain": 108,
+        "uniqueCommits": 4
+      },
+      {
+        "name": "publication/utsavos-granular",
+        "commit": "0798627de160425a9a5925a1291bfe37fce825be",
+        "worktreeOccupied": true,
+        "behindMain": 20,
+        "uniqueCommits": 0
+      },
+      {
+        "name": "origin",
+        "commit": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+        "worktreeOccupied": false,
+        "behindMain": 0,
+        "uniqueCommits": 0
+      },
+      {
+        "name": "origin/codex/live-release-completion",
+        "commit": "ba5df4fb3d43117b7669c06219d2b058f60e7990",
+        "worktreeOccupied": false,
+        "behindMain": 2,
+        "uniqueCommits": 0
+      },
+      {
+        "name": "origin/main",
+        "commit": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+        "worktreeOccupied": false,
+        "behindMain": 0,
+        "uniqueCommits": 0
+      }
+    ],
+    "retained": "All initial branches retained; archive/master have4 unique commits; publication worktree is occupied; merged live branch is referenced by historical Previews and PR1. No branch/tag deleted.",
+    "ci": {
+      "sha": "390199bef44fad3f06029ad857968bfdcce05da1",
+      "runs": [
+        {
+          "id": 40916585914,
+          "status": "completed",
+          "conclusion": "success",
+          "event": "pull_request",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914"
+        },
+        {
+          "id": 40916574803,
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803"
+        }
+      ],
+      "checks": [
+        {
+          "id": 123598858787,
+          "name": "Vercel Preview Comments",
+          "appId": 8329,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://vercel.com/github"
+        },
+        {
+          "id": 123598316755,
+          "name": "validate",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316755"
+        },
+        {
+          "id": 123598316261,
+          "name": "supabase-platform",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316261"
+        },
+        {
+          "id": 123598278677,
+          "name": "supabase-platform",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598278677"
+        },
+        {
+          "id": 123598277857,
+          "name": "validate",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598277857"
+        }
+      ]
+    },
+    "mainProtected": true,
+    "branchPurposes": {
+      "archive/utsavos-original-history": "Original supplied history;4 unique commits; retain",
+      "master": "Original-history pointer;4 unique commits; retain",
+      "publication/utsavos-granular": "Occupied publication worktree and historical release checkpoint;retain",
+      "codex/live-release-completion": "Merged engineering PR1 and historical protected Preview reference;retain",
+      "codex/hackathon-release-handoff": "Previous released handoff checkpoint;retain",
+      "codex/github-presentation": "Current presentation PR2;retain while review/approval is open",
+      "origin/main": "Default stable production/submission ref"
+    }
+  },
+  "readme": {
+    "sections": [
+      "Brand/hero/live links",
+      "Verified YouTube walkthrough",
+      "Problem and capabilities/evidence",
+      "Differentiators and exact golden scenario",
+      "Production gallery",
+      "8-step user journey",
+      "Stack and Mermaid architecture",
+      "Local setup and safe configuration",
+      "Testing/security",
+      "Documentation and Challenge5",
+      "Limits/roadmap/contributing/licensing/footer"
+    ],
+    "corrections": [
+      "PR1 is merged; main is submitted/released",
+      "Production acceptance distinguished from protected Preview",
+      "231 regressions and scoped layers",
+      "Free AI failures retained; Gemini success not claimed"
+    ],
+    "render": {
+      "observedAt": "2026-10-29T16:53:51.654Z",
+      "url": "https://github.com/YellankiKaushik/UtsavOS/tree/codex/github-presentation",
+      "status": 200,
+      "anonymous": true,
+      "demoLinks": 5,
+      "images": [
+        {
+          "alt": "UtsavOS landing page: Less coordinating. More celebrating.",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/landing.png"
+        },
+        {
+          "alt": "Watch the UtsavOS walkthrough: a saved wedding workspace with exact budget and reviewed tasks",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/demo-thumbnail.png"
+        },
+        {
+          "alt": "Workspace dashboard showing pilot usage and celebration progress",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/dashboard.png"
+        },
+        {
+          "alt": "Saved genuine AI draft with structured suggestions requiring human review",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/ai-planning.png"
+        },
+        {
+          "alt": "Budget with 180 guests, ₹453,000 projected total and ₹47,000 remaining",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/budget.png"
+        },
+        {
+          "alt": "Three accepted planning tasks with explicit dependency relationships",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/timeline.png"
+        },
+        {
+          "alt": "Saved approved change-impact record comparing ₹427,500 before with ₹453,000 after",
+          "complete": true,
+          "width": 1440,
+          "height": 960,
+          "src": "/YellankiKaushik/UtsavOS/raw/codex/github-presentation/docs/assets/change-impact.png"
+        }
+      ],
+      "desktopScreenshot": ".runtime/github-presentation/readme-desktop.png",
+      "galleryScreenshot": ".runtime/github-presentation/readme-gallery.png",
+      "mobileScreenshot": ".runtime/github-presentation/readme-mobile.png",
+      "review": "Actual anonymous GitHub desktop, gallery, video, Mermaid and390px mobile reviewed.7 images loaded;1 clickable video image;5 video links. Actual diagram node text and loaded rendering verified after transient spinner.",
+      "mermaid": {
+        "videoImageLinks": 1,
+        "mermaidRendered": true,
+        "diagramText": "integrated, inactive\n\nBrowser / React UI\n\nNext.js pages and API\n\nSupabase Auth\n\nApplication services\n\nDomain validation and exact calculations\n\nAuthorized transactional RPC\n\nPostgreSQL + RLS + audit\n\nPrivate Supabase Storage\n\nServer-only AI adapters\n\nOpenRouter: verified route\n\nGoogle Gemini",
+        "iframeTitles": ["File display"]
+      },
+      "reviewImage": {
+        "path": "docs/evidence/readme-gallery-review.png",
+        "width": 1440,
+        "height": 1000,
+        "bytes": 87365,
+        "source": "Actual anonymous GitHub branch rendering; desktop gallery",
+        "privacy": "No authenticated account or private credentials"
+      }
+    }
+  },
+  "media": {
+    "capturedAt": "2026-10-29",
+    "origin": "https://utsavos.vercel.app",
+    "aiRequestsForCapture": 0,
+    "planningDataMutations": 0,
+    "privacy": "Account email/avatar hidden only for capture; no cookies/tokens/contact records visible. Synthetic event names are not customer data.",
+    "images": [
+      {
+        "path": "docs/assets/ai-planning.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 44621,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/budget.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 41255,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/change-impact.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 38173,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/dashboard.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 34296,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/demo-thumbnail.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 39590,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/landing.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 38835,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/overview.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 39590,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      },
+      {
+        "path": "docs/assets/timeline.png",
+        "width": 1440,
+        "height": 960,
+        "bytes": 38908,
+        "source": "Read-only production session; isolated synthetic reviewer/event",
+        "fixture": false,
+        "privacyReviewed": true
+      }
+    ],
+    "thumbnail": {
+      "path": "docs/assets/demo-thumbnail.png",
+      "source": "Exact copy of production overview.png",
+      "video": "https://www.youtube.com/watch?v=Z5bo9ydn7JE"
+    },
+    "earlierAssets": "3 existing fixture/development screenshots retained and classified;3 external delivered genuine Preview images inspected, fresh production assets preferred",
+    "privacyReview": "Passed visual and DOM email checks; no account names/emails, guest contacts, keys, cookies or tokens in new images",
+    "firstCaptureCorrection": "Loading dashboard and wrong capture-only tab paths corrected before staging; saved AI/proposal state retains truthful stale/expiry labels"
+  },
+  "video": {
+    "ownerSuppliedUrl": "https://youtu.be/Z5bo9ydn7JE?si=UMyhs3kTEWqL7O6R",
+    "canonicalUrl": "https://www.youtube.com/watch?v=Z5bo9ydn7JE",
+    "videoId": "Z5bo9ydn7JE",
+    "observedAt": "2026-10-29T16:36:01.835Z",
+    "requests": [
+      {
+        "kind": "oembed",
+        "status": 200
+      },
+      {
+        "kind": "watch",
+        "status": 200
+      }
+    ],
+    "metadata": {
+      "title": "UtsavOS  | AI-native Event Planning Platform",
+      "author": "Kaushik",
+      "provider": "YouTube"
+    },
+    "playability": "OK",
+    "pageTitle": "UtsavOS  | AI-native Event Planning Platform - YouTube",
+    "download": "No original video download or Release asset configured",
+    "rejectedInput": "First owner link resolved to unrelated devotional video and was not published; corrected project video verified",
+    "remainingOwnerAction": null
+  },
+  "about": {
+    "description": "AI-native event planning for weddings, birthdays and celebrations, with structured GenAI plans, exact budgets, collaborative workflows and explainable replanning.",
+    "website": "https://utsavos.vercel.app",
+    "topics": [
+      "ai",
+      "event-planning",
+      "gemini",
+      "hackathon",
+      "nextjs",
+      "openrouter",
+      "promptwars",
+      "supabase",
+      "typescript",
+      "weddings"
+    ],
+    "public": true,
+    "defaultBranch": "main",
+    "issuesUnchanged": true,
+    "discussionsUnchanged": true,
+    "socialPreview": "unchanged; no supported upload field in repository REST API"
+  },
+  "repositoryStructure": {
+    "codeMoved": false,
+    "historicalReportsMoved": false,
+    "historyDeleted": false,
+    "documentationIndex": "docs/README.md",
+    "newGuides": [
+      "docs/SETUP.md",
+      "docs/ARCHITECTURE.md",
+      "docs/TESTING.md",
+      "docs/modules/README.md",
+      "docs/modules/AI.md",
+      "docs/modules/GUESTS_AND_TEAMS.md",
+      "docs/modules/FINANCE_AND_DOCUMENTS.md"
+    ],
+    "media": "docs/assets",
+    "unchanged": [
+      "app/",
+      "src/",
+      "supabase/",
+      "package.json",
+      "package-lock.json",
+      "vercel.json",
+      ".github/workflows/ci.yml"
+    ],
+    "newTool": "scripts/check-documentation.mjs"
+  },
+  "documentation": {
+    "relativeLinks": 208,
+    "files": 42,
+    "failures": [],
+    "brokenLinksFixed": [
+      "docs/UTSAVOS_FINAL_MASTER_REPORT.md organizer link now points to hackathon/ORGANIZER_REQUIREMENTS.md"
+    ],
+    "coverage": [
+      "Architecture/domain/modules",
+      "Auth/multi-tenancy",
+      "Exact money and transactional approval",
+      "AI validation/provenance/failures",
+      "Guests/teams",
+      "Private documents/finance",
+      "Limits/lifecycle",
+      "Testing/CI/deployment/rollback",
+      "Commercial boundaries and source licensing"
+    ]
+  },
+  "branchSecurity": {
+    "name": "Protect main — reviewed and verified releases",
+    "id": 26138826,
+    "url": "https://github.com/YellankiKaushik/UtsavOS/rules/26138826",
+    "enforcement": "active",
+    "target": "refs/heads/main",
+    "forcePushBlocked": true,
+    "deletionBlocked": true,
+    "pullRequestRequired": true,
+    "requiredChecks": ["validate", "supabase-platform"],
+    "integrationId": 15368,
+    "strictUpToDate": true,
+    "conversationsResolved": true,
+    "requiredApprovals": 0,
+    "bypassActors": [],
+    "privateVulnerabilityReporting": true,
+    "normalPrWorkflowVerified": false,
+    "plan": "free"
+  },
+  "linkedIn": {
+    "draft": "docs/hackathon/LINKEDIN_POST.md",
+    "urls": [
+      "https://utsavos.vercel.app",
+      "https://github.com/YellankiKaushik/UtsavOS",
+      "https://www.youtube.com/watch?v=Z5bo9ydn7JE"
+    ],
+    "publishedUrl": null,
+    "published": false,
+    "placeholder": "No fabricated post URL; publication instructions separate from copy-ready body"
+  },
+  "hackathon": {
+    "repository": "https://github.com/YellankiKaushik/UtsavOS",
+    "branch": "main",
+    "size": {
+      "generatedAt": "2026-10-29T16:58:04.426Z",
+      "commit": "390199bef44fad3f06029ad857968bfdcce05da1",
+      "trackedFiles": 259,
+      "trackedBytes": 3059011,
+      "headZipBytes": 1196170,
+      "localGitMetadataBytes": 1523770,
+      "limitBytes": 10000000,
+      "trackedAndZipStrictlyUnderLimit": true,
+      "methods": {
+        "tracked": "Sum git ls-tree -r -l HEAD blob lengths; exact uncompressed tracked content",
+        "zip": "Length of git archive --format=zip HEAD; exact archive bytes",
+        "gitMetadata": "Sum regular file sizes in local common Git directory, excluding symlinks; includes available refs/history/config, not the server's inaccessible objects"
+      },
+      "organizerDefinition": "Owner dashboard says GitHub repo less than10MB without defining working tree/archive/history. Report all measured forms; do not assume ignored node_modules count.",
+      "largest": [
+        {
+          "path": "package-lock.json",
+          "bytes": 335183
+        },
+        {
+          "path": "docs/api/openapi.yaml",
+          "bytes": 270446
+        },
+        {
+          "path": "DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md",
+          "bytes": 139458
+        },
+        {
+          "path": "docs/evidence/readme-gallery-review.png",
+          "bytes": 87365
+        },
+        {
+          "path": "docs/CODEX_FINAL_COMPLETION_REPORT.json",
+          "bytes": 62523
+        },
+        {
+          "path": "docs/CODEX_FINAL_COMPLETION_REPORT.md",
+          "bytes": 57260
+        },
+        {
+          "path": "docs/UTSAVOS_FINAL_MASTER_REPORT.md",
+          "bytes": 57241
+        },
+        {
+          "path": "docs/CODEX_VERCEL_RELEASE_REPORT.md",
+          "bytes": 53990
+        },
+        {
+          "path": "docs/UTSAVOS_FINAL_MASTER_REPORT.json",
+          "bytes": 50164
+        },
+        {
+          "path": "docs/CODEX_VERCEL_RELEASE_REPORT.json",
+          "bytes": 49984
+        }
+      ]
+    },
+    "publicApp": "https://utsavos.vercel.app",
+    "videoUrl": "https://www.youtube.com/watch?v=Z5bo9ydn7JE",
+    "linkedInUrl": null,
+    "eligibility": "Unresolved conflicting organizer guidance; no invented Antigravity contribution",
+    "submitted": false,
+    "ready": false
+  },
+  "testing": {
+    "commands": [
+      {
+        "command": "npm run format:check",
+        "result": "passed at local verification; repeated after final edits"
+      },
+      {
+        "command": "npm run lint",
+        "result": "passed"
+      },
+      {
+        "command": "npm run typecheck",
+        "result": "passed"
+      },
+      {
+        "command": "npm test -- --maxWorkers=1 --reporter=json --outputFile=.runtime/github-presentation/regression.json",
+        "passed": 231,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "command": "npm run build",
+        "result": "passed"
+      },
+      {
+        "command": "npm run security:client",
+        "result": "passed"
+      },
+      {
+        "command": "node scripts/check-documentation.mjs",
+        "result": "passed",
+        "relativeLinks": 208
+      },
+      {
+        "command": "node scripts/measure-repository.mjs",
+        "result": "passed"
+      }
+    ],
+    "lockConsistency": true,
+    "productionDependencyVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "externalLinks": [
+      {
+        "url": "https://utsavos.vercel.app",
+        "status": 200,
+        "resolved": "https://utsavos.vercel.app/",
+        "ok": true
+      },
+      {
+        "url": "https://utsavos.vercel.app/login",
+        "status": 200,
+        "resolved": "https://utsavos.vercel.app/login",
+        "ok": true
+      },
+      {
+        "url": "https://github.com/YellankiKaushik/UtsavOS",
+        "status": 200,
+        "resolved": "https://github.com/YellankiKaushik/UtsavOS",
+        "ok": true
+      },
+      {
+        "url": "https://github.com/YellankiKaushik/UtsavOS/actions/workflows/ci.yml",
+        "status": 200,
+        "resolved": "https://github.com/YellankiKaushik/UtsavOS/actions/workflows/ci.yml",
+        "ok": true
+      },
+      {
+        "url": "https://www.youtube.com/watch?v=Z5bo9ydn7JE",
+        "status": 200,
+        "resolved": "https://www.youtube.com/watch?v=Z5bo9ydn7JE",
+        "ok": true
+      },
+      {
+        "url": "https://promptwars.in/promptwarsVirtual.html",
+        "status": 200,
+        "resolved": "https://promptwars.in/promptwarsVirtual.html",
+        "ok": true
+      },
+      {
+        "url": "https://support.github.com/contact/security",
+        "status": 200,
+        "resolved": "https://help.github.com/request/landing",
+        "ok": true
+      }
+    ],
+    "secretAudit": {
+      "scope": "All locally available reachable Git refs; not deleted/unreachable server objects",
+      "objects": 1158,
+      "blobs": 505,
+      "configuredSecretComparison": true,
+      "credentialPatterns": true,
+      "findings": [],
+      "status": "PASS"
+    },
+    "ci": {
+      "sha": "390199bef44fad3f06029ad857968bfdcce05da1",
+      "runs": [
+        {
+          "id": 40916585914,
+          "status": "completed",
+          "conclusion": "success",
+          "event": "pull_request",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914"
+        },
+        {
+          "id": 40916574803,
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803"
+        }
+      ],
+      "checks": [
+        {
+          "id": 123598858787,
+          "name": "Vercel Preview Comments",
+          "appId": 8329,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://vercel.com/github"
+        },
+        {
+          "id": 123598316755,
+          "name": "validate",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316755"
+        },
+        {
+          "id": 123598316261,
+          "name": "supabase-platform",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916585914/job/123598316261"
+        },
+        {
+          "id": 123598278677,
+          "name": "supabase-platform",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598278677"
+        },
+        {
+          "id": 123598277857,
+          "name": "validate",
+          "appId": 15368,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/YellankiKaushik/UtsavOS/actions/runs/40916574803/job/123598277857"
+        }
+      ]
+    },
+    "liveAiCalls": 0,
+    "browserDatabaseScope": "No application/migration/runtime changes; local mutating browser/native suites not repeated solely for docs. Existing full CI still runs native, browser and disposable Docker Supabase. Read-only production screenshots/session checks exercised live login/read behavior without model calls or planning writes."
+  },
+  "security": {
+    "findings": "No new exposure found in reviewed source/media; this is not independent certification",
+    "fixed": [
+      "Main was unprotected; active ruleset now enforced",
+      "Outdated docs/one broken historical relative link",
+      "Unrelated video rejected",
+      "Capture loading/wrong routes corrected before publish"
+    ],
+    "preserved": [
+      "RLS/email confirmation",
+      "AI runtime and production secrets",
+      "15 applied migrations",
+      "Owner untracked image",
+      "Earlier failed tests and provider errors"
+    ],
+    "license": "No LICENSE file; no new open-source permission or CLA added",
+    "dependencyLicenses": ["MIT", "Apache-2.0", "ISC"],
+    "residual": [
+      "Free provider may throttle/time out",
+      "Real mail delivery/expiry/replay unverified; owner selected synthetic reviewer workflow",
+      "Hosted AI quotation extraction/checkout/full account-backup operations incomplete",
+      "Default social preview unchanged; optional manual custom upload only"
+    ],
+    "secretScan": {
+      "scope": "All locally available reachable Git refs; not deleted/unreachable server objects",
+      "objects": 1158,
+      "blobs": 505,
+      "configuredSecretComparison": true,
+      "credentialPatterns": true,
+      "findings": [],
+      "status": "PASS"
+    }
+  },
+  "ownerActions": [
+    {
+      "action": "Explicitly approve protected PR2 merge after required checks pass",
+      "website": "https://github.com/YellankiKaushik/UtsavOS/pull/2",
+      "settings": "Review the presentation branch; authorize normal protected PR merge",
+      "completed": "Presentation, media, metadata, effective ruleset and exact-head push/PR CI passed; merge did not execute",
+      "verify": "Agent merges only after approval and final checks, without bypassing protection"
+    },
+    {
+      "action": "Resolve tool eligibility and permitted private reviewer-credential channel",
+      "website": "https://hack2skill.com/login",
+      "settings": "Official Challenge5 instructions/organizer communication",
+      "completed": "Real Codex attribution and isolated reviewer workflow documented",
+      "verify": "Obtain actual organizer clarification; privately share credentials only through permitted channel"
+    },
+    {
+      "action": "Publish reviewed LinkedIn draft and supply actual post URL",
+      "website": "https://www.linkedin.com/feed/",
+      "settings": "Create post using docs/hackathon/LINKEDIN_POST.md",
+      "completed": "Copy-ready text includes verified app/repository/YouTube links",
+      "verify": "Open actual post URL signed out and place it in submission fields"
+    },
+    {
+      "action": "Manually select exact Challenge5 option and submit before1Nov2026 23:59IST",
+      "website": "https://hack2skill.com/login",
+      "settings": "PromptWars Virtual → Challenge5 → Submission",
+      "completed": "Public main/app/video and field-length drafts verified; no attempt consumed",
+      "verify": "Check actual required URLs and receipt; agent never submits"
+    },
+    {
+      "action": "Optional: choose an open-source license if desired",
+      "website": "https://github.com/YellankiKaushik/UtsavOS",
+      "settings": "Add LICENSE only after explicit owner choice",
+      "completed": "No license rights invented; direct dependency licenses inventoried",
+      "verify": "Review selected license and third-party obligations before labeling open-source"
+    },
+    {
+      "action": "Optional: customize GitHub social preview",
+      "website": "https://github.com/YellankiKaushik/UtsavOS/settings",
+      "settings": "General → Social preview → upload approved docs/assets/demo-thumbnail.png",
+      "completed": "Actual screenshot prepared; default preview left unchanged because REST has no supported upload field",
+      "verify": "Inspect repository link preview after owner upload"
+    }
+  ],
+  "verdict": {
+    "repositoryPresentation": "PARTIAL",
+    "documentation": "COMPLETE",
+    "media": "COMPLETE",
+    "mainProtection": "VERIFIED",
+    "hackathonLinks": "INCOMPLETE",
+    "application": "UNCHANGED AND VERIFIED",
+    "submission": "OWNER ACTIONS REQUIRED"
+  },
+  "applicationGuard": {
+    "observedAt": "2026-10-29T17:05:20.154Z",
+    "deployment": "dpl_7845EjqLm8CJA7vuT1QpN32mioLv",
+    "sha": "db39c6ff98fc048aa0af2599d23ed2d6a5bf35f8",
+    "actualAiRequests": 0,
+    "previewBypass": false,
+    "runtime": {
+      "status": 200,
+      "aiConfigured": true,
+      "primary": "openrouter",
+      "fallback": "none",
+      "features": {
+        "workspaceDashboard": true,
+        "dataLifecycle": true,
+        "documents": true,
+        "vendorFinance": true,
+        "teams": true,
+        "guests": true,
+        "eventFunctions": true
+      }
+    },
+    "cookies": [
+      {
+        "secure": true,
+        "httpOnly": true,
+        "sameSite": "Lax",
+        "path": "/"
+      }
+    ],
+    "invalidInput": {
+      "status": 400,
+      "code": "INVALID_INPUT"
+    },
+    "signedOutApi": {
+      "status": 401,
+      "code": "UNAUTHENTICATED"
+    },
+    "invalidCallback": {
+      "finalOrigin": "https://utsavos.vercel.app",
+      "path": "/login"
+    }
+  },
+  "automaticApprovalBlocker": {
+    "action": "Merge PR2 head390199b into protected main",
+    "executed": false,
+    "reason": "Automatic approval review requires explicit PR2 owner merge approval before this consequential repository-side effect.",
+    "approvalQuestionPending": true
+  }
+}

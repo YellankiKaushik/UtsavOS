@@ -1,3 +1,5 @@
+Historical checkpoint: this dated record is preserved, including failures. Current public release/owner actions are in [the release handoff](HACKATHON_RELEASE_HANDOFF.md) and [repository report](GITHUB_REPOSITORY_FINAL_REPORT.md). PR #1 is merged; older pending-release statements below describe their original checkpoint.
+
 # Founder actions required
 
 2026-10-27. The current exact actions and evidence are in [EXTERNAL_ACTION_REGISTER.md](EXTERNAL_ACTION_REGISTER.md), replacing the prior speculative setup list. No credentials belong in chat.

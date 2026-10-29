@@ -1,3 +1,5 @@
+Current release note: this module is enabled in the owner-approved production release with scoped local/native/hosted evidence. See [implementation status](../IMPLEMENTATION_STATUS.md). The dated implementation contract below is preserved; its original rollout/promotion statements are historical, not current release instructions.
+
 # Workspace limits and data lifecycle
 
 FR-020 is partial: the database dashboard and limits work; subscription processing does not. Stripe Marketplace returned `integration_terms_acceptance_required`. No resource, SDK, price, checkout, paid subscription or webhook verification is claimed. `/api/billing/webhook` always returns `503 BILLING_NOT_CONFIGURED` and cannot grant entitlements. Complete the owner integration setup before implementing provider-specific signature verification, event receipts, ordering/reconciliation and checkout; test those in provider test mode before enabling billing.

@@ -1,6 +1,6 @@
 # Submission form — validated draft
 
-Owner-provided official dashboard; deadline 1 November 2026, 23:59 IST; 0/3 attempts reported. Public release verified. Actual video/post URLs and owner submission remain pending.
+Owner-provided official dashboard; deadline 1 November 2026,23:59 IST;0/3 attempts reported. Public app and owner-supplied YouTube walkthrough verified. Actual published LinkedIn URL and manual submission remain pending.
 
 ## challenge
 
@@ -24,9 +24,9 @@ Verified owner-approved production release; signed-out guards and synthetic revi
 
 ## videoUrl
 
-[PENDING: actual owner-published URL]
+https://www.youtube.com/watch?v=Z5bo9ydn7JE
 
-OWNER UPLOAD PENDING; only use a genuinely uploaded unlisted YouTube or accessible Drive URL
+Owner-supplied corrected UtsavOS walkthrough; anonymous oEmbed/watch HTTP200 and playability OK, title UtsavOS | AI-native Event Planning Platform, channel Kaushik. No original download is hosted in Git.
 
 ## deployedUpdates
 
@@ -46,7 +46,7 @@ Characters: 755/1024
 
 ## linkedInUrl
 
-[PENDING: actual owner-published URL]
+[PENDING: actual published LinkedIn URL]
 
 OWNER PUBLICATION PENDING; do not invent a URL or post automatically
 

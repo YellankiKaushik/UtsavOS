@@ -1,3 +1,5 @@
+Historical checkpoint: this dated record is preserved, including failures. Current public release/owner actions are in [the release handoff](HACKATHON_RELEASE_HANDOFF.md) and [repository report](GITHUB_REPOSITORY_FINAL_REPORT.md). PR #1 is merged; older pending-release statements below describe their original checkpoint.
+
 # UtsavOS completion and production-readiness report
 
 Generated 2026-10-26T18:18:29.270Z. **P0 IMPLEMENTED BUT RELEASE BLOCKED.** This is an evidence checkpoint, not a release certificate. No credentials or recoverable secret fragments are included.

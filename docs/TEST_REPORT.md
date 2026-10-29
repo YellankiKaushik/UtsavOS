@@ -1,4 +1,4 @@
-> Current checkpoint — 29 October 2026: see [final master report](UTSAVOS_FINAL_MASTER_REPORT.md) for the latest229 regression/22 native/28 synthetic-browser results,15 applied migrations,protected release candidate,real GenAI evidence and retained hosted failures. The dated material below is historical; public release and email delivery remain unverified.
+> Current release: 231 regression passes; public production has successful wedding/birthday/community AI acceptance and persistence evidence, including separately retained initial rate limits and affected reruns. See [current testing guide](TESTING.md), [release handoff](HACKATHON_RELEASE_HANDOFF.md) and [presentation report](GITHUB_REPOSITORY_FINAL_REPORT.md). The dated ledger below remains historical; real mail delivery remains unverified.
 
 # Test report
 

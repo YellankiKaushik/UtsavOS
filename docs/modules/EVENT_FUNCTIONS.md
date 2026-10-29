@@ -1,3 +1,5 @@
+Current release note: this module is enabled in the owner-approved production release with scoped local/native/hosted evidence. See [implementation status](../IMPLEMENTATION_STATUS.md). The dated implementation contract below is preserved; its original rollout/promotion statements are historical, not current release instructions.
+
 # FR-015 — Multi-function event preview
 
 2026-10-27. IMPLEMENTED / TESTED LOCALLY. Hosted verification BLOCKED. Off by default through FEATURE_EVENT_FUNCTIONS=false. Not a P1 commercial-beta release or a billing entitlement. New user directive permits isolated development before the external P0 gates pass (ADR-024).

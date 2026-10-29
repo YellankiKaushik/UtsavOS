@@ -1,3 +1,5 @@
+Historical checkpoint: this dated record is preserved, including failures. Current public release/owner actions are in [the release handoff](HACKATHON_RELEASE_HANDOFF.md) and [repository report](GITHUB_REPOSITORY_FINAL_REPORT.md). PR #1 is merged; older pending-release statements below describe their original checkpoint.
+
 # External action register — 29 October 2026
 
 The active non-technical checklist is [OWNER_FINAL_ACTIONS.md](OWNER_FINAL_ACTIONS.md). The comprehensive evidence is [UTSAVOS_FINAL_MASTER_REPORT.md](UTSAVOS_FINAL_MASTER_REPORT.md). Earlier setup blockers are preserved in Git history and dated reports; they are not current requests for new keys,project setup or manual SQL.

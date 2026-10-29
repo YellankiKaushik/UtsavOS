@@ -1,4 +1,8 @@
-# Genuine demo — timed edit
+# Published demonstration
+
+[Watch UtsavOS on YouTube](https://www.youtube.com/watch?v=Z5bo9ydn7JE). Corrected owner-supplied link verified anonymously on 29 October2026: title UtsavOS | AI-native Event Planning Platform, channel Kaushik, watch/oEmbed200 and playability OK. This external walkthrough is distinct from the local82-second edit described below; do not assume equal duration/content. No original download is hosted on GitHub.
+
+## Earlier local film provenance
 
 Final asset: C:/Users/YellankiKaushik/.codex/visualizations/2026/10/27/01a17bf0-1534-7b50-99db-ae173615c7ed/utsavos-challenge5-film/delivery/UtsavOS-Challenge5-demo.mp4 . Editable composition, inputs and provenance are in its parent project. Keep video outside Git: the repository limit is10MB.
 
@@ -18,6 +22,6 @@ Final asset: C:/Users/YellankiKaushik/.codex/visualizations/2026/10/27/01a17bf0-
 
 Audit history, logout/re-login and second-tenant denial passed in the hosted test; those sensitive account transitions are excluded from the exported film. AI budget suggestions were intentionally not accepted for the golden vector. Some model estimates need correction; this film does not claim reliable quotations.
 
-Before upload, play the entire file. Upload to YouTube as Unlisted or Drive with viewer access for the evaluation link; open the resulting link signed out. Then put that actual URL into SUBMISSION_FORM_ANSWERS.json/.md. No upload URL exists yet. No social post or form submission has been made.
+Before upload, play the entire file. Upload to YouTube as Unlisted or Drive with viewer access for the evaluation link; open the resulting link signed out. Then put that actual URL into SUBMISSION_FORM_ANSWERS.json/.md. The verified external walkthrough link is above; no direct-download URL for this local MP4 has been established. No social post or form submission has been made.
 
 Post-release upload context: the owner-approved application is now at https://utsavos.vercel.app . The existing film records a genuine synthetic Preview session before this production release; any pending-release wording in the captured edit describes that earlier checkpoint. Identify this capture context in the upload description. Production verification, including retained rate-limit failures and successful affected reruns, is in the final handoff. No replacement footage or public video URL has been invented.
