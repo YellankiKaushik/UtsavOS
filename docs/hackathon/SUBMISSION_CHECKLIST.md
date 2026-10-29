@@ -1,5 +1,7 @@
 # Submission checklist — 29 October 2026
 
+Latest verification: [release handoff](../HACKATHON_RELEASE_HANDOFF.md). Candidate `fa15104` has green CI and three fresh real AI journeys; isolated reviewer sessions and tenant denial pass. Email delivery and approved public release remain pending. Historical failures are retained.
+
 Deadline: **1 November 2026,23:59 IST**. Owner supplied the authenticated official dashboard text; attempts reported0/3. Do not submit automatically or consume an attempt while required links are missing.
 
 - [x] Wedding, birthday and community planning implemented.

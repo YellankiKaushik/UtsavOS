@@ -1,5 +1,7 @@
 # UtsavOS final master report
 
+**Latest hackathon checkpoint:** [HACKATHON_RELEASE_HANDOFF.md](HACKATHON_RELEASE_HANDOFF.md) records the newer `fa15104` candidate, green CI, three fresh genuine AI acceptance journeys and prepared isolated reviewer. Historical observations and failures below remain preserved; production is still awaiting explicit owner approval.
+
 Generated 2026-10-29T12:29:39.584Z. Evidence is scoped to the named commit/environment. This report supersedes older status claims without rewriting their historical artifacts.
 
 ## 1. Executive verdict
