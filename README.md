@@ -4,6 +4,8 @@ AI event planning for weddings, birthdays and community celebrations. A personal
 
 **29 October 2026: genuine GenAI and hosted acceptance verified in isolated staging. Public release, email delivery, competition tool eligibility and owner submission actions remain pending. Commercial production is incomplete.** See the [master report](docs/UTSAVOS_FINAL_MASTER_REPORT.md) and [owner checklist](docs/OWNER_FINAL_ACTIONS.md). Earlier dated completion reports are historical.
 
+The initial six hosted journeys passed. A later birthday repetition returned503, and its affected recheck timed out at45seconds; an alternate free route returned404. These failures are retained in the report. Manual planning remains available, and public release is held pending the relevant verification gates.
+
 Start with the [project description](docs/hackathon/PROJECT_DESCRIPTION.md), [demo script](docs/hackathon/DEMO_VIDEO_SCRIPT.md) and [challenge compliance matrix](docs/hackathon/CHALLENGE_COMPLIANCE_MATRIX.md). The current implementation is on [PR #1](https://github.com/YellankiKaushik/UtsavOS/pull/1), branch codex/live-release-completion. The default main branch and existing public production have not been promoted to this candidate.
 
 ## Run locally

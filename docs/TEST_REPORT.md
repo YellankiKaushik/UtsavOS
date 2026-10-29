@@ -1,3 +1,5 @@
+> Current checkpoint — 29 October 2026: see [final master report](UTSAVOS_FINAL_MASTER_REPORT.md) for the latest229 regression/22 native/28 synthetic-browser results,15 applied migrations,protected release candidate,real GenAI evidence and retained hosted failures. The dated material below is historical; public release and email delivery remain unverified.
+
 # Test report
 
 2026-10-28 (Asia/Calcutta). Counts below are independent runs and overlap. Fixture, native PostgreSQL, hosted Supabase and hosted Vercel results are distinct. Skipped/filtered/preflight-blocked cases are not passes.

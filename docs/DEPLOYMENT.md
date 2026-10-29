@@ -1,3 +1,5 @@
+> Current checkpoint — 29 October 2026: see [final master report](UTSAVOS_FINAL_MASTER_REPORT.md) for the latest229 regression/22 native/28 synthetic-browser results,15 applied migrations,protected release candidate,real GenAI evidence and retained hosted failures. The dated material below is historical; public release and email delivery remain unverified.
+
 # Deployment and operations
 
 2026-10-28 (Asia/Calcutta). **Staging manual flows verified; complete live release blocked.**

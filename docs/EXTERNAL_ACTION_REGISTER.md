@@ -1,52 +1,17 @@
-# External action register
+# External action register — 29 October 2026
 
-2026-10-28 (Asia/Calcutta). Credentials belong in ignored environment files or approved secret storage, never chat. Unchanged provider failures are not retried.
+The active non-technical checklist is [OWNER_FINAL_ACTIONS.md](OWNER_FINAL_ACTIONS.md). The comprehensive evidence is [UTSAVOS_FINAL_MASTER_REPORT.md](UTSAVOS_FINAL_MASTER_REPORT.md). Earlier setup blockers are preserved in Git history and dated reports; they are not current requests for new keys,project setup or manual SQL.
 
-Resolved: designated Supabase ownership/access and migrations; ordinary session persistence/isolation; GitHub validation and Docker platform CI; protected Vercel Preview; genuine hosted manual core/document/lifecycle journeys. Unrelated LoadGuard3D untouched.
+| ID   | Current external dependency                                                                       | Priority                                                 |
+| ---- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| H-01 | Organizer clarification about actual Codex/tool eligibility                                       | Hackathon critical                                       |
+| H-02 | Approved controlled inbox and permitted judge-access method                                       | Hackathon critical                                       |
+| H-03 | Owner review/release approval after verification gates are resolved                               | Hackathon critical                                       |
+| H-04 | Owner upload of final genuine demo;actual accessible URL                                          | Hackathon critical                                       |
+| H-05 | Owner-reviewed LinkedIn publication and manual complete submission before1 November2026,23:59 IST | Hackathon critical                                       |
+| C-01 | Owner Stripe terms/account/test-price/access decisions                                            | Later commercial;not required by supplied challenge form |
+| C-02 | Accepted support/incident/retention/backup responsibilities and approved managed restore access   | Before commercial beta                                   |
 
-## Google Gemini
+Provider availability is a separate observed external condition:the existing OpenRouter route has genuine successful plans but a later affected birthday request timed out at45002ms. A single alternate free route returned404. No permission/privacy controls were relaxed and no paid model was enabled. A later verification should follow a meaningful availability/configuration change,not repeat unchanged failures indefinitely.
 
-- Safe classification: AI_AUTHENTICATION_FAILED / HTTP401
-- Evidence: `.runtime/release-20261028/provider-diagnostic.json; provider-smoke-initial.json`
-- Established cause: Authentication-level rejection established; exact project/key restriction not established
-- Required owner action: Verify project, enabled Generative Language API, key restrictions, model entitlement and quota; securely update local and Preview configuration if necessary
-- Codex can resolve without external change: false
-- Next verification: npm run test:providers:smoke -- -t gemini once after a material external change
-
-## OpenRouter
-
-- Safe classification: AI_INVALID_OUTPUT; response validation; earlier AI_ROUTE_UNAVAILABLE
-- Evidence: `.runtime/live-provider-smoke.json; .runtime/release-20261028/openrouter-routes.json`
-- Established cause: Key/catalogue authorized; an eligible fixed free completion failed validation twice. Reasoning-disable test did not establish cause; generation lookup404
-- Required owner action: Identify a compatible permitted fixed route under data_collection=deny and approve a spend budget if no free route works; configure securely
-- Codex can resolve without external change: false
-- Next verification: One filtered smoke on the changed approved route, then bounded corpus only with explicit budget
-
-## Supabase Auth email
-
-- Safe classification: email_address_invalid / HTTP400 for reserved example.test addresses; delivery UNVERIFIED
-- Evidence: `.runtime/release-20261028/email-diagnostic.json`
-- Established cause: Synthetic reserved address rejection established; SMTP/provider delivery failure is not established
-- Required owner action: Configure/verify permitted sender and controlled test inbox; verify real signup confirmation and recovery callback/session/password/logout on exact Preview
-- Codex can resolve without external change: false
-- Next verification: One bounded signup and recovery journey with a controlled inbox; preserve email confirmation
-
-## Stripe via Vercel Marketplace
-
-- Safe classification: integration_terms_acceptance_required / action_required
-- Evidence: `vercel integration add stripe --environment preview --no-env-pull --no-connect --format json --non-interactive returned owner action`
-- Established cause: Marketplace agreement/account setup required before provisioning
-- Required owner action: Review and accept terms at https://vercel.com/kaushik-yellanki-project/~/integrations/accept-terms/stripe?source=cli; finish approved test-mode account setup. Do not create live charges or assume pricing
-- Codex can resolve without external change: false
-- Next verification: Inspect installations, retry only after acceptance, follow provider skill; implement test-mode checkout, raw-body signature verification, idempotent event receipts and out-of-order reconciliation; then test before enablement
-
-## Commercial operations/privacy/retention
-
-- Safe classification: OPERATIONAL_RELEASE_GATE_UNVERIFIED
-- Evidence: `DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md sections629–678/1255; docs/modules/WORKSPACE_AND_DATA.md`
-- Established cause: No verified production operator, retention/backup deletion policy, restore drill, customer support/incident owner or provider data agreement evidence
-- Required owner action: Assign responsible operators, publish reviewed privacy/support/retention terms, verify backups/restore and held financial/account deletion handling with applicable advice
-- Codex can resolve without external change: false
-- Next verification: Synthetic restore/deletion drill on approved isolated backup; operator runbook and onboarding acceptance; no claim of regulatory compliance
-
-The GitHub connector could read but could not create a PR (integration403). Existing verified repository-owner Git authentication created draft PR#1 through the API; no unrelated identity or service role was used. No merge occurred. See [detailed release report](CODEX_VERCEL_RELEASE_REPORT.md) for release state.
+Gemini replacement credentials are optional while using OpenRouter. Supabase identity,migrations,password sessions and private Storage no longer require the earlier setup actions. Codex owns code/tests/authorized migrations;the owner is not asked to troubleshoot them.
