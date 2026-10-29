@@ -58,13 +58,18 @@ const evidence = z
     quote: z.string().min(1).max(500),
   })
   .strict();
-const field = z
-  .object({
-    value: z.string().max(500).nullable(),
-    source: evidence.nullable(),
-    confidence: z.number().min(0).max(1),
-  })
-  .strict();
+const field = z.union([
+  z
+    .object({ value: z.null(), source: z.null(), confidence: z.literal(0) })
+    .strict(),
+  z
+    .object({
+      value: z.string().min(1).max(500),
+      source: evidence,
+      confidence: z.number().min(0).max(1),
+    })
+    .strict(),
+]);
 export const quotationExtraction = z
   .object({
     schemaVersion: z.literal(1),
@@ -82,6 +87,38 @@ export const quotationExtraction = z
   .strict();
 export type QuotationExtraction = z.infer<typeof quotationExtraction>;
 export type DocumentPage = z.infer<typeof documentPages>[number];
+// The model selects exact evidence rather than calculating character offsets.
+// These are textual anchors, never verified supplier/financial facts.
+export function quotationSourceSpans(pages: DocumentPage[]) {
+  const spans: { page: number; start: number; end: number; quote: string }[] =
+    [];
+  for (const page of pages) {
+    let offset = 0;
+    for (const line of page.text.split("\n")) {
+      const points = Array.from(line);
+      const candidates = [0];
+      const colon = points.indexOf(":");
+      if (colon >= 0) candidates.push(colon + 1);
+      for (const from of candidates) {
+        let start = from,
+          end = points.length;
+        while (start < end && /\s/u.test(points[start])) start++;
+        while (end > start && /\s/u.test(points[end - 1])) end--;
+        const quote = points.slice(start, end).join("");
+        if (end === start || quote.length > 500 || spans.length >= 300)
+          continue;
+        spans.push({
+          page: page.page,
+          start: offset + start,
+          end: offset + end,
+          quote,
+        });
+      }
+      offset += points.length + 1;
+    }
+  }
+  return spans;
+}
 function sourceMoney(text: string) {
   const match =
     /^(?:₹\s*|INR\s*|Rs\.?\s*)([0-9][0-9,]*)(?:\.([0-9]{1,2}))?$/i.exec(

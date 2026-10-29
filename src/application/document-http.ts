@@ -10,6 +10,7 @@ import {
   quotationExtraction,
   validateQuotationSources,
   type DocumentDetail,
+  quotationSourceSpans,
 } from "@/domain/documents";
 import {
   extractDocumentText,
@@ -366,7 +367,10 @@ export async function documentRoute(
     try {
       const result = await generateStructured(
         quotationExtraction,
-        { pages: source.pages },
+        {
+          pages: source.pages,
+          sourceSpans: quotationSourceSpans(source.pages),
+        },
         { purpose: "quotation", noFallback: true, signal: request.signal },
       );
       usage = result;

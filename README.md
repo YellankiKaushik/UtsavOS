@@ -16,7 +16,7 @@ npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). Never overwrite an existing environment file. Configure an isolated Supabase project, publishable key and APP_BASE_URL. Apply all 14 forward migrations in filename order through the authenticated Supabase CLI; never reset a customer database. Enable confirmation and configure Auth Site URL/callback allowlists for the exact intended origin. The ordinary app uses end-user sessions, never a service-role key.
+Open [localhost:3000](http://localhost:3000). Never overwrite an existing environment file. Configure an isolated Supabase project, publishable key and APP_BASE_URL. Apply all 15 forward migrations in filename order through the authenticated Supabase CLI; never reset a customer database. Enable confirmation and configure Auth Site URL/callback allowlists for the exact intended origin. The ordinary app uses end-user sessions, never a service-role key.
 
 The verified AI route is OpenRouter, dots-studio/dots-3-note-preview:free, with AI_PROVIDER_PRIMARY=openrouter, AI_PROVIDER_FALLBACK=none, OPENROUTER_REQUIRE_FREE=true, OPENROUTER_DISABLE_REASONING=true, AI_PROVIDER_MAX_RETRIES=0 and AI_REQUEST_TIMEOUT_MS=45000. Set FEATURE_AI_GENERATION=true only after checking the configured route/privacy policy and running a successful bounded smoke. Keep OPENROUTER_API_KEY server-side. Gemini remains integrated but the supplied credential returned401; it is inactive. Model availability can change.
 
@@ -46,6 +46,6 @@ npm run test:e2e
 npm run test:live:public
 ```
 
-Regression:225 passed. Native PostgreSQL:22 scenarios. Synthetic browser:28 passed. Hosted Preview:6 browser journeys passed, including3 genuine AI event types; a separate3-case provider run passed after correcting a Gemini-only test import. These are different layers, not one interchangeable test count. Do not run mutating/live suites against customer data. The 24-request live corpus requires its explicit evaluation gate; skipped/filtered/blocked cases are not passes.
+Regression:229 passed. Native PostgreSQL:22 scenarios. Synthetic browser:28 passed. Hosted Preview:6 browser journeys passed, including3 genuine AI event types; a separate3-case provider run passed after correcting a Gemini-only test import. These are different layers, not one interchangeable test count. Do not run mutating/live suites against customer data. The 24-request live corpus requires its explicit evaluation gate; skipped/filtered/blocked cases are not passes.
 
 P1 includes event functions, private RSVP, teams, vendor finance, source-reviewed private PDFs, limits/dashboard and eligible event export/deletion. Rollout flags remain intentional. AI document extraction, verified billing, full account/backup erasure and P2 integrations remain incomplete. Billing has an offline test-mode reconciliation foundation; the live webhook continues returning503. [Billing contract](docs/modules/BILLING.md), [operations](docs/OPERATIONS_RUNBOOK.md).

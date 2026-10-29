@@ -121,3 +121,11 @@ The latest owner directive requires at least one genuine approved LLM rather tha
 ## ADR-024 — Disabled billing reconciliation and recovery evidence (2026-10-29)
 
 Implement the independently executable billing core before owner account provisioning: worker-only private receipts/bindings, current-snapshot retrieval after a leased claim, durable deduplication, bounded retries, stale-worker epochs and expiring test-mode entitlements. No live route, price or customer binding is activated. Official SDK signature verification and real Stripe events require the owner account; injected test verifiers are not provider acceptance. Add an isolated synthetic physical database restore drill, clearly distinguished from managed Supabase/Storage/Auth recovery. See modules/BILLING.md and OPERATIONS_RUNBOOK.md.
+
+## ADR-025 — Quotation evidence anchors and schema consistency (2026-10-29)
+
+A genuine quotation probe failed strict source validation. Add bounded Unicode code-point anchors from exact source lines/label tails so the model can copy evidence, and encode missing-value/null-source/zero-confidence combinations directly in the schema. The observed second failure was a missing value paired with source evidence; do not infer that offsets caused every failure. Validation and explicit financial review stay intact. The changed quotation.v2 probe passed exact source/money validation with462 input/268 output tokens,13027ms and reported cost0. This is component evidence, not complete hosted extraction acceptance; keep FEATURE_DOCUMENT_EXTRACTION disabled until the full authorized source-review workflow passes.
+
+## ADR-026 — Persist safe failure diagnostics (2026-10-29)
+
+A repeated hosted birthday generation returned503 with no model/tokens and15547ms latency. The earlier database provenance wrapper retained only routing/cost,discarding failure categories and semantic diagnostics. Add migration20261029120336 to persist only fixed category/status/stage/rule/finish-reason values. Unknown metadata,raw prompts/errors/headers remain excluded. Integration tests exercise valid and malicious metadata through actual command RPCs. This improves future diagnosis;the original upstream cause remains unknown and is not retroactively attributed.
