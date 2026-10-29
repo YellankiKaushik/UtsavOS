@@ -1,10 +1,10 @@
 import { it, expect } from "vitest";
-import { database, event } from "../helpers/database";
+import { database, event, A, B } from "../helpers/database";
 it("persists only allowlisted provider failure diagnostics, never raw error content", async () => {
   const db = await database();
   try {
-    const e = await event(db);
     for (const valid of [true, false]) {
+      const e = await event(db, valid ? A : B);
       const reservation = (
         await db.query<{ r: { id: string } }>(
           "select public.event_command($1,null,'reserve_ai',$2,1,$3,'diagnostics-reserve') r",
