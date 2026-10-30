@@ -48,6 +48,12 @@ P1 flags are enabled in the verified release but default off for a new local set
 - **One persistent workspace:** functions, tasks, vendor requirements and change history stay connected to the event.
 - **Tenant isolation:** authenticated operations and database authorization protect workspace boundaries.
 
+## About the builder and my approach
+
+I’m Kaushik, the independent builder of UtsavOS for PromptWars Challenge 5. I used OpenAI Codex as a development tool and built the product around a practical question: can a host understand what a planning change will do before it becomes part of the event? You can follow the project on [GitHub](https://github.com/YellankiKaushik) and see the product in the [walkthrough](https://www.youtube.com/watch?v=Z5bo9ydn7JE).
+
+My approach is to let AI help with the first draft while keeping consequential decisions clear and reviewable. The model proposes ideas; the host edits and selectively accepts them. Deterministic rules calculate money in integer paise, and a guest-count change is previewed before an explicit, version-checked approval saves it. I verified the real wedding, birthday and community flows, then documented the provider’s rate limits and the product’s boundaries instead of presenting estimates as quotations or claiming bookings, payments or uninterrupted AI availability.
+
 ### A change you can check yourself
 
 Using user-entered estimates of ₹300,000 fixed costs and ₹850 catering per guest:
