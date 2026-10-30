@@ -6,16 +6,17 @@ The owner-approved application is released; `main` is the stable production and 
 
 ## Product and engineering guides
 
-| Need                                    | Read                                                                                                                                      |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Install and configure your own instance | [Setup](SETUP.md) and [environment template](../.env.example)                                                                             |
-| Understand application/data boundaries  | [Architecture guide](ARCHITECTURE.md), [full V2 target design](../DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md), [decisions](DECISIONS.md)   |
-| Inspect API and database contracts      | [OpenAPI](api/openapi.yaml), [generated database types](../src/generated/database.types.ts), [forward migrations](../supabase/migrations) |
-| Understand each feature                 | [Module index](modules/README.md) and [implementation/evidence matrix](IMPLEMENTATION_STATUS.md)                                          |
-| Run checks and interpret evidence       | [Testing](TESTING.md); [historical test ledger](TEST_REPORT.md)                                                                           |
-| Deploy safely                           | [Deployment](DEPLOYMENT.md), [release/rollback procedure](hackathon/RELEASE_RUNBOOK.md), [operations contract](OPERATIONS_RUNBOOK.md)     |
-| Contribute or report a vulnerability    | [Contributing](../CONTRIBUTING.md), [security policy](../SECURITY.md)                                                                     |
-| Inspect actual product images           | [Media sources and privacy](assets/README.md); [older fixture-image classification](screenshots/README.md)                                |
+| Need                                    | Read                                                                                                                                                                                                                |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Install and configure your own instance | [Setup](SETUP.md) and [environment template](../.env.example)                                                                                                                                                       |
+| Understand application/data boundaries  | [Architecture guide](ARCHITECTURE.md), [full V2 target design](../DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md), [decisions](DECISIONS.md)                                                                             |
+| Inspect API and database contracts      | [OpenAPI](api/openapi.yaml), [generated database types](../src/generated/database.types.ts), [forward migrations](../supabase/migrations)                                                                           |
+| Understand each feature                 | [Module index](modules/README.md) and [implementation/evidence matrix](IMPLEMENTATION_STATUS.md)                                                                                                                    |
+| Run checks and interpret evidence       | [Testing](TESTING.md); [historical test ledger](TEST_REPORT.md)                                                                                                                                                     |
+| Deploy safely                           | [Deployment](DEPLOYMENT.md), [release/rollback procedure](hackathon/RELEASE_RUNBOOK.md), [operations contract](OPERATIONS_RUNBOOK.md)                                                                               |
+| Contribute or report a vulnerability    | [Contributing](../CONTRIBUTING.md), [security policy](../SECURITY.md)                                                                                                                                               |
+| Inspect actual product images           | [Media sources and privacy](assets/README.md); [older fixture-image classification](screenshots/README.md)                                                                                                          |
+| Read the engineering case study         | [UtsavOS technical article](blog/UTSAVOS_MEDIUM_ARTICLE.md), [publishing guide](blog/MEDIUM_PUBLISHING_GUIDE.md), [fact-check](blog/ARTICLE_FACT_CHECK.md), [execution report](blog/CODEX_MEDIUM_ARTICLE_REPORT.md) |
 
 The V2 architecture is a proposed target design, including unreleased commercial/P2 work. The current implementation matrix and release evidence establish what is actually implemented and verified. In particular, the runtime release uses OpenRouter; the direct Gemini adapter is present but unsuccessful release authentication is not represented as generation success.
 

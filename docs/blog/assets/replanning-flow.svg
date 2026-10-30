@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="720" viewBox="0 0 1500 720" role="img" aria-labelledby="title desc">
+  <title id="title">UtsavOS re-planning approval flow</title>
+  <desc id="desc">A saved event snapshot is previewed without changing the plan. The host reviews and approves or rejects. Approval rechecks version, expiry, resource locks, and budget constraints. A guarded transaction applies valid changes and writes an audit record; invalid or stale proposals leave the saved plan unchanged.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#48615d"/></marker>
+    <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#ad5850"/></marker>
+    <style>
+      text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #203632; }
+      .title { font-size: 34px; font-weight: 700; }
+      .sub { font-size: 18px; fill: #526763; }
+      .head { font-size: 22px; font-weight: 700; }
+      .body { font-size: 17px; }
+      .small { font-size: 15px; fill: #526763; }
+      .edge { font-size: 15px; fill: #48615d; }
+    </style>
+  </defs>
+  <rect width="1500" height="720" fill="#f7f5ef" rx="26"/>
+  <text x="62" y="66" class="title">A proposal is not a plan update</text>
+  <text x="62" y="101" class="sub">Preview is read-only. Approval is conditional on the same version and constraints still being valid.</text>
+
+  <rect x="70" y="190" width="300" height="150" rx="18" fill="#fff" stroke="#89ad9f" stroke-width="2"/>
+  <rect x="450" y="190" width="300" height="150" rx="18" fill="#e9f3ef" stroke="#79aa9b" stroke-width="2"/>
+  <rect x="830" y="190" width="300" height="150" rx="18" fill="#fff5df" stroke="#d8b56f" stroke-width="2"/>
+  <rect x="1210" y="190" width="240" height="150" rx="18" fill="#edf1f7" stroke="#91a3bd" stroke-width="2"/>
+  <text x="98" y="232" class="head">1. Read snapshot</text>
+  <text x="98" y="272" class="body">Current event version</text>
+  <text x="98" y="304" class="body">Stored prices and locks</text>
+  <text x="478" y="232" class="head">2. Preview effects</text>
+  <text x="478" y="272" class="body">Exact before / after totals</text>
+  <text x="478" y="304" class="body">Warnings and affected tasks</text>
+  <text x="858" y="232" class="head">3. Host reviews</text>
+  <text x="858" y="272" class="body">Approve or reject</text>
+  <text x="858" y="304" class="body">No model approval authority</text>
+  <text x="1236" y="232" class="head">4. Re-check</text>
+  <text x="1236" y="272" class="body">Version and expiry</text>
+  <text x="1236" y="304" class="body">Locks and budget bounds</text>
+
+  <path d="M370 265 H440" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M750 265 H820" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1130 265 H1200" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="620" y="470" width="310" height="145" rx="18" fill="#edf1f7" stroke="#91a3bd" stroke-width="2"/>
+  <rect x="1055" y="470" width="380" height="145" rx="18" fill="#e9f3ef" stroke="#79aa9b" stroke-width="2"/>
+  <rect x="95" y="470" width="360" height="145" rx="18" fill="#fff0ed" stroke="#cd8b83" stroke-width="2"/>
+  <text x="650" y="514" class="head">5. Guarded transaction</text>
+  <text x="650" y="554" class="body">Apply updates; increment version</text>
+  <text x="650" y="586" class="body">Write audit event + receipt</text>
+  <text x="1083" y="514" class="head">6. Saved plan updated</text>
+  <text x="1083" y="554" class="body">Reload current snapshot</text>
+  <text x="1083" y="586" class="body">Proposal is now approved</text>
+  <text x="123" y="514" class="head">Stale / invalid / blocked</text>
+  <text x="123" y="554" class="body">Return conflict or constraint error</text>
+  <text x="123" y="586" class="body">Keep saved event unchanged</text>
+  <path d="M1330 340 C1330 410 1040 420 820 460" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="1120" y="408" class="edge">all checks pass</text>
+  <path d="M1245 340 C1170 430 660 432 455 500" fill="none" stroke="#ad5850" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <text x="685" y="438" class="edge">any check fails</text>
+  <path d="M930 545 H1045" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="955" y="527" class="edge">commit succeeds</text>
+
+  <line x1="62" y1="662" x2="1438" y2="662" stroke="#d6ded8" stroke-width="2"/>
+  <text x="62" y="694" class="small">The model can optionally explain a proposal; deterministic domain rules and database authorization decide whether it can be applied.</text>
+</svg>

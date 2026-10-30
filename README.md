@@ -54,6 +54,10 @@ I’m Kaushik, the independent builder of UtsavOS for PromptWars Challenge 5. I 
 
 My approach is to let AI help with the first draft while keeping consequential decisions clear and reviewable. The model proposes ideas; the host edits and selectively accepts them. Deterministic rules calculate money in integer paise, and a guest-count change is previewed before an explicit, version-checked approval saves it. I verified the real wedding, birthday and community flows, then documented the provider’s rate limits and the product’s boundaries instead of presenting estimates as quotations or claiming bookings, payments or uninterrupted AI availability.
 
+## Engineering Story / Behind the Build
+
+Read the [UtsavOS engineering case study](docs/blog/UTSAVOS_MEDIUM_ARTICLE.md) for a source-grounded walkthrough of product decisions, the Next.js and Supabase architecture, structured AI, deterministic budgeting, transactional replanning, security, testing, and deployment. The article is maintained here as Markdown; it has not been published to Medium.
+
 ### A change you can check yourself
 
 Using user-entered estimates of ₹300,000 fixed costs and ₹850 catering per guest:
