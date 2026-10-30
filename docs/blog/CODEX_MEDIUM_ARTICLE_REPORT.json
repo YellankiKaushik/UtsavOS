@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "project": "UtsavOS",
+  "preparedDate": "2026-10-31",
+  "status": {
+    "article": "ready_for_owner_editorial_review",
+    "mediumPublished": false,
+    "pullRequest": "open_pr_4",
+    "requiredCi": "passed_on_pr_4_head_6645be3",
+    "merge": "not_performed"
+  },
+  "article": {
+    "path": "docs/blog/UTSAVOS_MEDIUM_ARTICLE.md",
+    "title": "Building UtsavOS: Human-Reviewed AI, Exact Budgets, and Approved Replanning",
+    "subtitle": "A full-stack case study in turning weddings, birthdays, and community events into persistent plans—with structured AI drafts, integer-paise calculations, Supabase authorization, and explicit approval for consequential changes.",
+    "subtitleWordCount": 27,
+    "bodyWordCountApprox": 3290,
+    "wordCountMethod": "Whitespace-delimited body tokens including code and diagram source; excluding title, subtitle, technical references, and editorial note.",
+    "estimatedReadingTimeMinutes": 14,
+    "alternateTitles": [
+      "Building UtsavOS: From an AI Event Planner Idea to a Full-Stack Production Application",
+      "How I Built UtsavOS: An AI-Assisted Event Planning Workspace with Next.js, Supabase, and OpenRouter",
+      "Engineering UtsavOS: Structured AI, Exact Budgets, and Human-Approved Replanning"
+    ],
+    "mediumTopics": [
+      "Software Engineering",
+      "Artificial Intelligence",
+      "Nextjs",
+      "Programming"
+    ],
+    "ownerReviewRequired": [
+      "First-person authorship and voice",
+      "Final Medium formatting, links, images, topics, and responsive preview"
+    ]
+  },
+  "assets": [
+    {
+      "path": "docs/assets/overview.png",
+      "bytes": 39590,
+      "role": "cover_and_opening",
+      "classification": "privacy-reviewed synthetic-event production capture"
+    },
+    {
+      "path": "docs/assets/ai-planning.png",
+      "bytes": 44621,
+      "role": "product_journey",
+      "classification": "synthetic-event screenshot with saved genuine model output"
+    },
+    {
+      "path": "docs/assets/timeline.png",
+      "bytes": 38908,
+      "role": "selective_acceptance",
+      "classification": "privacy-reviewed synthetic-event production capture"
+    },
+    {
+      "path": "docs/assets/budget.png",
+      "bytes": 41255,
+      "role": "exact_budget",
+      "classification": "privacy-reviewed synthetic-event production capture"
+    },
+    {
+      "path": "docs/assets/change-impact.png",
+      "bytes": 38173,
+      "role": "change_preview",
+      "classification": "privacy-reviewed synthetic-event production capture"
+    },
+    {
+      "path": "docs/blog/assets/utsavos-architecture.png",
+      "bytes": 37874,
+      "role": "architecture_diagram",
+      "classification": "new source-backed diagram"
+    },
+    {
+      "path": "docs/blog/assets/utsavos-architecture.svg",
+      "bytes": 5460,
+      "role": "architecture_diagram_source",
+      "classification": "editable SVG"
+    },
+    {
+      "path": "docs/blog/assets/replanning-flow.png",
+      "bytes": 41393,
+      "role": "approval_flow_diagram",
+      "classification": "new source-backed diagram"
+    },
+    {
+      "path": "docs/blog/assets/replanning-flow.svg",
+      "bytes": 4828,
+      "role": "approval_flow_diagram_source",
+      "classification": "editable SVG"
+    }
+  ],
+  "qualityAssurance": {
+    "npmCi": {
+      "status": "passed",
+      "packagesAudited": 508,
+      "vulnerabilities": 0
+    },
+    "formatCheck": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "unitSuite": { "status": "passed", "files": 26, "tests": 231 },
+    "nativeConcurrency": {
+      "status": "passed_on_loopback_enabled_retry",
+      "tests": 22,
+      "initialSandboxAttempt": "EACCES before assertions"
+    },
+    "playwright": {
+      "status": "passed_on_loopback_enabled_retry",
+      "tests": 28,
+      "initialSandboxAttempt": "stopped before results because local servers could not start"
+    },
+    "clientSecretScan": "passed",
+    "documentationLinks": {
+      "status": "passed",
+      "markdownFiles": 48,
+      "validRelativeTargets": 229,
+      "brokenLocalLinks": 0
+    },
+    "imageReview": "five product screenshots and two diagrams visually inspected; no contacts, credentials, or tokens visible",
+    "officialExternalLinks": "Next.js, Zod, Supabase, OpenRouter, and Medium Help pages accessible",
+    "publicProjectLinks": "web retrieval could not fetch the live app, repository, or YouTube URL; known crawler limitation; no availability inference",
+    "repositorySize": {
+      "measuredAtCommit": "395e8553d501097e391941ed597f13e04e1ce854",
+      "trackedBytes": 3234575,
+      "gitArchiveZipBytes": 1303946,
+      "localGitMetadataBytes": 1712237,
+      "limitBytes": 10000000,
+      "trackedAndZipStrictlyUnderLimit": true,
+      "note": "Remote-only Git object storage is outside this local measurement."
+    }
+  },
+  "git": {
+    "startingMainSha": "c3b8600c85943cbd86fe1c0937bd9a8229279cb8",
+    "branch": "docs/utsavos-medium-story",
+    "articleCommit": "395e8553d501097e391941ed597f13e04e1ce854",
+    "pullRequestUrl": "https://github.com/YellankiKaushik/UtsavOS/pull/4",
+    "requiredChecks": ["validate", "supabase-platform"],
+    "ciStatus": "passed_on_pr_4_head_6645be3",
+    "ciRunIds": {
+      "push": 41111995510,
+      "pull_request": 41112005261
+    },
+    "mergeStatus": "not_performed",
+    "mergeAuthorization": "earlier owner approval named PR #2 only; approval for this article PR has not been given"
+  },
+  "ownerActions": [
+    "Approve protected merge of PR #4 if desired; required checks passed, but prior approval named PR #2 only.",
+    "Review first-person authorship and voice.",
+    "Format and inspect the article and assets in the owner's Medium account; verify links, topics, and desktop/mobile preview.",
+    "Publish from the owner's Medium account and provide the actual Medium URL before adding it to GitHub."
+  ],
+  "mediumPublished": false
+}

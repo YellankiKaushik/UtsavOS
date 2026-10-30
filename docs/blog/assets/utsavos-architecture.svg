@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="850" viewBox="0 0 1500 850" role="img" aria-labelledby="title desc">
+  <title id="title">UtsavOS system architecture</title>
+  <desc id="desc">Browser UI calls the Next.js application, which uses application and domain services for validated AI drafts and guarded Supabase RPCs. Supabase Auth and PostgreSQL store sessions and event state. OpenRouter is the verified production AI route; a Gemini adapter exists but production generation was not verified.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#48615d"/></marker>
+    <marker id="arrowTeal" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#177767"/></marker>
+    <style>
+      text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #203632; }
+      .title { font-size: 34px; font-weight: 700; }
+      .sub { font-size: 18px; fill: #526763; }
+      .head { font-size: 22px; font-weight: 700; }
+      .body { font-size: 18px; }
+      .small { font-size: 15px; fill: #526763; }
+      .edge { font-size: 15px; fill: #48615d; }
+    </style>
+  </defs>
+  <rect width="1500" height="850" fill="#f7f5ef" rx="26"/>
+  <text x="62" y="66" class="title">UtsavOS: one application, explicit trust boundaries</text>
+  <text x="62" y="100" class="sub">The model proposes. Application rules validate. Supabase stores and guards the approved plan.</text>
+
+  <!-- Main boxes -->
+  <rect x="55" y="188" width="260" height="270" rx="20" fill="#fff" stroke="#a9c1b8" stroke-width="2"/>
+  <rect x="360" y="165" width="340" height="315" rx="20" fill="#e9f3ef" stroke="#79aa9b" stroke-width="2"/>
+  <rect x="748" y="165" width="360" height="315" rx="20" fill="#fff" stroke="#79aa9b" stroke-width="2"/>
+  <rect x="1155" y="165" width="290" height="315" rx="20" fill="#edf1f7" stroke="#91a3bd" stroke-width="2"/>
+  <rect x="748" y="555" width="360" height="210" rx="20" fill="#fff5df" stroke="#d8b56f" stroke-width="2"/>
+
+  <!-- Browser -->
+  <text x="82" y="230" class="head">Host and browser</text>
+  <text x="82" y="273" class="body">React planning UI</text>
+  <text x="82" y="309" class="body">Edit and select AI items</text>
+  <text x="82" y="345" class="body">Review impact proposal</text>
+  <text x="82" y="381" class="body">Explicit approval</text>
+  <text x="82" y="427" class="small">No model or database secret</text>
+
+  <!-- Next.js -->
+  <text x="390" y="208" class="head">Next.js App Router</text>
+  <text x="390" y="250" class="body">Pages and route handlers</text>
+  <text x="390" y="286" class="body">Cookie-backed session</text>
+  <text x="390" y="322" class="body">Request and origin validation</text>
+  <text x="390" y="358" class="body">Application services</text>
+  <text x="390" y="414" class="small">Server-only credentials and adapters</text>
+  <text x="390" y="440" class="small">Single deployable modular monolith</text>
+
+  <!-- Domain/services -->
+  <text x="778" y="208" class="head">Domain and AI boundary</text>
+  <text x="778" y="250" class="body">Zod schema + semantic checks</text>
+  <text x="778" y="286" class="body">Exact integer-paise totals</text>
+  <text x="778" y="322" class="body">Versioned replan proposals</text>
+  <text x="778" y="358" class="body">Provider-neutral AI service</text>
+  <text x="778" y="414" class="small">Invalid or stale input fails closed</text>
+  <text x="778" y="440" class="small">Repository calls snapshot / command RPCs</text>
+
+  <!-- Supabase -->
+  <text x="1182" y="208" class="head">Supabase platform</text>
+  <text x="1182" y="250" class="body">Auth and session identity</text>
+  <text x="1182" y="286" class="body">PostgreSQL + RLS</text>
+  <text x="1182" y="322" class="body">Guarded transactions</text>
+  <text x="1182" y="358" class="body">Drafts, plans, audit history</text>
+  <text x="1182" y="414" class="small">Current event version rechecked</text>
+  <text x="1182" y="440" class="small">Storage keeps private documents private</text>
+
+  <!-- AI providers -->
+  <text x="778" y="598" class="head">External model boundary</text>
+  <text x="778" y="638" class="body">OpenRouter: verified free route</text>
+  <text x="778" y="674" class="body">Strict JSON; privacy / price constraints</text>
+  <text x="778" y="718" class="small">Gemini adapter exists; live generation unverified</text>
+
+  <!-- Arrows and labels -->
+  <path d="M315 310 H352" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M700 310 H740" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1108 310 H1147" fill="none" stroke="#48615d" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1147 375 H1108" fill="none" stroke="#91a3bd" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M930 480 V547" fill="none" stroke="#177767" stroke-width="3" marker-end="url(#arrowTeal)"/>
+  <path d="M775 555 C715 525 715 468 775 445" fill="none" stroke="#177767" stroke-width="3" marker-end="url(#arrowTeal)"/>
+  <text x="650" y="520" class="edge">untrusted response</text>
+
+  <line x1="62" y1="802" x2="1438" y2="802" stroke="#d6ded8" stroke-width="2"/>
+  <text x="62" y="831" class="small">Simplified view of the shipped repository at the documented release checkpoint. Not a claim of provider uptime or independent certification.</text>
+</svg>
