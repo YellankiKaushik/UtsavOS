@@ -5,8 +5,8 @@
   "status": {
     "article": "ready_for_owner_editorial_review",
     "mediumPublished": false,
-    "pullRequest": "pending_creation",
-    "requiredCi": "pending_pull_request",
+    "pullRequest": "open_pr_4",
+    "requiredCi": "passed_on_pr_4_head_ed72efe",
     "merge": "not_performed"
   },
   "article": {
@@ -134,14 +134,14 @@
     "startingMainSha": "c3b8600c85943cbd86fe1c0937bd9a8229279cb8",
     "branch": "docs/utsavos-medium-story",
     "articleCommit": "395e8553d501097e391941ed597f13e04e1ce854",
-    "pullRequestUrl": null,
+    "pullRequestUrl": "https://github.com/YellankiKaushik/UtsavOS/pull/4",
     "requiredChecks": ["validate", "supabase-platform"],
-    "ciStatus": "pending_pull_request",
+    "ciStatus": "passed_on_pr_4_head_ed72efe",
     "mergeStatus": "not_performed",
     "mergeAuthorization": "earlier owner approval named PR #2 only; approval for this article PR has not been given"
   },
   "ownerActions": [
-    "After required PR checks pass, approve protected merge of this article PR if desired.",
+    "Approve protected merge of PR #4 if desired; required checks passed, but prior approval named PR #2 only.",
     "Review first-person authorship and voice.",
     "Format and inspect the article and assets in the owner's Medium account; verify links, topics, and desktop/mobile preview.",
     "Publish from the owner's Medium account and provide the actual Medium URL before adding it to GitHub."

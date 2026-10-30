@@ -61,20 +61,20 @@ No Medium story, draft, or URL exists. The owner must review first-person claims
 | `node scripts/check-documentation.mjs` | Passed; 48 Markdown files, 229 valid relative targets, no broken local links. Existing screenshot PNGs passed format/size checks.                                                                                                                                                                                                      |
 | Visual review                          | Passed for the five product captures and two new diagrams; no guest contacts, credentials, or tokens were visible.                                                                                                                                                                                                                     |
 | External URL review                    | Official Next.js, Zod, Supabase, OpenRouter, and Medium Help pages were accessible. The web retrieval service could not fetch the public app, GitHub repository, or YouTube watch URL; this is a crawler limitation, not evidence those URLs are broken. Those public project links are already recorded in the release documentation. |
-| Repository size                        | At article content commit `395e855`: 3,234,575 tracked bytes and 1,303,946-byte Git ZIP archive; both are strictly below the 10,000,000-byte ceiling. Local Git metadata measured 1,712,237 bytes; Remote-only Git object storage is outside this local measurement.                                                                   |
+| Repository size                        | At article content commit `395e855`: 3,234,575 tracked bytes and 1,303,946-byte Git ZIP archive; both are strictly below the 10,000,000-byte ceiling. Local Git metadata measured 1,712,237 bytes; remote-only Git object storage is outside this local measurement.                                                                   |
 
 ## GitHub state
 
 - **Starting protected `main`:** `c3b8600c85943cbd86fe1c0937bd9a8229279cb8`.
 - **Working branch:** `docs/utsavos-medium-story`.
 - **Article content commit:** `395e8553d501097e391941ed597f13e04e1ce854`.
-- **Pull request:** Pending push and creation.
-- **Required checks:** `validate` and `supabase-platform`; GitHub result pending PR creation.
+- **Pull request:** [#4 — Document UtsavOS engineering story and Medium-ready article](https://github.com/YellankiKaushik/UtsavOS/pull/4) (open, based on protected `main`).
+- **Required checks:** `validate` and `supabase-platform` passed on PR #4 at head `ed72efe2f1601bc4e8bc3ae86239b4dd433eb03d`. The duplicate `push` and `pull_request` runs both passed. Vercel Preview reported Ready; optional Sourcery review was skipped because the account reached its weekly review budget.
 - **Merge:** Not performed. The earlier owner approval specifically named PR #2, so it does not authorize merging this new article PR. No branch protection or deployment setting was bypassed.
 
 ## Remaining owner actions
 
-1. After the PR is open and all required checks pass, approve merging this article PR through the protected workflow if desired.
+1. Approve merging PR #4 through the protected workflow if desired; required checks pass, but the earlier approval named PR #2 only.
 2. Review first-person authorship and the article voice.
 3. Use the publishing guide to format the story and upload/inspect images in the owner's Medium account; confirm the desktop/mobile previews and topics.
 4. Publish from the owner's Medium account and provide the real story URL before adding any Medium link to the repository.
