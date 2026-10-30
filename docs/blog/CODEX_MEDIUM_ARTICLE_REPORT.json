@@ -120,12 +120,20 @@
     "imageReview": "five product screenshots and two diagrams visually inspected; no contacts, credentials, or tokens visible",
     "officialExternalLinks": "Next.js, Zod, Supabase, OpenRouter, and Medium Help pages accessible",
     "publicProjectLinks": "web retrieval could not fetch the live app, repository, or YouTube URL; known crawler limitation; no availability inference",
-    "repositorySize": "pending final committed-tree measurement"
+    "repositorySize": {
+      "measuredAtCommit": "395e8553d501097e391941ed597f13e04e1ce854",
+      "trackedBytes": 3234575,
+      "gitArchiveZipBytes": 1303946,
+      "localGitMetadataBytes": 1712237,
+      "limitBytes": 10000000,
+      "trackedAndZipStrictlyUnderLimit": true,
+      "note": "Remote-only Git object storage is outside this local measurement."
+    }
   },
   "git": {
     "startingMainSha": "c3b8600c85943cbd86fe1c0937bd9a8229279cb8",
     "branch": "docs/utsavos-medium-story",
-    "articleCommit": null,
+    "articleCommit": "395e8553d501097e391941ed597f13e04e1ce854",
     "pullRequestUrl": null,
     "requiredChecks": ["validate", "supabase-platform"],
     "ciStatus": "pending_pull_request",

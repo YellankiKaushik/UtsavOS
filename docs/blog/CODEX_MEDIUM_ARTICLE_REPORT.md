@@ -61,13 +61,13 @@ No Medium story, draft, or URL exists. The owner must review first-person claims
 | `node scripts/check-documentation.mjs` | Passed; 48 Markdown files, 229 valid relative targets, no broken local links. Existing screenshot PNGs passed format/size checks.                                                                                                                                                                                                      |
 | Visual review                          | Passed for the five product captures and two new diagrams; no guest contacts, credentials, or tokens were visible.                                                                                                                                                                                                                     |
 | External URL review                    | Official Next.js, Zod, Supabase, OpenRouter, and Medium Help pages were accessible. The web retrieval service could not fetch the public app, GitHub repository, or YouTube watch URL; this is a crawler limitation, not evidence those URLs are broken. Those public project links are already recorded in the release documentation. |
-| Repository size                        | Pending final committed-tree measurement; organizer's stated ceiling is 10 MB.                                                                                                                                                                                                                                                         |
+| Repository size                        | At article content commit `395e855`: 3,234,575 tracked bytes and 1,303,946-byte Git ZIP archive; both are strictly below the 10,000,000-byte ceiling. Local Git metadata measured 1,712,237 bytes; Remote-only Git object storage is outside this local measurement.                                                                   |
 
 ## GitHub state
 
 - **Starting protected `main`:** `c3b8600c85943cbd86fe1c0937bd9a8229279cb8`.
 - **Working branch:** `docs/utsavos-medium-story`.
-- **Article branch commit:** Pending commit.
+- **Article content commit:** `395e8553d501097e391941ed597f13e04e1ce854`.
 - **Pull request:** Pending push and creation.
 - **Required checks:** `validate` and `supabase-platform`; GitHub result pending PR creation.
 - **Merge:** Not performed. The earlier owner approval specifically named PR #2, so it does not authorize merging this new article PR. No branch protection or deployment setting was bypassed.
