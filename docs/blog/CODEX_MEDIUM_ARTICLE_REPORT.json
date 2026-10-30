@@ -6,7 +6,7 @@
     "article": "ready_for_owner_editorial_review",
     "mediumPublished": false,
     "pullRequest": "open_pr_4",
-    "requiredCi": "passed_on_pr_4_head_ed72efe",
+    "requiredCi": "passed_on_pr_4_head_6645be3",
     "merge": "not_performed"
   },
   "article": {
@@ -136,7 +136,11 @@
     "articleCommit": "395e8553d501097e391941ed597f13e04e1ce854",
     "pullRequestUrl": "https://github.com/YellankiKaushik/UtsavOS/pull/4",
     "requiredChecks": ["validate", "supabase-platform"],
-    "ciStatus": "passed_on_pr_4_head_ed72efe",
+    "ciStatus": "passed_on_pr_4_head_6645be3",
+    "ciRunIds": {
+      "push": 41111995510,
+      "pull_request": 41112005261
+    },
     "mergeStatus": "not_performed",
     "mergeAuthorization": "earlier owner approval named PR #2 only; approval for this article PR has not been given"
   },

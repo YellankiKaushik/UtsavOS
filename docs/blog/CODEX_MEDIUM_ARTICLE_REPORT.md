@@ -69,7 +69,7 @@ No Medium story, draft, or URL exists. The owner must review first-person claims
 - **Working branch:** `docs/utsavos-medium-story`.
 - **Article content commit:** `395e8553d501097e391941ed597f13e04e1ce854`.
 - **Pull request:** [#4 — Document UtsavOS engineering story and Medium-ready article](https://github.com/YellankiKaushik/UtsavOS/pull/4) (open, based on protected `main`).
-- **Required checks:** `validate` and `supabase-platform` passed on PR #4 at head `ed72efe2f1601bc4e8bc3ae86239b4dd433eb03d`. The duplicate `push` and `pull_request` runs both passed. Vercel Preview reported Ready; optional Sourcery review was skipped because the account reached its weekly review budget.
+- **Required checks:** `validate` and `supabase-platform` passed on PR #4 at head `6645be35e64364fcb662c55d8adad8f79f856e95`. The duplicate `push` and `pull_request` runs both passed. Vercel Preview reported Ready; the optional Sourcery check ultimately passed; an earlier attempt was skipped after the weekly review budget was reached.
 - **Merge:** Not performed. The earlier owner approval specifically named PR #2, so it does not authorize merging this new article PR. No branch protection or deployment setting was bypassed.
 
 ## Remaining owner actions
