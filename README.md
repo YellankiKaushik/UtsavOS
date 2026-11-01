@@ -204,6 +204,7 @@ P0 planning has bounded production verification. P1 modules are implemented with
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change and [SECURITY.md](SECURITY.md) for private vulnerability reports. Main requires a PR, passing `validate`/`supabase-platform` checks and resolved conversations; force pushes/deletion are blocked. No impossible second-maintainer approval is required.
 
+Made by Kaushik Yellanki 
 No `LICENSE` file is present. This repository does not currently declare an open-source license; selecting one requires the owner's explicit decision. No license rights have been invented for source, screenshots or third-party components.
 
 ---
