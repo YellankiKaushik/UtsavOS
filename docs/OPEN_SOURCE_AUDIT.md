@@ -2,7 +2,7 @@
 
 **Audit date:** 2026-11-08
 
-**Reviewed baseline:** protected `main`, commit `c3b8600c85943cbd86fe1c0937bd9a8229279cb8
+**Reviewed baseline:** protected `main`, commit `c3b8600c85943cbd86fe1c0937bd9a8229279cb8`
 
 **Purpose:** prepare the existing Challenge 5 implementation for an open-source reference release and a permanent backend-free showcase. This audit changes no application behavior and does not authorize hosted-service changes.
 
@@ -10,7 +10,7 @@
 
 UtsavOS is a single Next.js App Router application with a useful separation between pure domain rules, application commands, infrastructure adapters and SQL authorization. Its current interactive application is not backend-independent: authenticated pages and most API routes require a Supabase user session, while plan generation requires a server-side model credential and external provider. The local seed and committed screenshots are identified as synthetic, but the sample seed is explicitly for local testing only.
 
-The lowest-risk route is to preserve the Next.js application as the hosted reference and add a new, isolated `showcase/` static site. It can demonstrate event setup, saved sample plans, deterministic budget/replan calculations and draft review with synthetic fixtures. It should state clearly that its AI plan is a saved sample, its edits are local to the visitor's browser, and it does not contact Supabase, OpenRouter, Gemini or Vercel application APIs. Build and test this boundary before any separate decision about hosted-service retirement.
+Retain the original Next.js application, domain rules and migrations as a reusable source reference for contributors. Build a standalone static `showcase/` around synthetic events, sample AI plans, deterministic budget and replan calculations, and browser-local edits. Its build and runtime will be independent of Supabase, OpenRouter, Gemini and application API routes. Verify the artifact in isolation and on a non-production deployment before requesting approval to publish it to the existing Vercel project at [utsavos.vercel.app](https://utsavos.vercel.app), the preferred permanent public URL. The full-stack application may eventually stop serving production traffic while its source remains available.
 
 The repository is public, but has **no `LICENSE` file**. It is therefore not yet an openly licensed codebase: public visibility alone does not grant reuse rights. The lockfile is pinned and CI is substantial, but license metadata, attribution obligations, automated dependency/security monitoring and the security-reporting setting need review. No production code, database, account, data, Vercel project or credential was changed in this audit.
 
@@ -32,7 +32,7 @@ This is a source and local-history audit. It does not query the Supabase or Verc
 | RSVP, guests and teams | Token-scoped RSVP endpoints, household/guest tables, scoped assignments and invites, feature-flagged modules                                                                   | Supabase tables/RPCs; RSVP is a public capability URL backed by server authorization                                                    | A nonfunctional preview of guest/RSVP screens may use explicit fake names and inert links; never mint real capability tokens            |
 | Finance and lifecycle  | Exact integer-paise domain calculations, vendor finance, entitlements, exports and lifecycle/account requests                                                                  | Transactional Supabase RPCs; private finance/lifecycle records                                                                          | Safe to demonstrate calculations against synthetic values; no invoices, payments, account deletion or data export claims                |
 | Billing                | Billing reconciliation tables/functions exist; `app/api/billing/webhook/route.ts` fails closed with 503                                                                        | No configured payment integration found; no Stripe dependency or working checkout/webhook flow                                          | Exclude checkout/subscription flows. Do not describe reconciliation foundation as billing support                                       |
-| Deployment and checks  | `vercel.json`, Next build on Vercel; GitHub Actions `validate` and `supabase-platform`                                                                                         | Vercel project/domain and its configuration. `VERCEL_OIDC_TOKEN` is test-helper access to protected deployments, not an application key | Publish static output separately, preferably GitHub Pages after owner configuration, without changing the current Vercel project/alias  |
+| Deployment and checks  | `vercel.json`, Next build on Vercel; GitHub Actions `validate` and `supabase-platform`                                                                                         | Vercel project/domain and its configuration. `VERCEL_OIDC_TOKEN` is test-helper access to protected deployments, not an application key | Verify portable static output before seeking approval to publish it to the existing Vercel project at the canonical URL                 |
 
 The pure `src/domain/` code is the strongest source for a faithful local demo: event and AI contracts, money, tasks/dependencies and replan effects contain deterministic rules. Avoid imports from `app/` and `src/infrastructure/`; those cross into server-only or hosted boundaries. A small parity test should compare showcase calculations with the pure domain functions so copied demo behavior does not silently drift.
 
@@ -113,7 +113,7 @@ These inputs are for operator-authorized live tests, not public CI or the showca
 - No Stripe SDK, API key, checkout handler or functioning payment webhook was found. Billing schema/reconciliation scaffolding is not a payment service.
 - No application email/SMS provider SDK or notification sender was found. Supabase Auth handles configured confirmation/recovery delivery; provider settings are external account configuration.
 - No client-side production database cache or offline adapter exists. If Supabase is absent, the authenticated server client fails with a configuration error; the public landing/liveness routes alone do not form a backend-free planner.
-- No new service credentials are needed for a local static showcase. GitHub Pages publication would use repository workflow permissions; enabling Pages is a separate owner account setting.
+- The standalone showcase can build and run without service credentials. GitHub Pages is an optional alternative static host and would require a separate owner decision.
 
 ## Secret-exposure audit
 
@@ -143,7 +143,7 @@ The existing `node scripts/audit-history-secrets.mjs` scans locally reachable bl
 
 ## Verification commands
 
-These are existing repository commands. The audit did not run application, provider, production, staging or destructive database tests.
+These commands document the verification paths available to contributors.
 
 ```powershell
 # Review the selected refs and preserved file history.
@@ -172,13 +172,15 @@ node scripts/audit-history-secrets.mjs
 
 # Dependency inventory for later license review.
 npm sbom --sbom-format=spdx
+```
 
+## Verification limitations
 
 Live provider and hosted-browser commands remain separately gated. Hosted browser flows require an explicit staging marker, isolated synthetic identities and project configuration; the AI corpus has an explicit request-budget guard. They are not necessary to build or verify the static showcase and must not become a default showcase CI requirement.
 
 ## Destructive-action boundaries
 
-This audit and its plan do not authorize deletion, reset, modification or migration of any Supabase project, database, user, bucket, backup or record. They do not authorize Vercel project/deployment/domain/environment changes, credential revocation, paid AI calls, live migrations, user-data export, production traffic changes or Git-history rewriting. Any eventual retirement of a hosted service is a separate owner decision after the showcase is complete, user-data/backup/restore/retention obligations are resolved, and a reversible release plan is approved.
+This audit and its plan do not authorize deletion, reset, modification or migration of any Supabase project, database, user, bucket, backup or record. They do not authorize Vercel project/deployment/domain/environment changes, credential revocation, paid AI calls, live migrations, user-data export, production traffic changes or Git-history rewriting. Any eventual retirement of a hosted service is a separate owner decision after the showcase is complete, user-data/backup/restore/retention obligations are resolved, and a reversible release plan is approved. Keep the Vercel project and its canonical alias in place. Review user data, retention obligations, backup and restore evidence, and authorization before retiring any unused production credential or service.
 
 ## Related documents
 
@@ -186,4 +188,3 @@ This audit and its plan do not authorize deletion, reset, modification or migrat
 - [Local setup](SETUP.md), [testing](TESTING.md), [deployment](DEPLOYMENT.md), [security policy](../SECURITY.md) and [contributing](../CONTRIBUTING.md)
 - [Implementation status](IMPLEMENTATION_STATUS.md), [release handoff](HACKATHON_RELEASE_HANDOFF.md) and [retained live AI evidence](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md)
 - [Phase-wise transition plan](OPEN_SOURCE_TRANSITION_PLAN.md)
-```
