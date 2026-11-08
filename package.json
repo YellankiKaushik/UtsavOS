@@ -64,7 +64,7 @@
     "@vitejs/plugin-react": "6.1.2",
     "embedded-postgres": "17.10.0-beta.17",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.5",
     "pg": "8.23.1",
     "prettier": "3.9.10",
     "supabase": "2.122.0",
