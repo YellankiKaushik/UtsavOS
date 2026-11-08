@@ -69,7 +69,7 @@ npm run build
 npm run security:client
 ```
 
-Database/RLS verification uses a disposable local stack only:
+Run database and RLS verification in a fresh disposable VM or CI job with its own Docker daemon. Worktrees using the same daemon and Supabase project ID can share a stack. Confirm the target is the disposable stack you just started before resetting it, because the reset erases that database.
 
 ```powershell
 npx supabase start

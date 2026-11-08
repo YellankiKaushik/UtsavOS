@@ -94,6 +94,8 @@ The two URL and publishable-key aliases must agree if both are set. The key is a
 
 Provider API keys are server-only secrets. Model identifiers and routing/timeout fields are configuration rather than credentials. The OpenRouter adapter discovers the model catalogue, requires structured-output support and denies data collection; a zero-price ceiling is configurable and was required for the verified release route. Both adapters validate structured output before the application accepts it. The `AI_PROVIDER_FALLBACK` option must not be interpreted as permission to bypass configured privacy, free-price or route policy.
 
+Set `OPENROUTER_REQUIRE_FREE` to require zero pricing for prompt and completion tokens. `OPENROUTER_DISABLE_REASONING` requires a model that supports disabling reasoning and sends the request with reasoning disabled and excluded from the response.
+
 ### Feature flags
 
 `FEATURE_AI_GENERATION`, `FEATURE_AI_REPLAN`, `FEATURE_EVENT_FUNCTIONS`, `FEATURE_GUESTS`, `FEATURE_TEAMS`, `FEATURE_VENDOR_FINANCE`, `FEATURE_DOCUMENTS`, `FEATURE_DOCUMENT_EXTRACTION`, `FEATURE_WORKSPACE_DASHBOARD`, `FEATURE_DATA_LIFECYCLE`.
@@ -121,12 +123,12 @@ These inputs are for operator-authorized live tests, not public CI or the showca
 
 - Scanned **531 tracked blobs** among **1,215 Git objects** reachable from all locally available Git refs, including available local, archive and remote-tracking branches.
 - Compared credential-like values held in memory from the running environment and root non-template `.env*` files against reachable blob contents. No exact match was found. No non-template `.env*` file was present at the repository root during this audit.
-- High-confidence patterns for OpenRouter tokens, Google API keys, Supabase secret keys, GitHub tokens and private-key PEM markers produced **zero matches**.
-- The current templates `.env.example` and `.env.live.example` contain variable names and blank/private-input placeholders only. Test/CI guard references to service-role/secret keys are not live key values.
+- The one-time audit checked patterns for OpenRouter tokens, Google API keys, Supabase secret keys, GitHub tokens and private-key PEM markers. It found **zero matches**.
+- The templates `.env.example` and `.env.live.example` leave credential fields blank and supply defaults for non-secret settings such as the local origin, provider, model and feature flags. Test and CI guard references do not contain live service-role or secret keys.
 
 The scan did not print or persist candidate values. These checks reduce risk; they cannot prove absence of credentials encoded in an unrecognized format, deleted/unreachable objects, un-fetched server-side refs, artifacts outside the Git object graph or external CI/deployment settings. No history rewrite is justified by these results. If a later finding is confirmed, first scope exposure, affected systems and owner authorization; do not automatically revoke credentials or rewrite protected history.
 
-The existing `node scripts/audit-history-secrets.mjs` scans locally reachable blobs against loaded sensitive environment values and high-confidence provider patterns. It writes an ignored artifact below `.runtime/` containing paths and finding kinds, not values. `npm run security:client` scans built client output. Keep both outputs private if future findings identify sensitive filenames or locations.
+The repeatable `node scripts/audit-history-secrets.mjs` check compares locally reachable blobs with loaded sensitive environment values and checks OpenRouter, Google and Supabase provider patterns. To reproduce the broader one-time audit coverage, also run a redacted history scan that explicitly covers GitHub tokens and private-key PEM markers across the same reachable refs. The repository script writes an ignored artifact below `.runtime/` containing paths and finding kinds. `npm run security:client` scans built client output. Keep any findings with sensitive paths private.
 
 ## Open-source readiness assessment
 
@@ -144,6 +146,8 @@ The existing `node scripts/audit-history-secrets.mjs` scans locally reachable bl
 ## Verification commands
 
 These commands document the verification paths available to contributors.
+
+Run the Supabase commands only in a fresh disposable VM or CI job with its own Docker daemon. Worktrees using the same daemon and Supabase project ID can share a local stack. The reset erases the target database, so confirm the disposable stack was started in that environment before running it.
 
 ```powershell
 # Review the selected refs and preserved file history.
