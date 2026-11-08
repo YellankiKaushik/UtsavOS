@@ -1,10 +1,12 @@
 # UtsavOS license review
 
-Phase 2 reviewed the repository after the Phase 1 merge at `2f65759`. The repository is public and has no root license. The maintainer must confirm the rights and scope before granting reuse terms.
+Phase 2 reviewed the repository after the Phase 1 merge at `2f65759`. The decision record below was updated after the owner approved the project license.
 
-## Recommendation
+On 8 November 2026, the owner authorized MIT with the notice **Copyright (c) 2026 Yellanki Kaushik** for original code, migrations, tests, scripts, configuration, documentation, architecture diagrams, and synthetic fixtures he owns or has permission to license. Third-party material keeps its own terms, and the grant confers no trademark rights. [MIT license](../LICENSE) · [Third-party notices](../THIRD_PARTY_NOTICES.md)
 
-Use **MIT for the project-owned code and any documentation or fixtures the owner confirms are in scope**. UtsavOS is primarily a reference application for developers to study, adapt and self-host. MIT gives those users broad reuse rights with a short notice requirement. Choose Apache-2.0 instead if the owner wants contributors and downstream users to receive an explicit patent grant and is prepared to maintain the additional distribution notices.
+## License choice
+
+The owner selected **MIT** for original code, SQL migrations, tests, scripts, configuration, documentation, diagrams and synthetic fixtures that he owns or has permission to license. UtsavOS is a reference application for developers to study, adapt and self-host. MIT gives those users broad reuse rights with a short notice requirement. Apache-2.0 would provide an express contributor patent grant and requires additional notice maintenance; it was not selected.
 
 | Question                         | MIT                                                                                                                                | Apache-2.0                                                                                                                                                                                                       |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -14,16 +16,16 @@ Use **MIT for the project-owned code and any documentation or fixtures the owner
 
 The comparison follows the published license terms. Both choices leave third-party dependencies under their own licenses. Review the actual distribution, including browser bundles, before preparing notices. [OSI MIT text](https://opensource.org/license/mit) · [Apache Software Foundation license, sections 3–6](https://www.apache.org/licenses/LICENSE-2.0)
 
-## Rights to confirm
+## Scope and continuing rights checks
 
-- Git history on the reviewed baseline uses two author display names. That is contribution evidence, and the maintainer still needs to confirm who holds rights to the source, SQL migrations, tests, documentation, and any contributions made on behalf of another party. Git attribution alone cannot establish copyright ownership or permission to relicense.
-- The README documents Codex assistance. Confirm the provenance and applicable terms of any imported snippets or generated material before including them in a license grant. Confirm that the contest terms allow the intended release.
-- Separate screenshots, branding, icon artwork, externally hosted video, and third-party code from the project's code grant until their rights and required notices are confirmed. The source tree's media notes record capture provenance and synthetic data boundaries. [Dependency and asset audit](DEPENDENCY_AND_ASSET_AUDIT.md)
+- The inspected reachable history uses the author display names `Kaushik` and `YellankiKaushik`. Git metadata is not a legal ownership record. The MIT grant remains limited to material the owner owns or has rights to license; contributions by other rights holders require their permission.
+- The README records Codex assistance. The owner-approved grant covers AI-assisted material only where he has the necessary rights. Check any copied snippets, contributions made for another party, or applicable challenge terms before redistributing them.
+- The grant does not extend to third-party dependencies, fonts, icons, externally sourced images or videos, or UtsavOS marks. Preserve dependency notices where required; do not reproduce the brand under the code license. The standalone showcase uses its own synthetic fixtures, inline icon paths and system fonts. [Dependency and asset audit](DEPENDENCY_AND_ASSET_AUDIT.md)
 
-## Owner decisions
+## Decision record
 
-1. Select MIT or Apache-2.0 and confirm the correct copyright holder and notice year.
-2. Confirm that the grant covers the intended code, migrations, tests, documentation and fixtures. Identify excluded media, marks and third-party material explicitly.
-3. Confirm the contribution terms for future PRs and any consent required for earlier contributions. Decide who will review attribution and release notices.
+1. **Resolved:** The owner authorized MIT and the exact notice `Copyright (c) 2026 Yellanki Kaushik` for project materials he owns or may license.
+2. **Resolved:** The owner excluded third-party works, unpermitted contributions, and trademark use from that grant.
+3. For future contributions, keep the permission and attribution review in the PR. Check third-party rights whenever new media or dependencies are added; this review does not establish rights to material outside the stated grant.
 
-Add the selected license and update contributor terms in a separate change after those decisions are recorded.
+The release candidate carries the approved grant and preserves third-party terms. Check rights and notice obligations again for any future contribution or redistributed artifact.

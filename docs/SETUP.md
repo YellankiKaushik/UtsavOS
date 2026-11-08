@@ -1,6 +1,6 @@
 # Local setup and configuration
 
-Install Git and Node 24.x. The validated versions are Node **24.16.0** and npm **11.9.0**. Install Docker only if you plan to run the local Supabase stack or its platform tests. These steps set up the full-stack application. The static showcase is a separate future deliverable. [Transition plan](OPEN_SOURCE_TRANSITION_PLAN.md)
+Install Git and Node 24.x. The validated versions are Node **24.16.0** and npm **11.9.0**. Install Docker if you plan to run the local Supabase stack or its platform tests. The steps below configure the full-stack application. The separate static showcase can run without `.env.local` or backend credentials. [Showcase quickstart](../showcase/README.md)
 
 ```powershell
 git clone https://github.com/YellankiKaushik/UtsavOS.git
@@ -8,6 +8,8 @@ cd UtsavOS
 npm ci
 if (-not (Test-Path .env.local)) { Copy-Item .env.example .env.local }
 ```
+
+The template contains credential placeholders and non-secret defaults. The Supabase URL and publishable key are required for real authentication and persistence. The AI key and model settings are optional if you turn off AI generation. Keep actual credentials in ignored local settings.
 
 ## Database and authentication
 

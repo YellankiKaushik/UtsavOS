@@ -1,6 +1,6 @@
 # Contributing to UtsavOS
 
-Start with the [setup guide](docs/SETUP.md), [architecture](docs/ARCHITECTURE.md) and [current evidence matrix](docs/IMPLEMENTATION_STATUS.md). No open-source license has been selected; discuss material contributions with the maintainer before starting. This file does not add a license or contributor agreement.
+Choose the setup path for your change. The showcase runs with browser fixtures, while the original app supports self-hosting with your own services. Submit only material you have permission to contribute under the project's MIT terms. Identify third-party material, applicable terms and required notices in the PR. [Showcase guide](showcase/README.md) · [Full-stack setup](docs/SETUP.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 ## A reviewable change
 

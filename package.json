@@ -2,6 +2,7 @@
   "name": "utsavos",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": "24.x"
@@ -27,7 +28,13 @@
     "test:ai:live": "node scripts/preflight-live.mjs corpus && vitest run --config vitest.ai-live.config.ts",
     "test:concurrency": "vitest run --config vitest.concurrency.config.ts",
     "test:providers:smoke": "vitest run --config vitest.smoke.config.ts",
-    "test:live:public": "playwright test --config playwright.public-live.config.ts"
+    "test:live:public": "playwright test --config playwright.public-live.config.ts",
+    "showcase:dev": "vite --config showcase/vite.config.ts",
+    "showcase:build": "vite build --config showcase/vite.config.ts && npm run showcase:security",
+    "showcase:serve": "vite preview --config showcase/vite.config.ts",
+    "showcase:test": "vitest run --config vitest.showcase.config.ts",
+    "showcase:e2e:offline": "playwright test --config playwright.showcase.config.ts",
+    "showcase:security": "node scripts/scan-showcase-artifacts.mjs"
   },
   "dependencies": {
     "@google/genai": "2.31.0",

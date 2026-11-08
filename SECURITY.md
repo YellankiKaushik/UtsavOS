@@ -10,6 +10,8 @@ Include the affected commit/component, reproducible steps using isolated synthet
 
 ## Relevant boundaries
 
+The static showcase uses synthetic fixtures and keeps edited state in the browser under the site's origin. It does not sync or back up that state. Use the reset control or clear site data to remove edits. Avoid entering private details. The separate full-stack application has the service boundaries below. [Showcase guide](showcase/README.md)
+
 - Authenticated user sessions, workspace assignments, RLS and narrow authorized RPCs enforce tenant access.
 - Trusted origins, Secure/HttpOnly/Lax production cookies, versions, locks, intent-bound idempotency and transactional audit protect writes.
 - AI output and uploaded documents are untrusted; validated drafts require human acceptance and cannot approve financial changes.

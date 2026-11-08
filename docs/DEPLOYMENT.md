@@ -1,10 +1,16 @@
 # Deployment and release operations
 
-The current full-stack application runs at `https://utsavos.vercel.app` from `main`. Contributors can run their own instance using the setup guide. The future static showcase has a separate verification, approval and rollback path in the transition plan. [Local setup](SETUP.md) · [Transition plan](OPEN_SOURCE_TRANSITION_PLAN.md) · [Release evidence](HACKATHON_RELEASE_HANDOFF.md) · [Release and rollback runbook](hackathon/RELEASE_RUNBOOK.md)
+The canonical public URL is `https://utsavos.vercel.app`. The static release candidate builds with `npm run showcase:build` and publishes `showcase/dist` from the repository root. Check the release verification record for the deployment serving that URL and the tested rollback target. Contributors can still build the full-stack application with `npm run build` and run it with `npm start` in their own environment. [Release verification](STATIC_SHOWCASE_RELEASE_VERIFICATION.md) · [Local setup](SETUP.md) · [Retirement checklist](HOSTED_SERVICE_RETIREMENT_CHECKLIST.md)
+
+## Historical full-stack production configuration
+
+The following sections preserve the original full-stack configuration, operational requirements and rollback evidence from before the static release candidate. [Original release evidence](HACKATHON_RELEASE_HANDOFF.md) · [Original rollback runbook](hackathon/RELEASE_RUNBOOK.md)
 
 ## Git and hosting
 
-Vercel project utsavos uses the repository root, Next.js, Node 24, `npm ci` and `npm run build` from [vercel.json](../vercel.json). A feature-branch push creates a protected Preview; it must not be presented as a public submission URL. Main pushes trigger production-target builds, including documentation-only commits. An unchanged application tree after a docs-only build is verified with deployment metadata and anonymous/authenticated guard checks, not new model calls.
+The pre-cutover production deployment used the Vercel project `utsavos` at the repository root with the Next.js framework, Node 24, `npm ci` and `npm run build`. The current release candidate changes [vercel.json](../vercel.json) to a static Vite build of `showcase/dist`, while preserving the original Next.js source and full-stack build command for contributors. The release verification record identifies which deployment currently serves the canonical alias.
+
+A feature-branch push creates a protected Preview; verify that it belongs to `utsavos` and matches the candidate before sharing it. A protected Preview is not a public submission URL. A merge to main triggers the production-target build, including documentation-only commits. Before this static cutover, preserve and verify a full-stack rollback deployment and keep its dependent services available. Never infer a successful deployment from a passing GitHub check.
 
 Main changes go through PRs and the active main-only ruleset. Required Actions contexts are **validate** and **supabase-platform**, tied to GitHub Actions. Deletion and non-fast-forward pushes are blocked; conversations must be resolved, and the branch must be current. No bypass actors or impossible second-maintainer approval are configured. Use a focused revert/fix PR for urgent repair.
 

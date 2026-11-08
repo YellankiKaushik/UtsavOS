@@ -4,11 +4,27 @@
 
 Turn a personalized AI draft into a plan you can edit, budget, review and keep. When the guest count changes, see the consequences before approving them.
 
-[Try the live app](https://utsavos.vercel.app) · [Watch the demonstration](https://www.youtube.com/watch?v=Z5bo9ydn7JE) · [Documentation](docs/README.md) · [Technical architecture](DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md) · [Challenge 5](docs/hackathon/SUBMISSION_CHECKLIST.md)
+[Current canonical deployment](https://utsavos.vercel.app) · [Static showcase quickstart](showcase/README.md) · [Watch the original demonstration](https://www.youtube.com/watch?v=Z5bo9ydn7JE) · [Documentation](docs/README.md) · [Technical architecture](DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md)
 
-![UtsavOS landing page: Less coordinating. More celebrating.](docs/assets/landing.png)
+The standalone showcase is a working browser-only planning demo that needs no account or API keys. It lives in `showcase/`; the release verification record tracks the candidate Preview and the deployment currently serving the canonical URL. [Release verification](docs/STATIC_SHOWCASE_RELEASE_VERIFICATION.md)
 
-**Released on 29 October 2026.** [PR #1](https://github.com/YellankiKaushik/UtsavOS/pull/1) is merged and `main` is the production and submission branch. Genuine wedding, birthday and community AI journeys have passed production review, selective acceptance and persistence checks. Initial free-provider rate limits and later successful reruns remain documented. [Release evidence and limits →](docs/HACKATHON_RELEASE_HANDOFF.md)
+The original full-stack application was released on 29 October 2026 for PromptWars Challenge 5. Historical evidence records the original wedding, birthday and community AI journeys, including initial provider rate limits and later successful reruns. [Original release evidence](docs/HACKATHON_RELEASE_HANDOFF.md)
+
+## Showcase or self-hosted application
+
+| Capability                   | Static showcase                                                                      | Original Next.js application                                                                      |
+| ---------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| Event planning               | Invented wedding, birthday and community scenarios, editable budgets and tasks       | Authenticated workspaces with persistent planning records                                         |
+| Changes and suggestions      | Deterministic replan preview and selective acceptance of bundled example suggestions | Deterministic replanning, transactional approval and optional provider-assisted drafts            |
+| Storage and services         | Browser-local state and reset. No account, service key, or synchronization           | Your own Supabase Auth, Postgres and private Storage. Optional OpenRouter or Gemini configuration |
+| Collaboration and operations | Single browser demo                                                                  | Team capabilities, scoped invitations and RSVPs, documents and audit records                      |
+
+```sh
+npm ci
+npm run showcase:dev -- --host 127.0.0.1
+```
+
+For a deployable artifact, run `npm run showcase:build`. The output is `showcase/dist`. [Showcase guide](showcase/README.md) · [Full-stack setup](docs/SETUP.md)
 
 ## Watch UtsavOS in Action
 
@@ -22,7 +38,7 @@ Celebrations bring together budgets, guest lists, tasks, suppliers and multiple 
 
 UtsavOS keeps those decisions in one persistent workspace. AI suggests a starting point; the host chooses what becomes part of the plan. Deterministic calculations explain what a change costs, and an explicit approval controls what gets saved.
 
-## Verified capabilities
+## Original application capabilities and evidence
 
 | Area                 | What you can do                                                                                                   | Evidence and boundary                                                                                 |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -122,7 +138,7 @@ AI output passes JSON, schema and domain validation before draft persistence. Ac
 
 ## Getting started
 
-Use Git, **Node.js 24.16.0** and **npm 11.9.0**, matching the validated development environment. The lockfile pins dependencies. The current repository and deployment contain the full-stack Next.js application. A separate static showcase with synthetic data and browser-local state is planned for the same public URL. [Transition plan](docs/OPEN_SOURCE_TRANSITION_PLAN.md)
+Use Git, **Node.js 24.16.0** and **npm 11.9.0**, matching the validated development environment. The lockfile pins dependencies. Follow these steps for the full-stack application. The static quickstart above has no backend prerequisites.
 
 ```powershell
 git clone https://github.com/YellankiKaushik/UtsavOS.git
@@ -204,7 +220,7 @@ P0 planning has bounded production verification. P1 modules are implemented with
 
 Main requires a PR, passing `validate` and `supabase-platform` checks, and resolved conversations. Follow the review requirements shown on the PR. [Contribution guide](CONTRIBUTING.md) · [Private vulnerability reporting](SECURITY.md)
 
-The repository is public and has no declared open-source license. The owner must select a license and confirm which materials it covers. [License review](docs/OPEN_SOURCE_LICENSE_REVIEW.md) · [Dependency and asset audit](docs/DEPENDENCY_AND_ASSET_AUDIT.md)
+Original UtsavOS material owned by Yellanki Kaushik or authorized for this grant is MIT licensed, copyright 2026. Third-party works retain their own terms. The grant does not convey trademark rights in the UtsavOS name, logos, or branding. [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md) · [Dependency and asset audit](docs/DEPENDENCY_AND_ASSET_AUDIT.md)
 
 ---
 

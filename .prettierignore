@@ -11,3 +11,4 @@ playwright-report
 .runtime
 supabase/.temp
 .vercel
+showcase/dist

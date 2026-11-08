@@ -17,6 +17,8 @@ At the final application release checkpoint, regression was **231 passed, 0 fail
 
 ## Additional layers
 
+Run `npm run showcase:test` for synthetic state and domain parity checks. Run `npm run showcase:build` to produce and inspect the standalone artifact. Then install Chromium with `npx playwright install chromium` and run `npm run showcase:e2e:offline` against the built output. The showcase browser suite allows only its local static files, then exercises planning with the browser offline. [Showcase guide](../showcase/README.md)
+
 | Command                                    | Boundary and prerequisites                                                                                          |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
 | `npm run test:unit`                        | Domain and AI adapter/validation doubles                                                                            |

@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "utsavos@0.1.0",
-  "documentNamespace": "http://spdx.org/spdxdocs/utsavos-0.1.0-a5b12f85-a165-43f0-b7c5-c37a47cdb678",
+  "documentNamespace": "http://spdx.org/spdxdocs/utsavos-0.1.0-4e344c86-16e2-4b3c-a56a-cfda92bfd4b9",
   "creationInfo": {
-    "created": "2026-11-08T11:48:11.126Z",
+    "created": "2026-11-08T12:24:06.204Z",
     "creators": ["Tool: npm/cli-11.9.0"]
   },
   "documentDescribes": ["SPDXRef-Package-utsavos-0.1.0"],
@@ -19,7 +19,7 @@
       "downloadLocation": "NOASSERTION",
       "filesAnalyzed": false,
       "homepage": "NOASSERTION",
-      "licenseDeclared": "NOASSERTION",
+      "licenseDeclared": "MIT",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
