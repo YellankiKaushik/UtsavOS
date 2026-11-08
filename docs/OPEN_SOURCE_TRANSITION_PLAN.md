@@ -1,6 +1,6 @@
 # UtsavOS Open-Source Transition Plan
 
-**Status:** proposed, implementation not started
+**Status:** the license, dependency/asset review, standalone showcase, and offline verification phases are implemented on PR #7. Production cutover remains pending Preview/CI evidence and owner approval. Hosted-service retirement remains a separate owner review. [Release verification](STATIC_SHOWCASE_RELEASE_VERIFICATION.md) · [Retirement checklist](HOSTED_SERVICE_RETIREMENT_CHECKLIST.md)
 
 **Order:** licensing and dependency review → standalone showcase → offline and non-production deployment verification → owner-approved cutover → separate retirement review.
 
@@ -80,9 +80,9 @@ npx supabase stop
 
 The commands do not authorize `supabase db reset` without `--local`, hosted migration pushes, real accounts or live provider calls. Hosted suites remain explicitly gated by the existing preflight and owner-approved target/budget.
 
-### Future showcase acceptance commands
+### Static showcase acceptance commands
 
-Once Phase 3 exists, document exact scripts in `package.json` or the showcase package and use equivalent commands:
+The standalone static application has its own deterministic model tests, build-time module boundary and artifact scanner, and offline desktop/mobile browser suite:
 
 ```powershell
 # Run with every app/provider environment variable unset.
@@ -92,13 +92,13 @@ npm run showcase:test
 npm run showcase:e2e:offline
 ```
 
-The offline browser suite should deny all requests outside the local preview origin and assert none are attempted; inspect browser storage for only synthetic demo state; search the built assets for provider keys, Supabase client libraries, API endpoint strings and unapproved network/font references. These checks complement, not replace, the existing application/security suites.
+The offline browser suite denies requests outside the local preview origin and asserts none are attempted; it exercises invented sample scenarios and browser-local state; the build scanner rejects provider URLs, known credential patterns, and unapproved network/font references. These checks complement, not replace, the existing application/security suites.
 
 ## Owner decisions and release boundaries
 
-1. Select and approve the license and covered files before describing the whole repo as open source.
-2. Approve publishing the verified static artifact to the existing Vercel project at the canonical URL after reviewing the non-production results and rollback plan.
-3. Review third-party and generated media rights and dependency notices.
-4. Define a future user-data/backup/retention/communication plan before deciding whether any hosted application component should ever be retired.
+1. **Resolved:** MIT is authorized for materials the owner owns or has permission to license; third-party terms and marks are excluded. Continue attribution checks for future contributions.
+2. **Pending release gate:** Approve publishing the verified static artifact to the existing Vercel project at the canonical URL after Preview, CI, protection and rollback checks pass.
+3. Preserve applicable third-party package and asset notices; review rights whenever new material is added.
+4. Complete the external user-data, backup, retention and communication inventory before deciding whether any hosted application component should ever be retired.
 
-No owner decision is needed to review this documentation-only proposal. Branching, merging, publishing and every destructive service action remain subject to their normal protected workflows and separate authorization.
+The static implementation and documentation are prepared on the existing PR. Merging triggers the production deployment, so keep that step pending until the required release approval. Any hosted-service retirement remains a separate owner action and is not implied by this code release.

@@ -13,3 +13,4 @@ test-results-staging/
 .runtime/
 .supabase/
 .vercel/
+showcase/dist/

@@ -6,6 +6,8 @@ The owner-approved application is released; `main` is the stable production and 
 
 ## Product and engineering guides
 
+The standalone showcase uses synthetic data and local browser state. The original full-stack application remains available for self-hosting. [Showcase guide](../showcase/README.md) · [Release verification](STATIC_SHOWCASE_RELEASE_VERIFICATION.md) · [Owner retirement checklist](HOSTED_SERVICE_RETIREMENT_CHECKLIST.md) · [License review](OPEN_SOURCE_LICENSE_REVIEW.md) · [Dependency and asset audit](DEPENDENCY_AND_ASSET_AUDIT.md)
+
 | Need                                    | Read                                                                                                                                      |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Install and configure your own instance | [Setup](SETUP.md) and [environment template](../.env.example)                                                                             |

@@ -13,5 +13,6 @@ export default defineConfig([
     "playwright-report/**",
     "test-results/**",
     "test-results-staging/**",
+    "showcase/dist/**",
   ]),
 ]);
