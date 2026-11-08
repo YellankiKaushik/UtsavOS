@@ -6,6 +6,8 @@ The owner-approved application is released; `main` is the stable production and 
 
 ## Product and engineering guides
 
+The current deployment runs the full-stack application. The planned static showcase will use synthetic data and local browser state. [Transition audit](OPEN_SOURCE_AUDIT.md) · [Transition plan](OPEN_SOURCE_TRANSITION_PLAN.md) · [License review](OPEN_SOURCE_LICENSE_REVIEW.md) · [Dependency and asset audit](DEPENDENCY_AND_ASSET_AUDIT.md)
+
 | Need                                    | Read                                                                                                                                      |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Install and configure your own instance | [Setup](SETUP.md) and [environment template](../.env.example)                                                                             |

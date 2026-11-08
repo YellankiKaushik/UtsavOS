@@ -1,6 +1,6 @@
 # Local setup and configuration
 
-Use Node 24.x; the validated toolchain is Node **24.16.0** and npm **11.9.0**. `package-lock.json` pins dependencies. Bring your own isolated Supabase project and server-side AI provider access; the repository does not supply shared credentials.
+Install Git and Node 24.x. The validated versions are Node **24.16.0** and npm **11.9.0**. Install Docker only if you plan to run the local Supabase stack or its platform tests. These steps set up the full-stack application. The static showcase is a separate future deliverable. [Transition plan](OPEN_SOURCE_TRANSITION_PLAN.md)
 
 ```powershell
 git clone https://github.com/YellankiKaushik/UtsavOS.git
@@ -14,22 +14,21 @@ if (-not (Test-Path .env.local)) { Copy-Item .env.example .env.local }
 1. Create a dedicated Supabase project for your environment. Configure `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY`, or their corresponding `NEXT_PUBLIC_` aliases. Aliases must agree. Never put a service-role/secret key in publishable settings.
 2. Set `APP_BASE_URL=http://localhost:3000`. In your project's Auth configuration, use that local origin and exact `/auth/callback` and `/auth/callback?next=/reset-password` redirects. Keep email confirmation enabled and use a controlled inbox to verify confirmation and recovery.
 3. Review all **15** migration files in [supabase/migrations](../supabase/migrations), in filename order. They include private authorization functions, public invoker wrappers, financial locks, provenance and P1 contracts. Do not rename or edit an applied migration.
-4. Inspect the installed CLI help, authenticate and dry-run against **your own project reference**:
+4. Link this checkout to your own development project. Review the linked project reference and migration dry run before applying any changes.
 
 ```powershell
-npx supabase --help
 npx supabase login
-npx supabase db push --help
-npx supabase db push --project-ref YOUR_PROJECT_REF --linked --dry-run --skip-vault
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push --linked --dry-run --skip-vault
 # Only after confirming the target and proposed forward migrations:
-npx supabase db push --project-ref YOUR_PROJECT_REF --linked --skip-vault --yes
+npx supabase db push --linked --skip-vault
 ```
 
-`YOUR_PROJECT_REF` is an instruction placeholder, not the released UtsavOS database. Never run hosted reset/seed commands against an existing project to make tests pass. The CI `supabase db reset --local` operates on a disposable local Docker stack.
+Replace `YOUR_PROJECT_REF` with your own project reference. The CLI uses that link for subsequent remote commands. Enter credentials through the CLI prompt or a secret manager. Keep the database password and privileged keys out of Git and shell command arguments. [Supabase CLI migration reference](https://supabase.com/docs/reference/cli/supabase-db-push)
 
 ## AI configuration
 
-The template includes both adapters. The released route was verified with these **non-secret** settings:
+Start with `FEATURE_AI_GENERATION=false` in `.env.local` if you only need manual planning. Enable it after you have selected and verified a route with your own credential. The released OpenRouter route was verified with these non-secret settings:
 
 ```dotenv
 AI_PROVIDER_PRIMARY=openrouter
@@ -56,3 +55,18 @@ npm run dev
 ```
 
 Open [localhost:3000](http://localhost:3000). Sign up using an inbox you control, confirm your account and create an event. Account secrets, session cookies and synthetic test credentials belong only in ignored local/secret-manager configuration. [Testing](TESTING.md) explains separately gated live suites. [Deployment](DEPLOYMENT.md) describes exact deployed origins.
+
+## Local verification
+
+Run `npm test` and `npm run test:concurrency` for regression and native database tests. Run `npm run build`, install Chromium with `npx playwright install chromium`, then run `npm run test:e2e` for the local browser suite.
+
+Run the platform tests in a disposable VM or CI job with its own Docker daemon. Confirm the local stack you started is the reset target. Resetting it erases its database, and worktrees using the same Docker daemon and project ID can share a stack.
+
+```powershell
+npx supabase start
+npx supabase db reset --local
+npx supabase test db
+npx supabase stop
+```
+
+The local suites use synthetic data and require no production credentials. [Testing guide](TESTING.md) · [Phase 1 verification boundaries](OPEN_SOURCE_AUDIT.md#verification-limitations)

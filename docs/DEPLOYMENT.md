@@ -1,6 +1,6 @@
 # Deployment and release operations
 
-The owner-approved app is live at https://utsavos.vercel.app . Default branch **main** is the stable production/submission branch; PR #1 is already merged. See [release evidence](HACKATHON_RELEASE_HANDOFF.md) and [the release/rollback runbook](hackathon/RELEASE_RUNBOOK.md). This documentation task does not alter runtime configuration, financial rules, migrations, secrets or user data.
+The current full-stack application runs at `https://utsavos.vercel.app` from `main`. Contributors can run their own instance using the setup guide. The future static showcase has a separate verification, approval and rollback path in the transition plan. [Local setup](SETUP.md) · [Transition plan](OPEN_SOURCE_TRANSITION_PLAN.md) · [Release evidence](HACKATHON_RELEASE_HANDOFF.md) · [Release and rollback runbook](hackathon/RELEASE_RUNBOOK.md)
 
 ## Git and hosting
 

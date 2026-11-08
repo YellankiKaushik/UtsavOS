@@ -122,7 +122,7 @@ AI output passes JSON, schema and domain validation before draft persistence. Ac
 
 ## Getting started
 
-Use **Node.js 24.16.0** and **npm 11.9.0**, matching the validated development environment. The package engine requires Node 24.x; dependencies are pinned in the lockfile.
+Use Git, **Node.js 24.16.0** and **npm 11.9.0**, matching the validated development environment. The lockfile pins dependencies. The current repository and deployment contain the full-stack Next.js application. A separate static showcase with synthetic data and browser-local state is planned for the same public URL. [Transition plan](docs/OPEN_SOURCE_TRANSITION_PLAN.md)
 
 ```powershell
 git clone https://github.com/YellankiKaushik/UtsavOS.git
@@ -131,7 +131,7 @@ npm ci
 if (-not (Test-Path .env.local)) { Copy-Item .env.example .env.local }
 ```
 
-Configure your **own isolated Supabase project**, publishable key, Auth origin/callbacks and server-side provider credential. Apply all 15 forward migrations to that project after reviewing a dry run; never reset a hosted/customer database. Then:
+Configure your **own isolated Supabase project**, publishable key and Auth callbacks. Review a dry run before applying the 15 forward migrations to that project. Keep AI generation disabled for manual planning, or configure your own server-side provider key to opt in. [Setup and local database tests](docs/SETUP.md)
 
 ```powershell
 npm run dev
@@ -194,7 +194,7 @@ Start with the [documentation index](docs/README.md): [setup](docs/SETUP.md), [a
 
 **Celebration & Event Planner:** persistent planning for weddings, birthdays and community events, with personalized GenAI suggestions and explainable changes. Actual runtime evidence uses OpenRouter; Codex assisted implementation, debugging, testing and release preparation. No Antigravity contribution or organizer tool-eligibility approval is claimed.
 
-Submit the public repository's default **`main`**: [YellankiKaushik/UtsavOS](https://github.com/YellankiKaushik/UtsavOS), plus the [live app](https://utsavos.vercel.app) and [verified demonstration](https://www.youtube.com/watch?v=Z5bo9ydn7JE). The owner must still provide a published LinkedIn post URL and manually select/submit the official form. No submission receipt, award or score improvement is claimed. [Submission checklist](docs/hackathon/SUBMISSION_CHECKLIST.md) · [Copy-ready LinkedIn draft](docs/hackathon/LINKEDIN_POST.md) · [Organizer evidence](docs/hackathon/ORGANIZER_REQUIREMENTS.md)
+The release handoff recorded the repository's default `main` branch, the live app and the walkthrough as submission materials. The checklist and organizer evidence preserve the submission instructions from that period. [Submission checklist](docs/hackathon/SUBMISSION_CHECKLIST.md) · [LinkedIn draft](docs/hackathon/LINKEDIN_POST.md) · [Organizer evidence](docs/hackathon/ORGANIZER_REQUIREMENTS.md)
 
 ## Limits and roadmap
 
@@ -202,9 +202,9 @@ P0 planning has bounded production verification. P1 modules are implemented with
 
 ## Contributing and licensing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change and [SECURITY.md](SECURITY.md) for private vulnerability reports. Main requires a PR, passing `validate`/`supabase-platform` checks and resolved conversations; force pushes/deletion are blocked. No impossible second-maintainer approval is required.
+Main requires a PR, passing `validate` and `supabase-platform` checks, and resolved conversations. Follow the review requirements shown on the PR. [Contribution guide](CONTRIBUTING.md) · [Private vulnerability reporting](SECURITY.md)
 
-No `LICENSE` file is present. This repository does not currently declare an open-source license; selecting one requires the owner's explicit decision. No license rights have been invented for source, screenshots or third-party components.
+The repository is public and has no declared open-source license. The owner must select a license and confirm which materials it covers. [License review](docs/OPEN_SOURCE_LICENSE_REVIEW.md) · [Dependency and asset audit](docs/DEPENDENCY_AND_ASSET_AUDIT.md)
 
 ---
 
