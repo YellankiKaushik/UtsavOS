@@ -1,6 +1,21 @@
 # Static showcase release verification
 
-Release candidate tracked in [PR #7](https://github.com/YellankiKaushik/UtsavOS/pull/7). Record exact preview and CI evidence against the candidate revision before cutover.
+## PR #7 production release — verified 9 November 2026
+
+| Record                | Verified result                                                                                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Merge                 | PR #7 merged into `main`; merge commit `367ceb3d175f427774579be4d49b4655b04cf7d9`.                                                                                             |
+| Production deployment | READY deployment `dpl_25G8Cb4hXo2RCwGhFyuQ11NAk621` from that exact `main` SHA in the existing `utsavos` project; canonical alias `https://utsavos.vercel.app`.                |
+| Public response       | Read-only GET returned HTTP 200 with title `UtsavOS · A plan for every celebration`; HTML references Vite `/assets/*.js` assets and contains no `/_next/` assets.              |
+| Security headers      | CSP includes `connect-src 'none'`; `X-Content-Type-Options: nosniff` and strict-origin referrer policy are present.                                                            |
+| Rollback candidate    | The previous full-stack deployment `dpl_8Af4NwEh1xZKS99Ca652qxvK8rqm` remains READY in the same Vercel project at prior `main` SHA `2f657595996bc4a5191999a182e2a05495ea61d2`. |
+| Preservation          | The public deployment serves the independent static Vite showcase; the original self-hostable Next.js app and Supabase migrations remain in the repository.                    |
+
+This section records the PR #7 cutover milestone. A later protected maintenance merge may produce a newer Vercel deployment without changing what this historical deployment record describes.
+
+## Historical PR #7 Preview and pre-cutover evidence
+
+> **Historical pre-cutover evidence (8 November 2026):** The table below records candidate and Preview state before the approved production cutover. Its pending and baseline statements are preserved as historical evidence; the verified production release is recorded above.
 
 | Surface                         | Configuration or evidence                                                                                                                                                                                                                                                                     |
 | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -17,7 +32,7 @@ Release candidate tracked in [PR #7](https://github.com/YellankiKaushik/UtsavOS/
 | Production and rollback state   | The canonical `utsavos.vercel.app` alias still resolves to READY deployment `dpl_8Af4NwEh1xZKS99Ca652qxvK8rqm`, main SHA `2f657595996bc4a5191999a182e2a05495ea61d2`. This remains the full-stack rollback target.                                                                             |
 | Production verification         | Pending separate owner approval for the static production cutover and post-merge canonical checks.                                                                                                                                                                                            |
 
-## Release gates
+## Historical pre-cutover release gates
 
 1. Verify the approved license and generated notices. Confirm all protected CI and review requirements on the release commit.
 2. The Preview from PR #7 was inspected against the exact candidate SHA using the authenticated Vercel CLI. Its HTML, Vite assets, response policy, expected API 404 and built JavaScript checks are recorded above. Offline Playwright CI verified desktop and mobile flows, persistence, reset and network isolation; the Preview itself remains access-protected.
