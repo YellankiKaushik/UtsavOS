@@ -1,4 +1,4 @@
-Current release note: this module is enabled in the owner-approved production release with scoped local/native/hosted evidence. See [implementation status](../IMPLEMENTATION_STATUS.md). The dated implementation contract below is preserved; its original rollout/promotion statements are historical, not current release instructions.
+Current release note: this module is enabled in the owner-approved production release with scoped local/native/hosted evidence. See [implementation status](../archive/reports/IMPLEMENTATION_STATUS.md). The dated implementation contract below is preserved; its original rollout/promotion statements are historical, not current release instructions.
 
 # FR-015 — Multi-function event preview
 

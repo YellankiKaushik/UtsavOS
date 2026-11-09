@@ -2,7 +2,7 @@
 
 Executed checkpoint: the owner approved release after final CI; PR #1 merged as `d5751a2863e8c017bff3f5817e8266a35ef1d04f`, and a fresh production build was verified at the canonical domain. See the final handoff for actual results, including retained rate-limit failures and successful affected reruns. This procedure and the rollback baseline remain documented for review.
 
-Production changes and merge require explicit owner approval of the verified candidate. This procedure is preparation, not evidence that release has happened. Current evidence and remaining gates are in `docs/HACKATHON_RELEASE_HANDOFF.md`.
+Production changes and merge require explicit owner approval of the verified candidate. This procedure is preparation, not evidence that release has happened. Current evidence and remaining gates are in `docs/archive/reports/HACKATHON_RELEASE_HANDOFF.md`.
 
 1. Verify PR #1's reviewed SHA, green `validate` and `supabase-platform` jobs, genuine hosted wedding/birthday/community results and isolated reviewer login. Keep all earlier failures. A few successful free-model calls do not establish an availability SLO. Do not substitute fixture output or weaken privacy policy to make a check pass.
 2. Confirm the linked Vercel project `prj_PqBVW2XZqRNqmkhNVgoBOMEysCbm`, team `team_UYEpjjRaObtrYF55SYu5rqUl`, Node 24 and production branch `main`. Record the existing production deployment and environment metadata before any mutation. Sensitive variables are masked by Vercel; inventory presence does not establish their values.

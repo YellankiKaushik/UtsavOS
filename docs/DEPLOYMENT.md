@@ -4,7 +4,7 @@ The canonical public URL is `https://utsavos.vercel.app`. The static release can
 
 ## Historical full-stack production configuration
 
-The following sections preserve the original full-stack configuration, operational requirements and rollback evidence from before the static release candidate. [Original release evidence](HACKATHON_RELEASE_HANDOFF.md) · [Original rollback runbook](hackathon/RELEASE_RUNBOOK.md)
+The following sections preserve the original full-stack configuration, operational requirements and rollback evidence from before the static release candidate. [Original release evidence](archive/reports/HACKATHON_RELEASE_HANDOFF.md) · [Original rollback runbook](hackathon/RELEASE_RUNBOOK.md)
 
 ## Git and hosting
 
@@ -64,4 +64,4 @@ Production promotion is prohibited until genuine AI generation/draft acceptance,
 
 For tests use `playwright.staging.config.ts` plus the exact verified Preview and ignored synthetic credentials. Preserve the original `test:e2e:live` and corpus smoke/budget gates. Manual-only staging is not full P0 acceptance.
 
-[detailed release report](CODEX_VERCEL_RELEASE_REPORT.md) provides variable metadata, CI, health, deployment and continuation details.
+[detailed release report](archive/reports/CODEX_VERCEL_RELEASE_REPORT.md) provides variable metadata, CI, health, deployment and continuation details.

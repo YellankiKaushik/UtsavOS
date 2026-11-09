@@ -10,7 +10,7 @@ const unit = read(".runtime/final-unit-results.json"),
 const diagnostic = read(".runtime/provider-diagnostic.json"),
   smoke = read(".runtime/live-provider-smoke.json"),
   concurrency = read(".runtime/concurrency-summary.json");
-const previous = read("docs/CODEX_COMPLETION_REPORT.json");
+const previous = read("docs/archive/reports/CODEX_COMPLETION_REPORT.json");
 if (
   !unit.success ||
   !native.success ||
@@ -425,7 +425,7 @@ const r = {
       "HEAD",
     ).split("\n"),
     documentationCommit:
-      "Commit containing this report: git log -1 --format=%H -- docs/CODEX_FINAL_COMPLETION_REPORT.json",
+      "Commit containing this report: git log -1 --format=%H -- docs/archive/reports/CODEX_FINAL_COMPLETION_REPORT.json",
     uncommittedAtSourceCheckpoint:
       "Only original unrelated user image; report package added afterward and committed separately",
     remoteConfigured: !!git("remote"),
@@ -585,8 +585,8 @@ const r = {
   O_final_action_register: blocks,
   P_continuation: {
     firstFiles: [
-      "docs/EXTERNAL_ACTION_REGISTER.md",
-      "docs/IMPLEMENTATION_STATUS.md",
+      "docs/archive/reports/EXTERNAL_ACTION_REGISTER.md",
+      "docs/archive/reports/IMPLEMENTATION_STATUS.md",
       "docs/modules/EVENT_FUNCTIONS.md",
       "src/infrastructure/ai/diagnostic.ts",
       "src/infrastructure/ai/types.ts",
@@ -666,10 +666,10 @@ Object.entries(r)
   });
 mkdirSync("docs/evidence", { recursive: true });
 writeFileSync(
-  "docs/CODEX_FINAL_COMPLETION_REPORT.json",
+  "docs/archive/reports/CODEX_FINAL_COMPLETION_REPORT.json",
   JSON.stringify(r, null, 2) + "\n",
 );
-writeFileSync("docs/CODEX_FINAL_COMPLETION_REPORT.md", md);
+writeFileSync("docs/archive/reports/CODEX_FINAL_COMPLETION_REPORT.md", md);
 const evidence = {
   clientDate: r.clientDate,
   generatedAtUtc: r.generatedAtUtc,
@@ -708,19 +708,19 @@ for (const [provider, evaluation] of [
     ) + "\n",
   );
 writeFileSync(
-  "docs/EXTERNAL_ACTION_REGISTER.md",
+  "docs/archive/reports/EXTERNAL_ACTION_REGISTER.md",
   `# External action register\n\n2026-10-27. No secret values should be pasted in chat. Credentials belong in ignored environment files or approved secret storage. All current actions below remain BLOCKED; new diagnostic evidence replaces repeated speculative retries. No external purchase/migration/deployment was made.\n\n${blocks.map((b) => `## ${b.id} — ${b.service}\n\n- Required access/configuration: ${b.requiredAccess}\n- Evidence: ${b.diagnostics}\n- Root cause boundary: ${b.rootCause}\n- Exact owner action: ${b.action}\n- Prerequisite: ${b.prerequisite}\n- Risk: ${b.risk}\n- Can execute autonomously now: ${b.autonomous}\n- Verification: ${b.command}\n- Status: ${b.status}\n`).join("\n")}\n`,
 );
 writeFileSync(
-  "docs/IMPLEMENTATION_STATUS.md",
+  "docs/archive/reports/IMPLEMENTATION_STATUS.md",
   `# Implementation status\n\n2026-10-27 (Asia/Kolkata). Starting checkpoint15be61c preserved; tested implementation **${r.B_git_history.verifiedImplementationCommit}**. Current milestone7 external release gate **BLOCKED**; independent milestone8 FR-015 **IMPLEMENTED / TESTED LOCALLY, preview off by default**. Full product incomplete.\n\n## Gate assessment\n\n- A: P0 code locally verified.\n- B: Staging BLOCKED: Gemini401, no approved OpenRouter route, target Supabase access/accounts absent, no deployment.\n- C: Public production NOT READY: B plus operational/privacy/retention/support/recovery requirements.\n\n## New verified implementation\n\nProvider diagnostic.ts + diagnose-providers.mjs distinguish authentication/authorization/model/routing/quota/DNS/TLS/network/timeout safely. Live environment loader honors process overrides. Actual metadata Gemini401; OpenRouter key/catalogue200; two bounded fixed free generation attempts fail404/no route. No privacy relaxation, purchases or unchanged retries.\n\nFR-015 functions: domain/event-functions.ts; components/event-functions.tsx; API functions routes; fourth migration20261026183745; resource consistency FKs; owner RLS; shared P0 lock/version; audit/receipts; protected links; create/edit/archive and schedules. FEATURE_EVENT_FUNCTIONS=false by default. See modules/EVENT_FUNCTIONS.md. No team/billing/RSVP capability implied.\n\n## Requirement mapping\n\n| Requirement | Source / evidence | State |\n| --- | --- | --- |\n${p0.map((f) => `| ${f.requirementId} ${f.name} | ${f.implementationFiles.join(", ")} | IMPLEMENTED; local tested layers pass; staging blocked |`).join("\n")}\n| FR-015 functions | domain/component, API, fourth migration;10 SQL,2 native race,6 browser and API gate cases | IMPLEMENTED / TESTED LOCALLY; flag off; hosted blocked |\n| Remaining FR-016–021 / AppendixF | Not implemented; see final report L | NOT STARTED |\n| P2 backlog | No advanced operations/integrations exposed | NOT STARTED / conditional mobile DEFERRED |\n\n## Tests and defects\n\n${unit.numPassedTests} regression tests PASS; ${native.numPassedTests} native TCP tests PASS; ${browser.stats.expected} browser tests PASS; ${publicCheck.stats.expected} configured read-only public test PASS. Lint/types/format/build/client-secret scan and generated24-path API/database types pass. New SQL operator precedence/ESM import/typed RPC errors fixed; P1 pending checkbox now preserves selection during save and rolls back on failure. All original assertions retained. Actual signed Auth/PostgREST/provider output/corpus/deployment remain unverified.\n\n## Exact continuation\n\nFirst resolve external register in order for real-service acceptance. Independent next module: FR-016 guest/household/function-consistent attendance + hashed expiring/revocable invitation tokens/manual share, then FR-017 authorization before collaboration. Remaining P1/P2 code is not exhausted or completed. Preserve existing financial/tenant/version/receipt checks. Read final report P before resuming.\n\n[Current report](CODEX_FINAL_COMPLETION_REPORT.md) · [Tests](TEST_REPORT.md) · [Actions](EXTERNAL_ACTION_REGISTER.md) · [Decisions](DECISIONS.md) · [Deployment](DEPLOYMENT.md). Older CODEX_COMPLETION_REPORT files are historical, not regenerated. No known critical local domain/SQL defect remains in tested scope; target platform and commercial readiness remain unknown.\n`,
 );
 writeFileSync(
-  "docs/TEST_REPORT.md",
+  "docs/archive/reports/TEST_REPORT.md",
   `# Test report\n\n2026-10-27. Tested implementation${r.B_git_history.verifiedImplementationCommit}; Node24.16.0 on Windows. No dependency changes. Historical evidence from15be61c is retained separately; current counts below are executed results, not copied claims.\n\n| Command / category | Outcome | Passed | Failed | Skipped | Duration ms |\n| --- | --- | --- | --- | --- | --- |\n${commands.map((t) => `| ${t.command.replaceAll("|", "/")} | ${t.result.replaceAll("|", "/")} | ${t.passed ?? "n/a"} | ${t.failed ?? "n/a"} | ${t.skipped ?? "n/a"} | ${t.durationMs ?? "not measured"} |`).join("\n")}\n\n## Scope and artifacts\n\nPGlite executes four migrations and actual SQL transaction/RLS/grant checks with synthetic auth.uid roles. Native PostgreSQL17.10 uses independent TCP connections:13 scenarios including all prior races and2 new P1/P0 races. Neither verifies actual GoTrue/JWT/PostgREST. Default AI and API tests use controlled doubles.\n\nBrowser20 tests: original14 P0 plus6 P1. Five widths320/375/768/1024/1440;35 P0 planner scans,5 landing scans,5 function pages and5 function editor dialog scans. Axe/overflow/focus checks pass in those contexts. P1 create/edit/link/refresh/unlink/archive tested against synthetic API; real account persistence remains blocked. Production read-only check verifies health/anonymous route/API denial only. Manual screen-reader/device testing not done.\n\nThe first P1 browser run failed one of20 tests because checkbox controlled state reverted while awaiting save. Implementation now has explicit pending state/busy feedback and rollback; unchanged20-test suite passes. SQL JSON operator precedence, Node extension and generated Json RPC type mismatches were corrected; final156 regression tests pass. No assertions disabled.\n\nGemini metadata GET401/389ms; no unchanged generation repeated. OpenRouter key200/393ms, catalogue200/785ms. Two fixed free smokes (45s,1attempt,no fallback,privacy retained): liquid failed~1229ms; nvidia failed~1367ms with AI_ROUTE_UNAVAILABLE. Each filtered run has1failed/1skipped; Gemini skip is not a pass. No successful generated model/tokens/cost observed; live corpus0 cases. All three staged suites exit nonzero at preflight with0 tests and no remote mutation.\n\nIgnored raw artifacts: .runtime/final-unit-results.json, final-native-results.json, browser-results.json, live-public-results.json, provider-diagnostic.json, live-provider-smoke.json. Durable redacted ledger: [final-verification.json](evidence/final-verification.json); separate [Gemini](evidence/gemini-evaluation.json) / [OpenRouter](evidence/openrouter-evaluation.json) evaluation records; [full report](CODEX_FINAL_COMPLETION_REPORT.json).\n\nNo CI dispatch, hosted migration/Auth/RLS, real authenticated browser journey, cloud deployment, load/restore or compliance result exists. P0 release remains NO-GO. P1 functions locally tested only; remaining P1/P2 implementation incomplete.\n`,
 );
 writeFileSync(
-  "docs/FOUNDER_ACTIONS_REQUIRED.md",
+  "docs/archive/reports/FOUNDER_ACTIONS_REQUIRED.md",
   `# Founder actions required\n\n2026-10-27. The current exact actions and evidence are in [EXTERNAL_ACTION_REGISTER.md](EXTERNAL_ACTION_REGISTER.md), replacing the prior speculative setup list. No credentials belong in chat.\n\n- EXT-01: Gemini configured-model metadata returns401. Correct intended project/key/API authorization securely; no model substitution to hide it.\n- EXT-02: OpenRouter key/catalogue work, but tested fixed free models have no permitted completion route. Preserve privacy; approve compatible endpoint/access/budget without an automatic purchase.\n- EXT-03: Grant connected management access to the designated isolated UtsavOS Supabase project. No remote changes until identity verified; four migrations ready locally.\n- EXT-04: Configure/confirm two synthetic staging identities and exact callback/recovery settings, then execute real Auth/data/tenant/browser tests.\n- EXT-05: Provide Docker-capable LOCAL stack or designated Git/CI repository; native transaction tests do not replace platform parity.\n- EXT-06: After successful provider smoke, allow24 requests/provider and review real corpus/usefulness.\n- EXT-07: Designate authorized UtsavOS hosting target/environment; no project link or matching account/team target exists. Verify real deployment after service gates.\n\nP1 functions have continued independently and are off by default. Remaining independent P1/P2 work is incomplete and does not require pretending these external gates passed. See [current report](CODEX_FINAL_COMPLETION_REPORT.md).\n`,
 );
 console.log(

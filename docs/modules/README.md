@@ -1,6 +1,6 @@
 # Feature-module contracts
 
-Use [implementation status](../IMPLEMENTATION_STATUS.md) for the current evidence layer. Flags default off for P1 in a new local template; the owner-approved release enables the tested modules. Enabled UI is not a substitute for database authorization.
+Use [implementation status](../archive/reports/IMPLEMENTATION_STATUS.md) for the current evidence layer. Flags default off for P1 in a new local template; the owner-approved release enables the tested modules. Enabled UI is not a substitute for database authorization.
 
 | Module                      | Guide                                         | Source entry points                                                                                           |
 | --------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |

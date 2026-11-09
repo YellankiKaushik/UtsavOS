@@ -1,6 +1,6 @@
 # Challenge 5 final submission checklist
 
-Deadline: **1 November 2026, 23:59 IST**. Owner-reported attempts: **0/3**; none consumed here. Current evidence: [final release handoff](../HACKATHON_RELEASE_HANDOFF.md).
+Deadline: **1 November 2026, 23:59 IST**. Owner-reported attempts: **0/3**; none consumed here. Current evidence: [final release handoff](../archive/reports/HACKATHON_RELEASE_HANDOFF.md).
 
 - [x] Wedding, birthday and community flows implemented; strict genuine AI output, edited selective acceptance and persistence verified in Preview and production.
 - [x] Owner approved release after final CI passed; PR #1 merged; public canonical application https://utsavos.vercel.app verified without Preview bypass headers.

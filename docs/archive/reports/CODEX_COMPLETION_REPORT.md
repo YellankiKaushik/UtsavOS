@@ -130,7 +130,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-001 — Registration/login/logout/recovery and protected sessions
 
-- Files: [app/auth/actions/route.ts](../app/auth/actions/route.ts), [app/auth/callback/route.ts](../app/auth/callback/route.ts), [proxy.ts](../proxy.ts), [src/infrastructure/supabase/server.ts](../src/infrastructure/supabase/server.ts)
+- Files: [app/auth/actions/route.ts](../../../app/auth/actions/route.ts), [app/auth/callback/route.ts](../../../app/auth/callback/route.ts), [proxy.ts](../../../proxy.ts), [src/infrastructure/supabase/server.ts](../../../src/infrastructure/supabase/server.ts)
 - Database: Supabase Auth users/sessions
 - API: /auth/actions; /auth/callback; /api/v1/me
 - UI: src/components/auth-form.tsx
@@ -141,7 +141,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-002 — Personal owner workspace
 
-- Files: [app/onboarding/page.tsx](../app/onboarding/page.tsx), [src/application/repository.ts](../src/application/repository.ts), [supabase/migrations/20261026142503_p0_core.sql](../supabase/migrations/20261026142503_p0_core.sql)
+- Files: [app/onboarding/page.tsx](../../../app/onboarding/page.tsx), [src/application/repository.ts](../../../src/application/repository.ts), [supabase/migrations/20261026142503_p0_core.sql](../../../supabase/migrations/20261026142503_p0_core.sql)
 - Database: workspaces/workspace_members; private.provision + owner RLS
 - API: POST /api/v1/workspaces/personal
 - UI: onboarding and planner navigation
@@ -152,7 +152,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-003 — Create all three event types
 
-- Files: [src/domain/contracts.ts](../src/domain/contracts.ts), [src/components/planner.tsx](../src/components/planner.tsx), [app/api/v1/[...segments]/route.ts](../app/api/v1/[...segments]/route.ts)
+- Files: [src/domain/contracts.ts](../../../src/domain/contracts.ts), [src/components/planner.tsx](../../../src/components/planner.tsx), [app/api/v1/[...segments]/route.ts](../app/api/v1/[...segments]/route.ts)
 - Database: events; guarded create command
 - API: POST /api/v1/events
 - UI: EventWizard
@@ -163,7 +163,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-004 — List/detail/edit persistent events
 
-- Files: [src/components/planner.tsx](../src/components/planner.tsx), [src/application/repository.ts](../src/application/repository.ts), [app/api/v1/[...segments]/route.ts](../app/api/v1/[...segments]/route.ts)
+- Files: [src/components/planner.tsx](../../../src/components/planner.tsx), [src/application/repository.ts](../../../src/application/repository.ts), [app/api/v1/[...segments]/route.ts](../app/api/v1/[...segments]/route.ts)
 - Database: events.version, row locks, RLS
 - API: GET events; GET/PATCH events/:id
 - UI: Events/Overview/Event settings
@@ -174,7 +174,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-005 — Real Gemini structured draft and personalized ideas
 
-- Files: [src/infrastructure/ai/gemini-provider.ts](../src/infrastructure/ai/gemini-provider.ts), [src/infrastructure/ai/service.ts](../src/infrastructure/ai/service.ts), [src/domain/ai-contract.ts](../src/domain/ai-contract.ts), [src/infrastructure/gemini.ts](../src/infrastructure/gemini.ts)
+- Files: [src/infrastructure/ai/gemini-provider.ts](../../../src/infrastructure/ai/gemini-provider.ts), [src/infrastructure/ai/service.ts](../../../src/infrastructure/ai/service.ts), [src/domain/ai-contract.ts](../../../src/domain/ai-contract.ts), [src/infrastructure/gemini.ts](../../../src/infrastructure/gemini.ts)
 - Database: ai_usage_records/ai_drafts; reserve/complete/save commands
 - API: POST events/:id/plan-generations; Google Gemini API
 - UI: src/components/planning.tsx AiPage
@@ -185,7 +185,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-006 — Review/edit/select and atomically accept draft
 
-- Files: [src/components/planning.tsx](../src/components/planning.tsx), [src/domain/ai-contract.ts](../src/domain/ai-contract.ts), [supabase/migrations/20261026142503_p0_core.sql](../supabase/migrations/20261026142503_p0_core.sql)
+- Files: [src/components/planning.tsx](../../../src/components/planning.tsx), [src/domain/ai-contract.ts](../../../src/domain/ai-contract.ts), [supabase/migrations/20261026142503_p0_core.sql](../../../supabase/migrations/20261026142503_p0_core.sql)
 - Database: ai_drafts; budget_items/tasks/task_dependencies/vendor_requirements; receipts
 - API: POST events/:id/plan-acceptances
 - UI: DraftReview
@@ -196,7 +196,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-007 — Exact estimated budgets, pricing bases and overrun
 
-- Files: [src/domain/money.ts](../src/domain/money.ts), [src/components/resources.tsx](../src/components/resources.tsx), [supabase/migrations/20261026142503_p0_core.sql](../supabase/migrations/20261026142503_p0_core.sql)
+- Files: [src/domain/money.ts](../../../src/domain/money.ts), [src/components/resources.tsx](../../../src/components/resources.tsx), [supabase/migrations/20261026142503_p0_core.sql](../../../supabase/migrations/20261026142503_p0_core.sql)
 - Database: budget_items; money/FK/check constraints; events.budget_minor
 - API: budget-items CRUD and budget summary
 - UI: BudgetPage
@@ -207,7 +207,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-008 — Manual vendor checklist with category/status/deadline/estimate
 
-- Files: [src/components/resources.tsx](../src/components/resources.tsx), [src/domain/contracts.ts](../src/domain/contracts.ts)
+- Files: [src/components/resources.tsx](../../../src/components/resources.tsx), [src/domain/contracts.ts](../../../src/domain/contracts.ts)
 - Database: vendor_requirements; owner RLS and guarded put/delete
 - API: vendor-requirements CRUD
 - UI: VendorsPage
@@ -218,7 +218,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-009 — Tasks/status/priority/deadlines and dependency timeline
 
-- Files: [src/domain/tasks.ts](../src/domain/tasks.ts), [src/domain/dates.ts](../src/domain/dates.ts), [src/components/resources.tsx](../src/components/resources.tsx)
+- Files: [src/domain/tasks.ts](../../../src/domain/tasks.ts), [src/domain/dates.ts](../../../src/domain/dates.ts), [src/components/resources.tsx](../../../src/components/resources.tsx)
 - Database: tasks/task_dependencies; assert_dag and same-event FK
 - API: tasks CRUD
 - UI: TasksPage/TimelinePage
@@ -229,7 +229,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-010 — Non-mutating deterministic replan preview
 
-- Files: [src/domain/replan.ts](../src/domain/replan.ts), [src/components/planning.tsx](../src/components/planning.tsx), [supabase/migrations/20261026180040_combined_change_financial_bounds.sql](../supabase/migrations/20261026180040_combined_change_financial_bounds.sql)
+- Files: [src/domain/replan.ts](../../../src/domain/replan.ts), [src/components/planning.tsx](../../../src/components/planning.tsx), [supabase/migrations/20261026180040_combined_change_financial_bounds.sql](../../../supabase/migrations/20261026180040_combined_change_financial_bounds.sql)
 - Database: replan_proposals; current authorized snapshot/version
 - API: POST events/:id/replan-proposals
 - UI: ReplanPage diff/warnings
@@ -240,7 +240,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-011 — Approval/staleness/locks/idempotency and reversal
 
-- Files: [src/domain/replan.ts](../src/domain/replan.ts), [supabase/migrations/20261026142503_p0_core.sql](../supabase/migrations/20261026142503_p0_core.sql), [src/components/planning.tsx](../src/components/planning.tsx)
+- Files: [src/domain/replan.ts](../../../src/domain/replan.ts), [supabase/migrations/20261026142503_p0_core.sql](../../../supabase/migrations/20261026142503_p0_core.sql), [src/components/planning.tsx](../../../src/components/planning.tsx)
 - Database: event/proposal row locks; audit_events/idempotency_receipts; exact transaction
 - API: proposal approvals/rejections
 - UI: Proposal review explicit selection/approval
@@ -251,7 +251,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-012 — Audit history
 
-- Files: [src/components/planner.tsx](../src/components/planner.tsx), [src/application/repository.ts](../src/application/repository.ts), [supabase/migrations/20261026142503_p0_core.sql](../supabase/migrations/20261026142503_p0_core.sql)
+- Files: [src/components/planner.tsx](../../../src/components/planner.tsx), [src/application/repository.ts](../../../src/application/repository.ts), [supabase/migrations/20261026142503_p0_core.sql](../../../supabase/migrations/20261026142503_p0_core.sql)
 - Database: audit_events owner read-only; transaction-coupled audit
 - API: GET event history
 - UI: History with pagination
@@ -262,7 +262,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-013 — Responsive accessible dashboard/modules/account UI
 
-- Files: [app/globals.css](../app/globals.css), [src/components/planner.tsx](../src/components/planner.tsx), [src/components/planning.tsx](../src/components/planning.tsx), [src/components/resources.tsx](../src/components/resources.tsx), [src/components/ui.tsx](../src/components/ui.tsx)
+- Files: [app/globals.css](../../../app/globals.css), [src/components/planner.tsx](../../../src/components/planner.tsx), [src/components/planning.tsx](../../../src/components/planning.tsx), [src/components/resources.tsx](../../../src/components/resources.tsx), [src/components/ui.tsx](../../../src/components/ui.tsx)
 - Database: authorized event snapshots and /me
 - API: P0 routes from Section36
 - UI: Overview/create/budget/tasks/timeline/vendors/planning/review/settings
@@ -273,7 +273,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### FR-014 — Failure recovery and manual planning during AI outage
 
-- Files: [src/infrastructure/ai/service.ts](../src/infrastructure/ai/service.ts), [src/infrastructure/ai/types.ts](../src/infrastructure/ai/types.ts), [src/infrastructure/supabase/fetch.ts](../src/infrastructure/supabase/fetch.ts), [src/components/ui.tsx](../src/components/ui.tsx)
+- Files: [src/infrastructure/ai/service.ts](../../../src/infrastructure/ai/service.ts), [src/infrastructure/ai/types.ts](../../../src/infrastructure/ai/types.ts), [src/infrastructure/supabase/fetch.ts](../../../src/infrastructure/supabase/fetch.ts), [src/components/ui.tsx](../../../src/components/ui.tsx)
 - Database: quota/active-generation lease; receipts; atomic mutations
 - API: safe API envelopes and bounded provider calls
 - UI: ErrorNotice/loading/cancel/retry controls
@@ -284,7 +284,7 @@ Every row is IMPLEMENTED at source level and NOT release eligible until applicab
 
 ### USR-OR-001 — OpenRouter unified provider/fallback/provenance
 
-- Files: [src/infrastructure/ai/openrouter-provider.ts](../src/infrastructure/ai/openrouter-provider.ts), [src/infrastructure/ai/service.ts](../src/infrastructure/ai/service.ts), [src/infrastructure/config.ts](../src/infrastructure/config.ts), [supabase/migrations/20261026165848_ai_provider_provenance.sql](../supabase/migrations/20261026165848_ai_provider_provenance.sql)
+- Files: [src/infrastructure/ai/openrouter-provider.ts](../../../src/infrastructure/ai/openrouter-provider.ts), [src/infrastructure/ai/service.ts](../../../src/infrastructure/ai/service.ts), [src/infrastructure/config.ts](../../../src/infrastructure/config.ts), [supabase/migrations/20261026165848_ai_provider_provenance.sql](../../../supabase/migrations/20261026165848_ai_provider_provenance.sql)
 - Database: safe draft/usage provider fields; workspace active lease
 - API: OpenRouter models/chat completions; shared plan API
 - UI: Provider disclosure in planning/settings, actual-model draft header

@@ -71,4 +71,4 @@ npx supabase test db
 npx supabase stop
 ```
 
-The local suites use synthetic data and require no production credentials. [Testing guide](TESTING.md) · [Phase 1 verification boundaries](OPEN_SOURCE_AUDIT.md#verification-limitations)
+The local suites use synthetic data and require no production credentials. [Testing guide](TESTING.md) · [Phase 1 verification boundaries](archive/reports/OPEN_SOURCE_AUDIT.md#verification-limitations)

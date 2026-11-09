@@ -26,7 +26,7 @@ Protected Preview first passed **3/3** real journeys (22,196 / 20,303 / 18,902 m
 
 All recorded actual `dots-studio/dots-3-note-preview:free`, AtlasCloud, `event-plan.v2`, one attempt and cost 0. All four structured sections validated; edited selective acceptance saved 3 tasks/2 vendor requirements per event and survived reload. AI budget lines were deliberately excluded. Wedding also passed the ₹427,500→₹453,000 replan, ₹47,000 remaining, approval/history, logout/relogin and cross-tenant 404.
 
-**Initial production suite: 1 passed / 2 rate-limit failures. Separate affected rerun after cooldown: 2 passed / 0 failed/skipped.** The failed events stayed version 1 with no draft or accepted records. Quota checks found free allowance remaining; the exact limiter was not captured. These successes do not eliminate upstream intermittency. Every prior timeout, validation/fixture failure, alternate-route rejection and new production failure is preserved in the [dated evidence](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md) and historical master report. Deterministic failure/outage tests are separate from genuine AI passes.
+**Initial production suite: 1 passed / 2 rate-limit failures. Separate affected rerun after cooldown: 2 passed / 0 failed/skipped.** The failed events stayed version 1 with no draft or accepted records. Quota checks found free allowance remaining; the exact limiter was not captured. These successes do not eliminate upstream intermittency. Every prior timeout, validation/fixture failure, alternate-route rejection and new production failure is preserved in the [dated evidence](../../hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md) and historical master report. Deterministic failure/outage tests are separate from genuine AI passes.
 
 ## Judge access, security and release configuration
 
@@ -34,13 +34,13 @@ A separate synthetic reviewer is ready at [the production login](https://utsavos
 
 The owner selected this reviewer workflow and documentation of the **controlled-inbox blocker**. The single synthetic account was administratively confirmed; global email confirmation and RLS remain enabled. Real confirmation/recovery mail delivery, email-link expiry/replay and inbox completion are **unverified** because no controlled inbox is connected.
 
-All **15 migrations** match remote; dry run is up to date. Canonical `APP_BASE_URL`, exact Supabase callbacks, free AI settings and tested flags are applied. Document extraction stays false; Stripe/P2 remain inactive. Protection on unrelated deployments was unchanged. [Release configuration and rollback](hackathon/RELEASE_RUNBOOK.md) retain the prior deployment `dpl_8KWZiS3WCC8xUCKY6uRHWm9xYGyi` / SHA `0798627de160425a9a5925a1291bfe37fce825be`.
+All **15 migrations** match remote; dry run is up to date. Canonical `APP_BASE_URL`, exact Supabase callbacks, free AI settings and tested flags are applied. Document extraction stays false; Stripe/P2 remain inactive. Protection on unrelated deployments was unchanged. [Release configuration and rollback](../../hackathon/RELEASE_RUNBOOK.md) retain the prior deployment `dpl_8KWZiS3WCC8xUCKY6uRHWm9xYGyi` / SHA `0798627de160425a9a5925a1291bfe37fce825be`.
 
 ## Final submission checklist and owner actions
 
 - [x] Public repository/default main, approved production app and private synthetic judge workflow verified.
-- [x] Required text limits pass: GitHub URL 42/1024; updates 795/1024; GenAI explanation 755/1024. Actual production URL is in the [form drafts](hackathon/SUBMISSION_FORM_ANSWERS.md).
-- [x] Existing genuine 82.034-second film verified locally, 11,773,092 bytes outside Git. [Upload instructions](hackathon/DEMO_VIDEO_SCRIPT.md); [LinkedIn draft](hackathon/LINKEDIN_POST.md). No public video/post URL exists yet.
+- [x] Required text limits pass: GitHub URL 42/1024; updates 795/1024; GenAI explanation 755/1024. Actual production URL is in the [form drafts](../../hackathon/SUBMISSION_FORM_ANSWERS.md).
+- [x] Existing genuine 82.034-second film verified locally, 11,773,092 bytes outside Git. [Upload instructions](../../hackathon/DEMO_VIDEO_SCRIPT.md); [LinkedIn draft](../../hackathon/LINKEDIN_POST.md). No public video/post URL exists yet.
 - [ ] **Owner:** clarify conflicting organizer Antigravity/tool-eligibility guidance and the permitted private judge-credential channel. Actual Codex use is disclosed.
 - [ ] **Owner:** upload the existing film as unlisted YouTube or access-granted Drive; verify signed out and provide its actual URL.
 - [ ] **Owner:** publish the reviewed LinkedIn draft with verified app/video links and provide the real post URL.

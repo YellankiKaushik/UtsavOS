@@ -12,4 +12,4 @@ Workspace membership and event assignment determine access. Managers can operate
 
 Invitations require matching-email consent; rejoining after revocation requires a fresh invitation. Membership/billing administration is not delegated by client-supplied roles. Source: `src/domain/teams.ts`, `src/application/team-http.ts`, `src/components/teams.tsx`, migration `20261027195746_p1_team_collaboration.sql`.
 
-Local/native transaction checks, mobile UI and ordinary hosted RPCs passed at the release checkpoints. This is not proof that every hosted role/UI permutation or real email delivery was exercised. See [implementation status](../IMPLEMENTATION_STATUS.md).
+Local/native transaction checks, mobile UI and ordinary hosted RPCs passed at the release checkpoints. This is not proof that every hosted role/UI permutation or real email delivery was exercised. See [implementation status](../archive/reports/IMPLEMENTATION_STATUS.md).

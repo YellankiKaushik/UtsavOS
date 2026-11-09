@@ -1,4 +1,4 @@
-> Current release: 231 regression passes; public production has successful wedding/birthday/community AI acceptance and persistence evidence, including separately retained initial rate limits and affected reruns. See [current testing guide](TESTING.md), [release handoff](HACKATHON_RELEASE_HANDOFF.md) and [presentation report](GITHUB_REPOSITORY_FINAL_REPORT.md). The dated ledger below remains historical; real mail delivery remains unverified.
+> Current release: 231 regression passes; public production has successful wedding/birthday/community AI acceptance and persistence evidence, including separately retained initial rate limits and affected reruns. See [current testing guide](../../TESTING.md), [release handoff](HACKATHON_RELEASE_HANDOFF.md) and [presentation report](GITHUB_REPOSITORY_FINAL_REPORT.md). The dated ledger below remains historical; real mail delivery remains unverified.
 
 # Test report
 

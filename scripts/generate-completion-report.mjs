@@ -144,7 +144,8 @@ const tests = [
     skipped: 0,
     durationMs: null,
     status: "BLOCKED",
-    evidence: "scripts/preflight-live.mjs; docs/FOUNDER_ACTIONS_REQUIRED.md",
+    evidence:
+      "scripts/preflight-live.mjs; docs/archive/reports/FOUNDER_ACTIONS_REQUIRED.md",
     scope:
       "Nonzero preflight exit; no tests, provider call or remote mutation executed. Missing staging accounts/confirmation or matching successful smoke/evaluation budget.",
   })),
@@ -781,7 +782,7 @@ const report = {
     health:
       "Local production /api/health/live200 and unauthenticated guards PASS; no hosted health",
     externalActions:
-      "EXT-01 through EXT-07; docs/DEPLOYMENT.md and docs/FOUNDER_ACTIONS_REQUIRED.md",
+      "EXT-01 through EXT-07; docs/DEPLOYMENT.md and docs/archive/reports/FOUNDER_ACTIONS_REQUIRED.md",
   },
   K_stage_status: {
     P0: "IMPLEMENTED BUT RELEASE BLOCKED; mandatory real provider/platform/Auth/end-to-end gates not satisfied",
@@ -794,9 +795,9 @@ const report = {
     state:
       "Baseline checkpointdbe84fe preserved; current source includes unified AI, three migrations, native tests, isolated browsers and safe live preflight. Default checks pass; failed provider attempts and unknown target platform block release.",
     inspectFirst: [
-      "docs/FOUNDER_ACTIONS_REQUIRED.md",
-      "docs/IMPLEMENTATION_STATUS.md",
-      "docs/TEST_REPORT.md",
+      "docs/archive/reports/FOUNDER_ACTIONS_REQUIRED.md",
+      "docs/archive/reports/IMPLEMENTATION_STATUS.md",
+      "docs/archive/reports/TEST_REPORT.md",
       "docs/DEPLOYMENT.md",
       "src/infrastructure/config.ts",
       "src/infrastructure/ai/service.ts",
@@ -912,10 +913,10 @@ for (let i = 0; i < sections.length; i++) {
 }
 mkdirSync("docs/evidence", { recursive: true });
 writeFileSync(
-  "docs/CODEX_COMPLETION_REPORT.json",
+  "docs/archive/reports/CODEX_COMPLETION_REPORT.json",
   JSON.stringify(report, null, 2) + "\n",
 );
-writeFileSync("docs/CODEX_COMPLETION_REPORT.md", md);
+writeFileSync("docs/archive/reports/CODEX_COMPLETION_REPORT.md", md);
 writeFileSync(
   "docs/evidence/verification.json",
   JSON.stringify(
@@ -947,11 +948,11 @@ const table =
     )
     .join("\n");
 writeFileSync(
-  "docs/IMPLEMENTATION_STATUS.md",
+  "docs/archive/reports/IMPLEMENTATION_STATUS.md",
   `# Implementation status\n\n2026-10-26. Milestone7: **IN PROGRESS; external release gates BLOCKED**. P0: **IMPLEMENTED BUT RELEASE BLOCKED**. P1/P2: **NOT STARTED**, gated. Architecture V2 unchanged; complete source audit done; original image preserved. Safe pre-provider checkpoint: dbe84fe. Inspect Git history/status for subsequent implementation checkpoint.\n\n${table}\n\nVERIFIED means only the named layer: ${unit.numPassedTests} default tests, ${native.numPassedTests} native independent-session tests, ${browser.stats.expected} offline browser tests and ${publicLive.stats.expected} read-only configured public test. Actual Auth/JWT/PostgREST, successful model outputs, full real browser journey, corpus usefulness and deployment remain unverified. Build/lint/types/client secret scan pass. Production audit reports0 vulnerabilities.\n\n## Implemented changes\n\n- Safe configuration aliases, ignored credential handling, exact duplicate normalization, bounded Supabase/UI I/O.\n- Direct Gemini plus OpenRouter, shared strict validation/deadline/cancel/retry/fallback, disclosure and safe actual-model/usage metadata.\n- Forward migrations for provenance/active generation cap and combined guest/price final-state arithmetic.\n- Native PostgreSQL TCP races, migration upgrade, provider failure tests and five-width responsive/axe checks.\n- Live preflight, provider-specific cost-bounded corpus and isolated browser servers/artifacts.\n\n## Known defects / limitations\n\nNo unresolved critical domain/SQL defect observed in executed checks. Target platform authorization and model usefulness remain unknown. No production-ready or paid-beta verdict. Native test roles are synthetic; fixture UI is labeled. No load/restore/manual screen-reader guarantee. A process killed during generation leaves its60-second lease to expire.\n\nResolved regressions: final combined financial subtotal cap, free-router catalogue omission, primary deadline allocation, client provider-info reload, pooled SQL wrapper upgrade, concurrent browser trace artifact collision. Earlier sandbox denied native loopback/build writes/npm DNS; allowed reruns passed without disabling checks.\n\n## External blockers and next executable tasks\n\n${blockers.map((b) => `- **${b.id}:** ${b.exactFailure}. Next: ${b.nextExecutableStep}.`).join("\n")}\n\nSee [completion report](CODEX_COMPLETION_REPORT.md) for requirement-to-file/API/DB/UI/test mapping, [test report](TEST_REPORT.md), [external actions](FOUNDER_ACTIONS_REQUIRED.md), [decisions](DECISIONS.md) ADR-018–022 and [deployment](DEPLOYMENT.md). Never mutate an unidentified/unrelated project or re-run unchanged costly provider failures.\n`,
 );
 writeFileSync(
-  "docs/TEST_REPORT.md",
+  "docs/archive/reports/TEST_REPORT.md",
   `# Test report\n\n2026-10-26. Windows, Node24.16.0, npm11.9.0. Source checkpoint baseline dbe84fe plus documented implementation changes. Exact lockfile retained. Synthetic seed/corpusv1. Real credentials were used only for bounded synthetic provider smokes and read-only target/public checks; no customer data or remote mutation.\n\n| Category | Command | Result | Scope |\n| --- | --- | --- | --- |\n${tests.map((t) => `| ${esc(t.category)} | \`${t.command}\` | ${t.status}${t.tests !== null ? `: ${t.passed}/${t.tests} passed, ${t.failed} failed, ${t.skipped} skipped` : ""} | ${esc(t.scope)} |`).join("\n")}\n\n## Verification boundaries\n\nDefault Vitest: ${JSON.stringify(vitest(unit))}. PGlite executes actual PostgreSQL migrations/RLS/grants, transactions and exact money against synthetic roles; it does not verify GoTrue or signed JWTs. AI/API tests inject doubles and do not represent live generation.\n\nNative PostgreSQL: ${JSON.stringify(vitest(native))}; ${concurrency.version}. Independent TCP sessions race event writes, duplicate approvals, stale proposal blocked row locks, budget locks, draft insertion, tenant denial and workspace AI leases. Pooled RPC used before migration resolves the new wrapper afterward. All three migrations execute; core direct execution remains revoked.\n\nOffline browser: ${JSON.stringify(playwright(browser))}; five widths320/375/768/1024/1440, seven planner modules each (35 scans) plus5 public layouts. Axe WCAG A/AA/2.1AA, no horizontal overflow, dialog focus/Escape, fixture manual planning/AI outage/selective acceptance/proposal approval/refresh. These do not prove real database/Auth/AI integration. Configured public browser: ${JSON.stringify(playwright(publicLive))}; read-only health and anonymous guards only.\n\nActual Gemini failed authorization; actual OpenRouter timed out with no validated result. Requested models and safe latency/category evidence are in [verification.json](evidence/verification.json). Actual model/tokens/cost unknown. Initial router-catalogue code defect was fixed/tested; two planning retests still hit deadline. No further unchanged retries. The24-case real evaluation did not run; no95% model success target claimed.\n\n## Failures diagnosed and corrected\n\n- Guest-adjusted SQL intermediate subtotal could exceed cap before a simultaneous price reduction: forward migration computes exact numeric intermediate and enforces final cap. Regression preview and approval both yield2paise for1×9e12→2×1.\n- OpenRouter free router may be absent from concrete model list: support documented router only when compatible free candidates exist and enforce structured parameters. No compatibility success claim from catalogue alone.\n- Dividing primary time across potential retries shortened healthy calls: full remaining primary deadline unless explicit fallback reserves time. Tests verify total deadline and eligible fallback.\n- Public SQL function could retain old private core resolution after rename: explicitly recreate invoker wrapper and verify on a previously used native connection.\n- Browser trace ENOENT after simultaneous suites shared output directory: separate artifact directories, same14 tests rerun PASS. No test disabled.\n- New test initially passed wrong money helper arguments and migration-upgrade test omitted required base version: corrected tests, rerun129+11 PASS.\n- Sandbox denied loopback EACCES, generated build directory EPERM and npm DNS: reran these authorized checks with proper permissions; native/build/audit passed. Failed attempts are not claimed as passes.\n\n## Remaining gates\n\nActual target project identity/migrations, signed Auth/session/recovery, PostgREST/RLS/pgTAP, genuine valid Gemini and OpenRouter outputs,24-case usefulness review, real authenticated end-to-end journey and deployed staging remain BLOCKED. Three live commands exit nonzero at preflight with0 tests, no remote mutation/cost. Local container runtime absent. Remote CI not executed. No load/p95, backup restore/RPO/RTO, manual screen-reader or compliance assessment claimed. P1/P2 not started.\n\nIgnored raw reports: .runtime/unit-results.json, native-results.json, concurrency-summary.json, browser-results.json, live-public-results.json, live-provider-smoke.json, production-audit.json. Durable redacted evidence: [verification.json](evidence/verification.json), [full JSON report](CODEX_COMPLETION_REPORT.json). Screenshots in docs/screenshots and browser reports are synthetic UI evidence only.\n\n**P0 release: NO-GO.** Next steps: [external actions](FOUNDER_ACTIONS_REQUIRED.md), [deployment](DEPLOYMENT.md).\n`,
 );
 console.log(

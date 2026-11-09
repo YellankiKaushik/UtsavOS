@@ -1,6 +1,6 @@
 # Testing and evidence
 
-Tests operate at different boundaries. Counts overlap and must not be added together. A fixture pass does not establish provider access, email delivery or production availability. [Production release evidence](HACKATHON_RELEASE_HANDOFF.md) and [retained failures](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md) identify the actual tested commits.
+Tests operate at different boundaries. Counts overlap and must not be added together. A fixture pass does not establish provider access, email delivery or production availability. [Production release evidence](archive/reports/HACKATHON_RELEASE_HANDOFF.md) and [retained failures](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md) identify the actual tested commits.
 
 ## Deterministic development checks
 

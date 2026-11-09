@@ -188,7 +188,7 @@ This audit and its plan do not authorize deletion, reset, modification or migrat
 
 ## Related documents
 
-- [Architecture](ARCHITECTURE.md) and [V2 architecture](../DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md)
-- [Local setup](SETUP.md), [testing](TESTING.md), [deployment](DEPLOYMENT.md), [security policy](../SECURITY.md) and [contributing](../CONTRIBUTING.md)
-- [Implementation status](IMPLEMENTATION_STATUS.md), [release handoff](HACKATHON_RELEASE_HANDOFF.md) and [retained live AI evidence](hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md)
+- [Architecture](../../ARCHITECTURE.md) and [V2 architecture](../../../DEEP_TECHNICAL_ARCHITECTURE_UTSAVOS_V2.md)
+- [Local setup](../../SETUP.md), [testing](../../TESTING.md), [deployment](../../DEPLOYMENT.md), [security policy](../../../SECURITY.md) and [contributing](../../../CONTRIBUTING.md)
+- [Implementation status](IMPLEMENTATION_STATUS.md), [release handoff](HACKATHON_RELEASE_HANDOFF.md) and [retained live AI evidence](../../hackathon/AI_RELEASE_VERIFICATION_2026-10-29.md)
 - [Phase-wise transition plan](OPEN_SOURCE_TRANSITION_PLAN.md)

@@ -18,4 +18,4 @@ The static showcase uses synthetic fixtures and keeps edited state in the browse
 - Provider keys remain server-only; ordinary deployed workflows use publishable Supabase keys with end-user sessions, never service-role authority.
 - Private Storage, scoped RSVP capabilities and lifecycle holds protect source/contact/financial data.
 
-Known limits include intermittent free-provider failures, unverified real confirmation/recovery email delivery, disabled hosted AI quotation extraction and incomplete commercial billing/account-backup operations. See [the release handoff](docs/HACKATHON_RELEASE_HANDOFF.md). No legal compliance or independent security certification is claimed.
+Known limits include intermittent free-provider failures, unverified real confirmation/recovery email delivery, disabled hosted AI quotation extraction and incomplete commercial billing/account-backup operations. See [the release handoff](docs/archive/reports/HACKATHON_RELEASE_HANDOFF.md). No legal compliance or independent security certification is claimed.
